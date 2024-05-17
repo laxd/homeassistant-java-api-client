@@ -11,17 +11,16 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type",
-        defaultImpl = HomeAssistantWebSocketMessage.class,
-        visible = true
+        defaultImpl = HomeAssistantWebSocketMessage
 )
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSubTypes([
-    @Type(value = HomeAssistantAuthRequiredMessage.class, name = "auth_required"),
+    @Type(value = HomeAssistantAuthRequiredMessage, name = "auth_required"),
     @Type(value = HomeAssistantEventMessage, name = "event")
 ])
 class HomeAssistantWebSocketMessage {
 
-    private Map<String, Object> unknown = [:]
+    Map<String, Object> unknown = [:]
 
     @JsonAnySetter
     void set(String name, Object value) {

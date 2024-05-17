@@ -14,9 +14,11 @@ class Main {
 
         Thread.sleep(1000)
 
-        client.onEvent("state_changed") {
-            println("State changed! ${it.data}")
-        }
+        client.onStateChanged((stateChangedEvent) -> {
+            if (stateChangedEvent.oldState.entityId == "light.bedroom") {
+                println("Bedroom light changed! ${stateChangedEvent.newState}")
+            }
+        })
 
         Thread.sleep(10000)
     }

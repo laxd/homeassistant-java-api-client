@@ -15,10 +15,10 @@ class EventMessageHandler implements MessageHandler<HomeAssistantEventMessage> {
 
     @Override
     void handle(WebSocketSession session, HomeAssistantEventMessage message) {
-        registry.registeredListeners.each {
-            // TODO: Filter based on ID of the message
-            // Filter based on message subscription
-            println("Handling message")
+        registry.registeredListeners.stream().filter {
+            it.subscriptionId == message.subscriptionId
+        }.each {
+            // TODO: Allow filtering based on subscription type, e.g. subscribed to changes of a specific entity
             it.handleMessage(message.event)
         }
     }

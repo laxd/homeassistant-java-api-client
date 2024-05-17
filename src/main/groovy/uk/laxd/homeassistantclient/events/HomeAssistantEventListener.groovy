@@ -1,10 +1,9 @@
 package uk.laxd.homeassistantclient.events
 
-import uk.laxd.homeassistantclient.model.Event
-import kotlin.properties.Delegates
+import uk.laxd.homeassistantclient.model.event.Event
 
-abstract class HomeAssistantEventListener {
+abstract class HomeAssistantEventListener<E extends Event> {
     int subscriptionId
 
-    abstract void handleMessage(Event event)
+    abstract void handleMessage(E event)
 }

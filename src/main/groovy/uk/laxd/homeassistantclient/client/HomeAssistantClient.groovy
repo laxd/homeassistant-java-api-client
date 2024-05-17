@@ -1,10 +1,11 @@
 package uk.laxd.homeassistantclient.client
 
 import jakarta.inject.Inject
-import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.model.Entity
+import uk.laxd.homeassistantclient.model.event.Event
+import uk.laxd.homeassistantclient.model.event.StateChangedEvent
 import uk.laxd.homeassistantclient.rest.HomeAssistantRestClient
 import uk.laxd.homeassistantclient.spring.HomeAssistantClientConfiguration
 import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
@@ -28,8 +29,12 @@ class HomeAssistantClient {
         restClient.getEntity(entityId)
     }
 
-    void onEvent(String eventType, HomeAssistantEventListener listener) {
+    void onEvent(String eventType, HomeAssistantEventListener<Event> listener) {
         wsClient.listenToEvents(eventType, listener)
+    }
+
+    void onStateChanged(HomeAssistantEventListener<StateChangedEvent> listener) {
+        wsClient.listenToEvents("state_changed", listener)
     }
 
     /**
