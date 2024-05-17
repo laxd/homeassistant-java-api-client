@@ -6,4 +6,12 @@ abstract class HomeAssistantEventListener<E extends Event> {
     int subscriptionId
 
     abstract void handleMessage(E event)
+
+
+    @Override
+    String toString() {
+        "HomeAssistantEventListener{" +
+            "subscriptionId=" + subscriptionId +
+            '}'
+    }
 }
