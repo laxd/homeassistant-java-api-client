@@ -2,6 +2,8 @@ package uk.laxd.homeassistantclient.ws
 
 import jakarta.inject.Inject
 import jakarta.inject.Named
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
@@ -13,6 +15,8 @@ import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
 @Named
 @Lazy
 class HomeAssistantWebSocketClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(HomeAssistantWebSocketClient)
 
     @Inject
     private IdGenerator idGenerator
@@ -27,7 +31,7 @@ class HomeAssistantWebSocketClient {
         def messageId = idGenerator.generateId()
         listener.subscriptionId = messageId
 
-        println("Subscribting to events")
+        logger.info("Subscribing to events of type '{}' - subscription ID: {}", event, messageId)
 
         session.sendMessage(
                 new TextMessage("""

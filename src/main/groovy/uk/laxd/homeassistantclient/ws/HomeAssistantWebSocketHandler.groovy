@@ -3,6 +3,8 @@ package uk.laxd.homeassistantclient.ws
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.CloseStatus
@@ -14,6 +16,8 @@ import uk.laxd.homeassistantclient.ws.message.MessageHandlerDelegate
 
 @Component
 class HomeAssistantWebSocketHandler implements WebSocketHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(HomeAssistantWebSocketHandler.class)
 
     private messageBuilder = new StringBuilder()
     private final MessageHandlerDelegate messageHandler
@@ -27,7 +31,7 @@ class HomeAssistantWebSocketHandler implements WebSocketHandler {
     }
 
     void afterConnectionEstablished(WebSocketSession session) {
-        println "WebSocket Connection established"
+        logger.info("WebSocket Connection established")
     }
 
     void handleMessage(WebSocketSession session, WebSocketMessage<?> message) {
@@ -41,7 +45,7 @@ class HomeAssistantWebSocketHandler implements WebSocketHandler {
             }
             catch (Exception e) {
                 // Avoid propagating exception up to websocket, to avoid closing if a listener throws an exception
-                println(e.message)
+                logger.error("Encountered error while handling WebSocket message: {}", e.message)
             }
         } else {
             messageBuilder.append(message.payload)
@@ -49,11 +53,11 @@ class HomeAssistantWebSocketHandler implements WebSocketHandler {
     }
 
     void handleTransportError(WebSocketSession session, Throwable exception) {
-        println "WebSocket Error: $exception"
+        logger.error("WebSocket Error {}", exception)
     }
 
     void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
-        println "WebSocket Connection closed $closeStatus"
+        logger.info("WebSocket connection closed: {}", closeStatus)
     }
 
     boolean supportsPartialMessages() {
