@@ -27,11 +27,13 @@ Home assistant events can be listened for as well
 
 ```java
 client.onStateChanged((stateChangedEvent) -> {
-    if (stateChangedEvent.oldState.entityId == "light.bedroom") {
+    if (stateChangedEvent.entityId == "light.bedroom") {
         System.out.println("Bedroom light changed! " + stateChangedEvent.newState)
     }
 })
 
-# Or, to listen to arbitrary events
-client.onEvent("")
+// Or, to listen to arbitrary events
+client.onEvent("whatever_event_you_want", (event) -> {
+    ...
+})
 ```
