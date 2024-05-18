@@ -37,6 +37,10 @@ class HomeAssistantClient {
         wsClient.listenToEvents("state_changed", listener)
     }
 
+    void onStateChanged(String entity, String from, String to, HomeAssistantEventListener<StateChangedEvent> listener) {
+        wsClient.listenToStateChange(entity, from, to, listener)
+    }
+
     /**
      * Create a new client for home assistant.
      *
