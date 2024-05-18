@@ -1,7 +1,6 @@
 package uk.laxd.homeassistantclient.ws
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -40,6 +39,8 @@ class HomeAssistantWebSocketHandler implements WebSocketHandler {
                 def payload = messageBuilder.isEmpty() ? message.payload.toString() : messageBuilder.append(message.payload.toString()).toString()
 
                 def parsedMessage = objectMapper.readValue(payload, HomeAssistantWebSocketMessage.class)
+
+                logger.info("Received message: {}", payload)
 
                 messageHandler.handle(session, parsedMessage)
             }

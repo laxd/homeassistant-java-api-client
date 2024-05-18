@@ -2,6 +2,8 @@ package uk.laxd.homeassistantclient.ws.message
 
 import jakarta.inject.Inject
 import jakarta.inject.Named
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
 import uk.laxd.homeassistantclient.model.ws.HomeAssistantEventMessage
@@ -10,6 +12,7 @@ import uk.laxd.homeassistantclient.model.ws.HomeAssistantWebSocketMessage
 @Named
 class EventMessageHandler implements MessageHandler<HomeAssistantEventMessage> {
 
+    private static final Logger logger = LoggerFactory.getLogger(EventMessageHandler.class)
     @Inject
     private HomeAssistantEventListenerRegistry registry
 
@@ -18,7 +21,7 @@ class EventMessageHandler implements MessageHandler<HomeAssistantEventMessage> {
         registry.registeredListeners.stream().filter {
             it.subscriptionId == message.subscriptionId
         }.each {
-            // TODO: Allow filtering based on subscription type, e.g. subscribed to changes of a specific entity
+            logger.info("Passing {} to listener {}", message, it)
             it.handleMessage(message.event)
         }
     }

@@ -26,4 +26,9 @@ class State {
     @JsonProperty("attributes")
     Map<String, Object> attributes
 
+
+    @Override
+    String toString() {
+        "$entityId - $state"
+    }
 }

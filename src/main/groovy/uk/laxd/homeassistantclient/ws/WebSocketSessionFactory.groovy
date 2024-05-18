@@ -21,7 +21,7 @@ class WebSocketSessionFactory {
 
         println "Connecting to WebSocket URL: $wsUrl"
 
-        return client.execute(handler, wsUrl).get()
+        return new LoggingWebSocketSessionDecorator(client.execute(handler, wsUrl).get())
     }
 }
 
