@@ -16,7 +16,8 @@ import java.time.LocalDateTime
 )
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSubTypes([
-        @JsonSubTypes.Type(value = StateChangedEvent, name = "state_changed"),
+    @JsonSubTypes.Type(value = StateChangedEvent, name = "state_changed"),
+    @JsonSubTypes.Type(value = TriggerEvent, name = "event")
 ])
 class Event {
 

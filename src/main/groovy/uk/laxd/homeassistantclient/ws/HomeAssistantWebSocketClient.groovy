@@ -9,6 +9,7 @@ import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
+import uk.laxd.homeassistantclient.model.trigger.Trigger
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
 import uk.laxd.homeassistantclient.ws.message.model.PingWebSocketMessage
 import uk.laxd.homeassistantclient.ws.message.model.TriggerWebSocketMessage
@@ -50,13 +51,13 @@ class HomeAssistantWebSocketClient {
         registry.register(listener)
     }
 
-    void listenToStateChange(String entity, String from, String to, HomeAssistantEventListener listener) {
+    void listenToStateChange(Trigger trigger, HomeAssistantEventListener listener) {
         def messageId = idGenerator.generateId()
         listener.subscriptionId = messageId
 
-        logger.info("Subscribing to state changes of '{}', from '{}' to '{}', listener='{}'", entity, from, to, listener)
+        logger.info("Subscribing with trigger [{}], listener='{}'", trigger, listener)
 
-        def message = new TriggerWebSocketMessage("state", entity, from, to)
+        def message = new TriggerWebSocketMessage(trigger)
         message.subscriptionId = messageId
 
         session.sendMessage(webSocketMessageConverter.toTextMessage(message))

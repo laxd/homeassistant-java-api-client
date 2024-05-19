@@ -1,16 +1,20 @@
 package uk.laxd.homeassistantclient.ws.message.model
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+
+import java.time.Duration
 
 class TriggerWebSocketMessage extends SubscriptionWebSocketMessage {
 
-    TriggerWebSocketMessage(String platform, String entityId, String from, String to) {
+    TriggerWebSocketMessage(uk.laxd.homeassistantclient.model.trigger.Trigger trigger) {
         this.type = "subscribe_trigger"
         this.trigger = new Trigger()
-        this.trigger.platform = platform
-        this.trigger.entityId = entityId
-        this.trigger.stateFrom = from
-        this.trigger.stateTo = to
+        this.trigger.platform = trigger.triggerType.string
+        this.trigger.entityId = trigger.entity
+        this.trigger.stateFrom = trigger.from
+        this.trigger.stateTo = trigger.to
+        this.trigger.duration = trigger.duration
     }
 
     @JsonProperty("trigger")
@@ -24,10 +28,16 @@ class TriggerWebSocketMessage extends SubscriptionWebSocketMessage {
         String entityId
 
         @JsonProperty("from")
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
         String stateFrom
 
         @JsonProperty("to")
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
         String stateTo
+
+        @JsonProperty("for")
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
+        Duration duration
     }
 
 }
