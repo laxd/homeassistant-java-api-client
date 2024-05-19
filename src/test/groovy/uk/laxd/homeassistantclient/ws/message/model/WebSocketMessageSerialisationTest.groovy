@@ -2,6 +2,7 @@ package uk.laxd.homeassistantclient.ws.message.model
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
+import uk.laxd.homeassistantclient.model.trigger.TriggerBuilder
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
 class WebSocketMessageSerialisationTest extends Specification {
@@ -15,10 +16,10 @@ class WebSocketMessageSerialisationTest extends Specification {
     def "TriggerWebSocketMessage can be serialised correctly"() {
         given:
         def message = new TriggerWebSocketMessage(
-                "state",
-                "light.bedroom",
-                "off",
-                "on"
+                TriggerBuilder.onStateChange("light.bedroom")
+                        .from("off")
+                        .to("on")
+                        .build()
         )
         message.subscriptionId = 123
 
