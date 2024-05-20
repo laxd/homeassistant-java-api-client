@@ -21,7 +21,7 @@ class Main {
                 .duration(Duration.ofSeconds(5))
                 .build()
 
-        client.onStateChanged(trigger, (triggerEvent) -> {
+        client.on(trigger, (triggerEvent) -> {
             println("Bedroom OR kitchen light turned on for 5 seconds!")
         })
 
@@ -29,7 +29,7 @@ class Main {
                 .andAt("22:00:00")
                 .build()
 
-        client.onStateChanged(timeTrigger, (triggerEvent) -> {
+        client.on(timeTrigger, (triggerEvent) -> {
             // Something that needs to run at 15:00 or 22:00
             println("Triggered!")
         })

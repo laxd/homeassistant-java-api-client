@@ -51,7 +51,7 @@ class HomeAssistantWebSocketClient {
         registry.register(listener)
     }
 
-    void listenToStateChange(Trigger trigger, HomeAssistantEventListener listener) {
+    void listenToTrigger(Trigger trigger, HomeAssistantEventListener listener) {
         def messageId = idGenerator.generateId()
         listener.subscriptionId = messageId
 

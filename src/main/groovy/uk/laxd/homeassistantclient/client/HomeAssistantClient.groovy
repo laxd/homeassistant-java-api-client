@@ -35,12 +35,8 @@ class HomeAssistantClient {
         wsClient.listenToEvents(eventType, listener)
     }
 
-    void onStateChanged(HomeAssistantEventListener<StateChangedEvent> listener) {
-        wsClient.listenToEvents("state_changed", listener)
-    }
-
-    void onStateChanged(Trigger trigger, HomeAssistantEventListener<TriggerEvent> listener) {
-        wsClient.listenToStateChange(trigger, listener)
+    void on(Trigger trigger, HomeAssistantEventListener<TriggerEvent> listener) {
+        wsClient.listenToTrigger(trigger, listener)
     }
 
     /**
