@@ -1,7 +1,7 @@
 package uk.laxd.homeassistantclient
 
 import uk.laxd.homeassistantclient.client.HomeAssistantClient
-import uk.laxd.homeassistantclient.model.trigger.TriggerBuilder
+import uk.laxd.homeassistantclient.model.trigger.builder.TriggerBuilder
 
 import java.time.Duration
 
@@ -15,24 +15,23 @@ class Main {
 
         client.ping()
 
-        def trigger = TriggerBuilder.onStateChange("light.bedroom")
+        def trigger = TriggerBuilder.onStateChange("light.bedroom", "light.kitchen")
                 .from("off")
                 .to("on")
                 .duration(Duration.ofSeconds(5))
                 .build()
 
-        client.onStateChanged(trigger, (stateChangedEvent) -> {
-            println("Bedroom light turned on for 5 seconds!")
+        client.onStateChanged(trigger, (triggerEvent) -> {
+            println("Bedroom OR kitchen light turned on for 5 seconds!")
         })
 
-        def trigger2 = TriggerBuilder.onStateChange("light.living_room")
-                .to("on")
+        def timeTrigger = TriggerBuilder.dailyAt("15:00")
+                .andAt("22:00:00")
                 .build()
 
-        client.onStateChanged(trigger2, (stateChangedEvent) -> {
-            // This will only be run when the light changes to "on",
-            // regardless of what the state was before
-            println("Living room light turned on")
+        client.onStateChanged(timeTrigger, (triggerEvent) -> {
+            // Something that needs to run at 15:00 or 22:00
+            println("Triggered!")
         })
 
         Thread.sleep(100000)

@@ -1,23 +1,21 @@
 package uk.laxd.homeassistantclient.model.trigger
 
-import java.time.Duration
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 
-// TODO: Create sub classes that match each type of trigger in TriggerType?
-// TODO: Also merge this with jackson annotated trigger?
-class Trigger {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "triggerType"
+)
+@JsonSubTypes([
+        @JsonSubTypes.Type(value = StateTrigger, name = "state"),
+        @JsonSubTypes.Type(value = TimeTrigger, name = "time")
+])
+abstract class Trigger {
 
-    TriggerType triggerType
-    String entity
-    String from
-    String to
-    Duration duration
+    @JsonProperty("platform")
+    abstract TriggerType triggerType()
 
-
-    @Override
-    String toString() {
-        "$triggerType $entity" +
-                from ? " from '$from'" : "" +
-                to ? " to '$to'" : "" +
-                duration ? " for '$duration'" : ""
-    }
 }
