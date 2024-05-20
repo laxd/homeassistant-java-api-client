@@ -36,7 +36,6 @@ class TriggerSerialisationTest extends Specification {
     }
 
     def "minimal time trigger can be serialised"() {
-
         given:
         def trigger = new TimeTrigger("10:00:00")
 
@@ -46,6 +45,7 @@ class TriggerSerialisationTest extends Specification {
         then:
         triggerAsJson == """{"at":["10:00:00"],"platform":"time"}"""
     }
+
     def "time trigger with all values can be serialised"() {
 
         given:
@@ -57,5 +57,31 @@ class TriggerSerialisationTest extends Specification {
 
         then:
         triggerAsJson == """{"at":["10:00:00","15:30"],"platform":"time"}"""
+    }
+
+    def "minimal time pattern trigger can be serialised"() {
+        given:
+        def trigger = new TimePatternTrigger()
+        trigger.hours = "1"
+
+        when:
+        def triggerAsJson = objectMapper.writeValueAsString(trigger)
+
+        then:
+        triggerAsJson == """{"hours":"1","platform":"time_pattern"}"""
+    }
+
+    def "time pattern trigger with all values can be serialised"() {
+        given:
+        def trigger = new TimePatternTrigger()
+        trigger.hours = "1"
+        trigger.minutes = "/5"
+        trigger.seconds = "*"
+
+        when:
+        def triggerAsJson = objectMapper.writeValueAsString(trigger)
+
+        then:
+        triggerAsJson == """{"hours":"1","minutes":"/5","seconds":"*","platform":"time_pattern"}"""
     }
 }

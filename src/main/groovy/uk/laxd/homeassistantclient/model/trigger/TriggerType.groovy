@@ -12,7 +12,7 @@ enum TriggerType {
     TAG("not_implemented"),
     TEMPLATE("not_implemented"),
     TIME("time"),
-    TIME_PATTERN("not_implemented"),
+    TIME_PATTERN("time_pattern"),
     PERSISTENT_NOTIFICATION("not_implemented"),
     WEBHOOK("not_implemented"),
     ZONE("not_implemented"),
