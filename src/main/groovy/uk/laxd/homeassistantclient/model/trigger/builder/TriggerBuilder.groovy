@@ -19,7 +19,7 @@ class TriggerBuilder<T extends Trigger> {
     static TimeTriggerBuilder dailyAt(String time, String... additionalTime) {
         def builder = new TimeTriggerBuilder()
         builder.result = new TimeTrigger(time)
-        builder.result.ad += Arrays.asList(additionalTime)
+        builder.result.at += Arrays.asList(additionalTime)
         builder
     }
 
