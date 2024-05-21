@@ -10,7 +10,7 @@ enum TriggerType {
     STATE("state"),
     SUN("not_implemented"),
     TAG("not_implemented"),
-    TEMPLATE("not_implemented"),
+    TEMPLATE("template"),
     TIME("time"),
     TIME_PATTERN("time_pattern"),
     PERSISTENT_NOTIFICATION("not_implemented"),

@@ -5,6 +5,7 @@ import spock.lang.Specification
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
 import java.time.Duration
+import java.util.concurrent.TimeUnit
 
 class TriggerSerialisationTest extends Specification {
 
@@ -26,13 +27,13 @@ class TriggerSerialisationTest extends Specification {
         def trigger = new StateTrigger("light.bedroom")
         trigger.from = "off"
         trigger.to = "on"
-        trigger.duration = Duration.ofHours(1).plusMinutes(30)
+        trigger.duration = new For(Duration.ofHours(1).plusMinutes(30))
 
         when:
         def triggerAsJson = objectMapper.writeValueAsString(trigger)
 
         then:
-        triggerAsJson == """{"from":"off","to":"on","entity_id":["light.bedroom"],"for":"01:30:00","platform":"state"}"""
+        triggerAsJson == """{"from":"off","to":"on","for":"01:30:00","entity_id":["light.bedroom"],"platform":"state"}"""
     }
 
     def "minimal time trigger can be serialised"() {
@@ -83,5 +84,28 @@ class TriggerSerialisationTest extends Specification {
 
         then:
         triggerAsJson == """{"hours":"1","minutes":"/5","seconds":"*","platform":"time_pattern"}"""
+    }
+
+    def "minimal value template trigger can be serialised"() {
+        given:
+        def trigger = new TemplateTrigger("{{ is_state('device_tracker.paulus', 'home') }}")
+
+        when:
+        def triggerAsJson = objectMapper.writeValueAsString(trigger)
+
+        then:
+        triggerAsJson == """{"value_template":"{{ is_state('device_tracker.paulus', 'home') }}","platform":"template"}"""
+    }
+
+    def "value template trigger with all values can be serialised"() {
+        given:
+        def trigger = new TemplateTrigger("{{ is_state('device_tracker.paulus', 'home') }}")
+        trigger.duration = new For(Duration.ofMinutes(5))
+
+        when:
+        def triggerAsJson = objectMapper.writeValueAsString(trigger)
+
+        then:
+        triggerAsJson == """{"value_template":"{{ is_state('device_tracker.paulus', 'home') }}","for":"00:05:00","platform":"template"}"""
     }
 }

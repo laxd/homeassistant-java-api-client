@@ -1,6 +1,7 @@
 package uk.laxd.homeassistantclient.model.trigger.builder
 
 import uk.laxd.homeassistantclient.model.trigger.StateTrigger
+import uk.laxd.homeassistantclient.model.trigger.TemplateTrigger
 import uk.laxd.homeassistantclient.model.trigger.TimePatternTrigger
 import uk.laxd.homeassistantclient.model.trigger.TimeTrigger
 import uk.laxd.homeassistantclient.model.trigger.Trigger
@@ -27,6 +28,12 @@ class TriggerBuilder<T extends Trigger> {
     static TimePatternTriggerBuilder timePattern() {
         def builder = new TimePatternTriggerBuilder()
         builder.result = new TimePatternTrigger()
+        builder
+    }
+
+    static TemplateTriggerBuilder valueTemplate(String template) {
+        def builder = new TemplateTriggerBuilder()
+        builder.result = new TemplateTrigger(template)
         builder
     }
 

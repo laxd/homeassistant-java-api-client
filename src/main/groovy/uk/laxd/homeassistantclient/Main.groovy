@@ -41,6 +41,13 @@ class Main {
             println("Every 10 seconds...")
         })
 
+        def template = TriggerBuilder.valueTemplate("{{ is_state('light.bedroom', 'on') }}")
+                .build()
+
+        client.on(template, (event) -> {
+            println("Used a template to see when bedroom light turned on!")
+        })
+
         Thread.sleep(100000)
     }
 

@@ -3,6 +3,7 @@ package uk.laxd.homeassistantclient.model.trigger
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonUnwrapped
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import groovy.transform.ToString
 import uk.laxd.homeassistantclient.model.trigger.jackson.DurationSerialiser
@@ -25,9 +26,9 @@ class StateTrigger extends Trigger {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     String to
 
-    @JsonProperty("for")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    Duration duration
+    @JsonUnwrapped
+    For duration
 
     @Override
     TriggerType triggerType() {

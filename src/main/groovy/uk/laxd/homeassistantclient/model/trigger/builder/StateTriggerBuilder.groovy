@@ -1,5 +1,6 @@
 package uk.laxd.homeassistantclient.model.trigger.builder
 
+import uk.laxd.homeassistantclient.model.trigger.For
 import uk.laxd.homeassistantclient.model.trigger.StateTrigger
 
 import java.time.Duration
@@ -16,8 +17,10 @@ class StateTriggerBuilder extends TriggerBuilder<StateTrigger> {
         this
     }
 
+    // TODO: Also allow taking in a h/m/s duration including templates
     TriggerBuilder duration(Duration duration) {
-        this.result.duration = duration
+        this.result.duration = new For(duration)
         this
     }
+
 }
