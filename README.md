@@ -23,17 +23,39 @@ if (bedroomLight.state == "On") {
 }
 ```
 
-Home assistant events can be listened for as well
+## Triggers
+
+Some types of [triggers](https://www.home-assistant.io/docs/automation/trigger/) are supported, see the following list
+for supported types:
+
+- Event trigger
+- Home Assistant trigger
+- MQTT trigger
+- Numeric state trigger
+- State trigger :heavy_check_mark:
+- Sun trigger
+- Tag trigger
+- Template trigger :heavy_check_mark:
+- Time trigger :heavy_check_mark:
+- Time pattern trigger :heavy_check_mark:
+- Persistent notification trigger
+- Webhook trigger
+- Zone trigger
+- Geolocation trigger
+- Device triggers
+- Calendar trigger
+- Sentence trigger
+
+These can be used as follows. Multiple triggers are supported
 
 ```java
-client.onStateChanged((stateChangedEvent) -> {
-    if (stateChangedEvent.entityId == "light.bedroom") {
-        System.out.println("Bedroom light changed! " + stateChangedEvent.newState)
-    }
-})
+def trigger = TriggerBuilder.onStateChange("light.bedroom", "light.kitchen")
+    .from("off")
+    .to("on")
+    .duration(Duration.ofSeconds(5))
+    .build()
 
-// Or, to listen to arbitrary events
-client.onEvent("whatever_event_you_want", (event) -> {
-    ...
+client.on(trigger, (triggerEvent) -> {
+    println("Bedroom OR kitchen light turned on for 5 seconds!")
 })
 ```
