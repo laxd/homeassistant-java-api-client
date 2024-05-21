@@ -8,17 +8,17 @@ Instantiate a new instance of the HomeAssistantClient.
 
 `longLivedToken` should be a long lived access token
 
-```java
-HomeAssistantClient client = HomeAssistantClient.createClient(homeAssistantUrl, longLivedToken);
+```groovy
+def client = HomeAssistantClient.createClient(homeAssistantUrl, longLivedToken);
 ```
 
 Query for home assistant entities
 
-```java
-Entity bedroomLight = client.getEntity("light.bedroom");
+```groovy
+def bedroomLight = client.getEntity("light.bedroom")
 
 if (bedroomLight.state == "On") {
-    System.out.println("The bedroom light is on");
+    System.out.println("The bedroom light is on")
     System.out.println("It was last changed: " + bedroomLight.lastChanged)
 }
 ```
@@ -48,7 +48,9 @@ for supported types:
 
 These can be used as follows. Multiple triggers are supported
 
-```java
+
+#### State trigger 
+```groovy
 def trigger = TriggerBuilder.onStateChange("light.bedroom", "light.kitchen")
     .from("off")
     .to("on")
@@ -57,5 +59,36 @@ def trigger = TriggerBuilder.onStateChange("light.bedroom", "light.kitchen")
 
 client.on(trigger, (triggerEvent) -> {
     println("Bedroom OR kitchen light turned on for 5 seconds!")
+})
+```
+
+#### Time trigger
+```groovy
+def timeTrigger = TriggerBuilder.dailyAt("15:00")
+        .andAt("22:00:00")
+        .build()
+
+client.on(timeTrigger, (triggerEvent) -> {
+    // Something that needs to run at 15:00 or 22:00
+    println("Triggered!")
+})
+```
+
+#### Time pattern trigger
+```groovy
+def every10Seconds = TriggerBuilder.timePattern().every(10, TimeUnit.SECONDS)
+
+client.on(every10Seconds, (triggerEvent) -> {
+    println("Every 10 seconds...")
+})
+```
+
+#### Template trigger
+```groovy
+def template = TriggerBuilder.valueTemplate("{{ is_state('light.bedroom', 'on') }}")
+        .build()
+
+client.on(template, (event) -> {
+    println("Triggering when bedroom light turns on")
 })
 ```
