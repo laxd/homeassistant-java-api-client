@@ -2,7 +2,7 @@ package uk.laxd.homeassistantclient.ws.message.model
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
-import uk.laxd.homeassistantclient.model.trigger.builder.TriggerBuilder
+import uk.laxd.homeassistantclient.model.json.trigger.builder.TriggerBuilder
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
 class WebSocketMessageSerialisationTest extends Specification {

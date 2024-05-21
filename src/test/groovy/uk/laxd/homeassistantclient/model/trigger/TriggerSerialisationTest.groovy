@@ -2,10 +2,14 @@ package uk.laxd.homeassistantclient.model.trigger
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
+import uk.laxd.homeassistantclient.model.json.trigger.For
+import uk.laxd.homeassistantclient.model.json.trigger.StateTrigger
+import uk.laxd.homeassistantclient.model.json.trigger.TemplateTrigger
+import uk.laxd.homeassistantclient.model.json.trigger.TimePatternTrigger
+import uk.laxd.homeassistantclient.model.json.trigger.TimeTrigger
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
 import java.time.Duration
-import java.util.concurrent.TimeUnit
 
 class TriggerSerialisationTest extends Specification {
 

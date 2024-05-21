@@ -1,29 +1,43 @@
 package uk.laxd.homeassistantclient.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonTypeInfo
-import java.util.Date
+import groovy.transform.ToString
+import uk.laxd.homeassistantclient.model.json.HomeAssistantEntity
+import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 
+@ToString(includes = "entityId,state")
 class Entity {
 
-    @JsonProperty("entity_id")
+    private HomeAssistantWebSocketClient wsClient
+
+    Entity(HomeAssistantWebSocketClient wsClient, HomeAssistantEntity entity) {
+        this.wsClient = wsClient
+        this.entityId = entity.entityId
+        this.state = entity.state
+        this.lastChanged = entity.lastChanged
+        this.lastUpdated = entity.lastUpdated
+        this.attributes = entity.attributes
+    }
+
     String entityId
     String state
-
-    @JsonProperty("last_changed")
     Date lastChanged
-
-    @JsonProperty("last_updated")
     Date lastUpdated
-
     Map<String, Object> attributes
+
+    void turnOn() {
+        this.wsClient.turnOn(this.entityId)
+    }
+
+    void turnOff() {
+        this.wsClient.turnOff(this.entityId)
+    }
+
+    void toggle() {
+        this.wsClient.toggle(this.entityId)
+    }
 
     String getType() {
         return entityId.split(".")[0]
     }
 
-    @Override
-    String toString() {
-        return "$entityId - $attributes"
-    }
 }

@@ -2,7 +2,7 @@ package uk.laxd.homeassistantclient.rest
 
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.service.annotation.GetExchange
-import uk.laxd.homeassistantclient.model.Entity
+import uk.laxd.homeassistantclient.model.json.HomeAssistantEntity
 
 interface HomeAssistantRestClient {
 
@@ -10,11 +10,11 @@ interface HomeAssistantRestClient {
     String isRunning()
 
     @GetExchange("/states")
-    List<Entity> getAllEntities()
+    List<HomeAssistantEntity> getAllEntities()
 
     /**
      * Retrieves a generic entity
      */
     @GetExchange("/states/{id}")
-    Entity getEntity(@PathVariable("id") String id)
+    HomeAssistantEntity getEntity(@PathVariable("id") String id)
 }

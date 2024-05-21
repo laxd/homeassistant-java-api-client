@@ -1,0 +1,33 @@
+package uk.laxd.homeassistantclient.model.json.trigger
+
+
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonUnwrapped
+import groovy.transform.ToString
+
+@ToString(includeNames = true, includes = "entities,from,to")
+class StateTrigger extends Trigger {
+
+    StateTrigger(String entity, String... additionalEntities) {
+        this.entities = [entity] + Arrays.asList(additionalEntities)
+    }
+
+    @JsonProperty("entity_id")
+    Collection<String> entities
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    String from
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    String to
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonUnwrapped
+    For duration
+
+    @Override
+    TriggerType triggerType() {
+        TriggerType.STATE
+    }
+}

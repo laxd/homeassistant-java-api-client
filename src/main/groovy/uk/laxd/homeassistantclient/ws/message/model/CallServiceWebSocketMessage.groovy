@@ -1,7 +1,7 @@
 package uk.laxd.homeassistantclient.ws.message.model
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped
-import uk.laxd.homeassistantclient.model.service.CallService
+import uk.laxd.homeassistantclient.model.json.service.CallService
 
 class CallServiceWebSocketMessage extends SubscriptionWebSocketMessage {
 

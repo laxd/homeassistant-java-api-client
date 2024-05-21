@@ -3,6 +3,8 @@ package uk.laxd.homeassistantclient.model.ws
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import spock.lang.Specification
+import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantAuthRequiredMessage
+import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantWebSocketMessage
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
 class HomeAssistantWsModelSpec extends Specification {

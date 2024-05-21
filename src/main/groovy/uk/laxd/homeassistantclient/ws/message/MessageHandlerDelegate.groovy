@@ -3,7 +3,7 @@ package uk.laxd.homeassistantclient.ws.message
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.WebSocketSession
-import uk.laxd.homeassistantclient.model.ws.HomeAssistantWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantWebSocketMessage
 
 @Component
 class MessageHandlerDelegate {

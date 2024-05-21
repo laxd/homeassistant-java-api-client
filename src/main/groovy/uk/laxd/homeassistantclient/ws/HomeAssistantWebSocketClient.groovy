@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Lazy
 import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
-import uk.laxd.homeassistantclient.model.service.CallService
-import uk.laxd.homeassistantclient.model.service.ServiceType
-import uk.laxd.homeassistantclient.model.trigger.Trigger
+import uk.laxd.homeassistantclient.model.json.service.CallService
+import uk.laxd.homeassistantclient.model.json.service.ServiceType
+import uk.laxd.homeassistantclient.model.json.trigger.Trigger
 import uk.laxd.homeassistantclient.ws.message.WebSocketSubscriptionIdPopulator
 import uk.laxd.homeassistantclient.ws.message.model.CallServiceWebSocketMessage
 import uk.laxd.homeassistantclient.ws.message.model.EventWebSocketMessage
@@ -77,6 +77,12 @@ class HomeAssistantWebSocketClient {
 
     void turnOff(String entityId) {
         def service = new CallService(ServiceType.TURN_OFF.text)
+        service.target.entities << entityId
+        callService(service)
+    }
+
+    void toggle(String entityId) {
+        def service = new CallService(ServiceType.TOGGLE.text)
         service.target.entities << entityId
         callService(service)
     }

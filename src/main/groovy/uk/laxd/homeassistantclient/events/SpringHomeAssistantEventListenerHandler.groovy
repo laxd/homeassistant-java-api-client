@@ -4,7 +4,7 @@ import jakarta.inject.Inject
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import uk.laxd.homeassistantclient.model.event.Event
+import uk.laxd.homeassistantclient.model.json.event.Event
 
 @Component
 class SpringHomeAssistantEventListenerHandler implements HomeAssistantEventListenerHandler {

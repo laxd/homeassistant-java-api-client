@@ -1,7 +1,7 @@
 package uk.laxd.homeassistantclient.ws.message
 
 import org.springframework.web.socket.WebSocketSession
-import uk.laxd.homeassistantclient.model.ws.HomeAssistantWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantWebSocketMessage
 
 interface MessageHandler<M extends HomeAssistantWebSocketMessage> {
 

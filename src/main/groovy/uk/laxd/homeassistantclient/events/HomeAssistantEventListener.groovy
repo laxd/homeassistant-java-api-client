@@ -1,6 +1,6 @@
 package uk.laxd.homeassistantclient.events
 
-import uk.laxd.homeassistantclient.model.event.Event
+import uk.laxd.homeassistantclient.model.json.event.Event
 
 abstract class HomeAssistantEventListener<E extends Event> {
     int subscriptionId

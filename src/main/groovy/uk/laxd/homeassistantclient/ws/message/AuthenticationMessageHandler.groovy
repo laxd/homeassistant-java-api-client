@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.client.HomeAssistantAuthentication
-import uk.laxd.homeassistantclient.model.ws.HomeAssistantAuthRequiredMessage
-import uk.laxd.homeassistantclient.model.ws.HomeAssistantWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantAuthRequiredMessage
+import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantWebSocketMessage
 
 @Component
 class AuthenticationMessageHandler implements MessageHandler<HomeAssistantAuthRequiredMessage> {

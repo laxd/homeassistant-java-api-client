@@ -4,9 +4,9 @@ import jakarta.inject.Inject
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.model.Entity
-import uk.laxd.homeassistantclient.model.trigger.Trigger
-import uk.laxd.homeassistantclient.model.event.Event
-import uk.laxd.homeassistantclient.model.event.TriggerEvent
+import uk.laxd.homeassistantclient.model.json.trigger.Trigger
+import uk.laxd.homeassistantclient.model.json.event.Event
+import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
 import uk.laxd.homeassistantclient.rest.HomeAssistantRestClient
 import uk.laxd.homeassistantclient.spring.HomeAssistantClientConfiguration
 import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
@@ -27,7 +27,8 @@ class HomeAssistantClient {
     }
 
     Entity getEntity(String entityId) {
-        restClient.getEntity(entityId)
+        def entity = restClient.getEntity(entityId)
+        return new Entity(wsClient, entity)
     }
 
     void onEvent(String eventType, HomeAssistantEventListener<Event> listener) {
@@ -48,6 +49,10 @@ class HomeAssistantClient {
 
     void turnOff(String entityId) {
         wsClient.turnOff(entityId)
+    }
+
+    void toggle(String entityId) {
+        wsClient.toggle(entityId)
     }
 
     /**
