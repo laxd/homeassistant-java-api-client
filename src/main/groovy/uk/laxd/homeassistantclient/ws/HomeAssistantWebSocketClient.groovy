@@ -8,8 +8,11 @@ import org.springframework.context.annotation.Lazy
 import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
+import uk.laxd.homeassistantclient.model.service.CallService
+import uk.laxd.homeassistantclient.model.service.ServiceType
 import uk.laxd.homeassistantclient.model.trigger.Trigger
 import uk.laxd.homeassistantclient.ws.message.WebSocketSubscriptionIdPopulator
+import uk.laxd.homeassistantclient.ws.message.model.CallServiceWebSocketMessage
 import uk.laxd.homeassistantclient.ws.message.model.EventWebSocketMessage
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
 import uk.laxd.homeassistantclient.ws.message.model.PingWebSocketMessage
@@ -64,6 +67,27 @@ class HomeAssistantWebSocketClient {
         session.sendMessage(webSocketMessageConverter.toTextMessage(message))
 
         registry.register(listener)
+    }
+
+    void turnOn(String entityId) {
+        def service = new CallService(ServiceType.TURN_ON.text)
+        service.target.entities << entityId
+        callService(service)
+    }
+
+    void turnOff(String entityId) {
+        def service = new CallService(ServiceType.TURN_OFF.text)
+        service.target.entities << entityId
+        callService(service)
+    }
+
+    void callService(CallService callService) {
+        logger.info("Calling service {}", callService)
+
+        def message = new CallServiceWebSocketMessage(callService)
+        message.subscriptionId = idGenerator.generateId()
+
+        session.sendMessage(webSocketMessageConverter.toTextMessage(message))
     }
 
     void ping() {

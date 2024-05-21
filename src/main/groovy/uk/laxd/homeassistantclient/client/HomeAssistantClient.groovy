@@ -42,6 +42,14 @@ class HomeAssistantClient {
         wsClient.listenToTriggers(triggers, listener)
     }
 
+    void turnOn(String entityId) {
+        wsClient.turnOn(entityId)
+    }
+
+    void turnOff(String entityId) {
+        wsClient.turnOff(entityId)
+    }
+
     /**
      * Create a new client for home assistant.
      *
