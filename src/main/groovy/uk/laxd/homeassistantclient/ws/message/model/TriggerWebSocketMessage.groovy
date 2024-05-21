@@ -6,12 +6,15 @@ import uk.laxd.homeassistantclient.model.trigger.Trigger
 class TriggerWebSocketMessage extends SubscriptionWebSocketMessage {
 
     TriggerWebSocketMessage(Trigger trigger) {
-        this.type = "subscribe_trigger"
-        this.trigger = trigger
+        this([trigger])
     }
 
+    TriggerWebSocketMessage(Collection<Trigger> triggers) {
+        this.type = "subscribe_trigger"
+        this.triggers = triggers
+    }
     @JsonProperty("trigger")
-    Trigger trigger
+    Collection<Trigger> triggers
 
 }
 

@@ -6,7 +6,6 @@ import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.model.Entity
 import uk.laxd.homeassistantclient.model.trigger.Trigger
 import uk.laxd.homeassistantclient.model.event.Event
-import uk.laxd.homeassistantclient.model.event.StateChangedEvent
 import uk.laxd.homeassistantclient.model.event.TriggerEvent
 import uk.laxd.homeassistantclient.rest.HomeAssistantRestClient
 import uk.laxd.homeassistantclient.spring.HomeAssistantClientConfiguration
@@ -37,6 +36,10 @@ class HomeAssistantClient {
 
     void on(Trigger trigger, HomeAssistantEventListener<TriggerEvent> listener) {
         wsClient.listenToTrigger(trigger, listener)
+    }
+
+    void on(Collection<Trigger> triggers, HomeAssistantEventListener<TriggerEvent> listener) {
+        wsClient.listenToTriggers(triggers, listener)
     }
 
     /**

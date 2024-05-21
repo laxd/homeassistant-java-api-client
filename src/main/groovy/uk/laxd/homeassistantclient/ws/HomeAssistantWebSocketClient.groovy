@@ -52,12 +52,16 @@ class HomeAssistantWebSocketClient {
     }
 
     void listenToTrigger(Trigger trigger, HomeAssistantEventListener listener) {
+        listenToTriggers([trigger], listener)
+    }
+
+    void listenToTriggers(Collection<Trigger> triggers, HomeAssistantEventListener listener) {
         def messageId = idGenerator.generateId()
         listener.subscriptionId = messageId
 
-        logger.info("Subscribing with trigger [{}], listener='{}'", trigger, listener)
+        logger.info("Subscribing with triggers [{}], listener='{}'", triggers, listener)
 
-        def message = new TriggerWebSocketMessage(trigger)
+        def message = new TriggerWebSocketMessage(triggers)
         message.subscriptionId = messageId
 
         session.sendMessage(webSocketMessageConverter.toTextMessage(message))
