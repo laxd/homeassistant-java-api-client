@@ -27,6 +27,6 @@ class WebSocketMessageSerialisationTest extends Specification {
         def string = objectMapper.writeValueAsString(message)
 
         then:
-        string == """{"type":"subscribe_trigger","id":123,"trigger":{"from":"off","to":"on","entity_id":["light.bedroom"],"platform":"state"}}"""
+        string == """{"type":"subscribe_trigger","id":123,"trigger":[{"from":"off","to":"on","entity_id":["light.bedroom"],"platform":"state"}]}"""
     }
 }
