@@ -5,11 +5,12 @@ import jakarta.inject.Named
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Lazy
-import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
 import uk.laxd.homeassistantclient.model.trigger.Trigger
+import uk.laxd.homeassistantclient.ws.message.WebSocketSubscriptionIdPopulator
+import uk.laxd.homeassistantclient.ws.message.model.EventWebSocketMessage
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
 import uk.laxd.homeassistantclient.ws.message.model.PingWebSocketMessage
 import uk.laxd.homeassistantclient.ws.message.model.TriggerWebSocketMessage
@@ -20,33 +21,32 @@ class HomeAssistantWebSocketClient {
 
     private static final Logger logger = LoggerFactory.getLogger(HomeAssistantWebSocketClient)
 
-    @Inject
+    private WebSocketSubscriptionIdPopulator idPopulator
     private IdGenerator idGenerator
-
-    @Inject
     private WebSocketSession session
-
-    @Inject
     private HomeAssistantEventListenerRegistry registry
-
-    @Inject
     private JacksonWebSocketMessageConverter webSocketMessageConverter
 
-    void listenToEvents(String event, HomeAssistantEventListener listener) {
-        def messageId = idGenerator.generateId()
-        listener.subscriptionId = messageId
+    @Inject
+    HomeAssistantWebSocketClient(WebSocketSubscriptionIdPopulator idPopulator,
+                                 IdGenerator idGenerator,
+                                 WebSocketSession session,
+                                 HomeAssistantEventListenerRegistry registry,
+                                 JacksonWebSocketMessageConverter webSocketMessageConverter) {
+        this.idPopulator = idPopulator
+        this.idGenerator = idGenerator
+        this.session = session
+        this.registry = registry
+        this.webSocketMessageConverter = webSocketMessageConverter
+    }
 
+    void listenToEvents(String event, HomeAssistantEventListener listener) {
         logger.info("Subscribing to events of type '{}', listener='{}'", event, listener)
 
-        session.sendMessage(
-                new TextMessage("""
-            {
-              "id": ${messageId},
-              "type": "subscribe_events",
-              "event_type": "$event"
-            }
-            """)
-        )
+        def message = new EventWebSocketMessage(event)
+
+        idPopulator.linkMessageToListener(message, listener)
+        session.sendMessage(webSocketMessageConverter.toTextMessage(message))
 
         registry.register(listener)
     }
@@ -56,14 +56,11 @@ class HomeAssistantWebSocketClient {
     }
 
     void listenToTriggers(Collection<Trigger> triggers, HomeAssistantEventListener listener) {
-        def messageId = idGenerator.generateId()
-        listener.subscriptionId = messageId
-
         logger.info("Subscribing with triggers [{}], listener='{}'", triggers, listener)
 
         def message = new TriggerWebSocketMessage(triggers)
-        message.subscriptionId = messageId
 
+        idPopulator.linkMessageToListener(message, listener)
         session.sendMessage(webSocketMessageConverter.toTextMessage(message))
 
         registry.register(listener)
