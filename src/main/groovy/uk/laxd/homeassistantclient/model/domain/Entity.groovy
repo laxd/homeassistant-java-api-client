@@ -1,4 +1,4 @@
-package uk.laxd.homeassistantclient.model
+package uk.laxd.homeassistantclient.model.domain
 
 import groovy.transform.ToString
 import uk.laxd.homeassistantclient.model.json.HomeAssistantEntity
@@ -9,6 +9,12 @@ class Entity {
 
     private HomeAssistantWebSocketClient wsClient
 
+    String entityId
+    String state
+    Date lastChanged
+    Date lastUpdated
+    Map<String, Object> attributes
+
     Entity(HomeAssistantWebSocketClient wsClient, HomeAssistantEntity entity) {
         this.wsClient = wsClient
         this.entityId = entity.entityId
@@ -17,12 +23,6 @@ class Entity {
         this.lastUpdated = entity.lastUpdated
         this.attributes = entity.attributes
     }
-
-    String entityId
-    String state
-    Date lastChanged
-    Date lastUpdated
-    Map<String, Object> attributes
 
     void turnOn() {
         this.wsClient.turnOn(this.entityId)

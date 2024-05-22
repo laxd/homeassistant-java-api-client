@@ -1,8 +1,4 @@
-package uk.laxd.homeassistantclient.model.json.trigger
-
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonUnwrapped
+package uk.laxd.homeassistantclient.model.domain.trigger
 
 import java.time.Duration
 
@@ -22,18 +18,9 @@ class For {
         this.duration = null
     }
 
-    @JsonProperty("for")
-    @JsonUnwrapped
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     final Duration duration
-
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     final String hours
-
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     final String minutes
-
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     final String seconds
 
 }

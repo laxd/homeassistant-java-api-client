@@ -1,7 +1,4 @@
-package uk.laxd.homeassistantclient.model.json.trigger
-
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonUnwrapped
+package uk.laxd.homeassistantclient.model.domain.trigger
 
 class TemplateTrigger extends Trigger {
 
@@ -14,11 +11,7 @@ class TemplateTrigger extends Trigger {
         TriggerType.TEMPLATE
     }
 
-    @JsonProperty("value_template")
     String valueTemplate
-
-    @JsonProperty("for")
-    @JsonUnwrapped
     For duration
 
 }

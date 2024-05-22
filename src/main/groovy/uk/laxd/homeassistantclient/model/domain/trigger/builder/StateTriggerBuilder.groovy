@@ -1,11 +1,12 @@
-package uk.laxd.homeassistantclient.model.json.trigger.builder
+package uk.laxd.homeassistantclient.model.domain.trigger.builder
 
 
-import uk.laxd.homeassistantclient.model.json.trigger.For
+import uk.laxd.homeassistantclient.model.domain.trigger.For
+import uk.laxd.homeassistantclient.model.domain.trigger.StateTrigger
 
 import java.time.Duration
 
-class StateTriggerBuilder extends TriggerBuilder<uk.laxd.homeassistantclient.model.json.trigger.StateTrigger> {
+class StateTriggerBuilder extends TriggerBuilder<StateTrigger> {
 
     TriggerBuilder from(String from) {
         this.result.from = from

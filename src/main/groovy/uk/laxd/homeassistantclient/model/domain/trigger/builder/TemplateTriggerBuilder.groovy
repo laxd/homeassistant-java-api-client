@@ -1,7 +1,7 @@
-package uk.laxd.homeassistantclient.model.json.trigger.builder
+package uk.laxd.homeassistantclient.model.domain.trigger.builder
 
-import uk.laxd.homeassistantclient.model.json.trigger.For
-import uk.laxd.homeassistantclient.model.json.trigger.TemplateTrigger
+import uk.laxd.homeassistantclient.model.domain.trigger.For
+import uk.laxd.homeassistantclient.model.domain.trigger.TemplateTrigger
 
 import java.time.Duration
 

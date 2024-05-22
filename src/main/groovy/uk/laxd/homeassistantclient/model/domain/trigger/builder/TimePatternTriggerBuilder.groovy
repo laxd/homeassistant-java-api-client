@@ -1,6 +1,6 @@
-package uk.laxd.homeassistantclient.model.json.trigger.builder
+package uk.laxd.homeassistantclient.model.domain.trigger.builder
 
-import uk.laxd.homeassistantclient.model.json.trigger.TimePatternTrigger
+import uk.laxd.homeassistantclient.model.domain.trigger.TimePatternTrigger
 
 import java.util.concurrent.TimeUnit
 

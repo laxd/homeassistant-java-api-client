@@ -1,9 +1,10 @@
-package uk.laxd.homeassistantclient.model.json.trigger.builder
+package uk.laxd.homeassistantclient.model.domain.trigger.builder
 
-
-import uk.laxd.homeassistantclient.model.json.trigger.TemplateTrigger
-import uk.laxd.homeassistantclient.model.json.trigger.TimePatternTrigger
-import uk.laxd.homeassistantclient.model.json.trigger.Trigger
+import uk.laxd.homeassistantclient.model.domain.trigger.StateTrigger
+import uk.laxd.homeassistantclient.model.domain.trigger.TemplateTrigger
+import uk.laxd.homeassistantclient.model.domain.trigger.TimePatternTrigger
+import uk.laxd.homeassistantclient.model.domain.trigger.TimeTrigger
+import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
 
 class TriggerBuilder<T extends Trigger> {
 
@@ -13,13 +14,13 @@ class TriggerBuilder<T extends Trigger> {
 
     static StateTriggerBuilder onStateChange(String entityId, String... additionalEntityIds) {
         def builder = new StateTriggerBuilder()
-        builder.result = new uk.laxd.homeassistantclient.model.json.trigger.StateTrigger(entityId, additionalEntityIds)
+        builder.result = new StateTrigger(entityId, additionalEntityIds)
         builder
     }
 
     static TimeTriggerBuilder dailyAt(String time, String... additionalTime) {
         def builder = new TimeTriggerBuilder()
-        builder.result = new uk.laxd.homeassistantclient.model.json.trigger.TimeTrigger(time)
+        builder.result = new TimeTrigger(time)
         builder.result.at += Arrays.asList(additionalTime)
         builder
     }

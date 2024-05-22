@@ -3,8 +3,8 @@ package uk.laxd.homeassistantclient.client
 import jakarta.inject.Inject
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
-import uk.laxd.homeassistantclient.model.Entity
-import uk.laxd.homeassistantclient.model.json.trigger.Trigger
+import uk.laxd.homeassistantclient.model.domain.Entity
+import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
 import uk.laxd.homeassistantclient.model.json.event.Event
 import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
 import uk.laxd.homeassistantclient.rest.HomeAssistantRestClient

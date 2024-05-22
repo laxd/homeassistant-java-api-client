@@ -1,4 +1,5 @@
-package uk.laxd.homeassistantclient.model.json.trigger
+package uk.laxd.homeassistantclient.model.domain.trigger
+
 /**
  * <p>
  *     Trigger at a given time.

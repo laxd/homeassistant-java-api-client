@@ -1,6 +1,9 @@
 package uk.laxd.homeassistantclient
 
 import uk.laxd.homeassistantclient.client.HomeAssistantClient
+import uk.laxd.homeassistantclient.model.domain.trigger.builder.TriggerBuilder
+
+import java.time.Duration
 
 class Main {
 
@@ -10,6 +13,10 @@ class Main {
 
         client.getEntity("light.living_room_ceiling_1")
             .toggle()
+
+        client.on(TriggerBuilder.onStateChange("light.living_room_ceiling_1").duration(Duration.ofSeconds(5)).build(), (e) -> {
+            println("Changed ${e.data}")
+        })
 
         Thread.sleep(5000)
 

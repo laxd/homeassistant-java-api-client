@@ -2,7 +2,8 @@ package uk.laxd.homeassistantclient.ws.message.model
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
-import uk.laxd.homeassistantclient.model.json.trigger.builder.TriggerBuilder
+import uk.laxd.homeassistantclient.model.domain.trigger.builder.TriggerBuilder
+import uk.laxd.homeassistantclient.model.json.trigger.JsonTrigger
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
 class WebSocketMessageSerialisationTest extends Specification {
@@ -15,18 +16,21 @@ class WebSocketMessageSerialisationTest extends Specification {
 
     def "TriggerWebSocketMessage can be serialised correctly"() {
         given:
-        def message = new TriggerWebSocketMessage(
-                TriggerBuilder.onStateChange("light.bedroom")
-                        .from("off")
-                        .to("on")
-                        .build()
-        )
+        def trigger = new JsonTrigger()
+        trigger.type = "test"
+        trigger.addAttribute("key", "value")
+
+        def message = new TriggerWebSocketMessage(trigger)
         message.subscriptionId = 123
 
         when:
-        def string = objectMapper.writeValueAsString(message)
+        def node = objectMapper.valueToTree(message)
 
         then:
-        string == """{"type":"subscribe_trigger","id":123,"trigger":[{"from":"off","to":"on","entity_id":["light.bedroom"],"platform":"state"}]}"""
+        node.fieldNames().toList() == ["type", "id", "trigger"]
+        node.get("type").textValue() == "subscribe_trigger"
+        node.get("id").intValue() == 123
+        node.get("trigger").toList()[0].get("platform").textValue() == "test"
+        node.get("trigger").toList()[0].get("key").textValue() == "value"
     }
 }

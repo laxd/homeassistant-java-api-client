@@ -1,4 +1,4 @@
-package uk.laxd.homeassistantclient.model.json.trigger
+package uk.laxd.homeassistantclient.model.domain.trigger
 
 import com.fasterxml.jackson.annotation.JsonValue
 
@@ -20,7 +20,6 @@ enum TriggerType {
     CALENDAR("not_implemented"),
     SENTENCE("not_implemented")
 
-    @JsonValue
     String string
 
     TriggerType(String string) {
