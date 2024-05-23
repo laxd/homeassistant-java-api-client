@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Lazy
 import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
-import uk.laxd.homeassistantclient.model.json.service.CallService
-import uk.laxd.homeassistantclient.model.json.service.ServiceType
+import uk.laxd.homeassistantclient.model.domain.service.Service
+import uk.laxd.homeassistantclient.model.domain.service.ServiceTarget
+import uk.laxd.homeassistantclient.model.domain.service.ServiceType
+import uk.laxd.homeassistantclient.model.domain.service.TargetType
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
-import uk.laxd.homeassistantclient.model.mapper.trigger.TriggerMapper
+import uk.laxd.homeassistantclient.model.mapper.service.ServiceMapper
 import uk.laxd.homeassistantclient.model.mapper.trigger.TriggerMapperFactory
 import uk.laxd.homeassistantclient.ws.message.WebSocketSubscriptionIdPopulator
 import uk.laxd.homeassistantclient.ws.message.model.CallServiceWebSocketMessage
@@ -33,6 +35,7 @@ class HomeAssistantWebSocketClient {
     private HomeAssistantEventListenerRegistry registry
     private JacksonWebSocketMessageConverter webSocketMessageConverter
     private TriggerMapperFactory triggerMapperFactory
+    private ServiceMapper serviceMapper
 
     @Inject
     HomeAssistantWebSocketClient(WebSocketSubscriptionIdPopulator idPopulator,
@@ -40,13 +43,15 @@ class HomeAssistantWebSocketClient {
                                  WebSocketSession session,
                                  HomeAssistantEventListenerRegistry registry,
                                  JacksonWebSocketMessageConverter webSocketMessageConverter,
-                                 TriggerMapperFactory triggerMapperFactory) {
+                                 TriggerMapperFactory triggerMapperFactory,
+                                 ServiceMapper serviceMapper) {
         this.idPopulator = idPopulator
         this.idGenerator = idGenerator
         this.session = session
         this.registry = registry
         this.webSocketMessageConverter = webSocketMessageConverter
         this.triggerMapperFactory = triggerMapperFactory
+        this.serviceMapper = serviceMapper
     }
 
     void listenToEvents(String event, HomeAssistantEventListener listener) {
@@ -80,27 +85,29 @@ class HomeAssistantWebSocketClient {
     }
 
     void turnOn(String entityId) {
-        def service = new CallService(ServiceType.TURN_ON.text)
-        service.target.entities << entityId
+        def service = new Service(ServiceType.TURN_ON)
+        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
         callService(service)
     }
 
     void turnOff(String entityId) {
-        def service = new CallService(ServiceType.TURN_OFF.text)
-        service.target.entities << entityId
+        def service = new Service(ServiceType.TURN_OFF)
+        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
         callService(service)
     }
 
     void toggle(String entityId) {
-        def service = new CallService(ServiceType.TOGGLE.text)
-        service.target.entities << entityId
+        def service = new Service(ServiceType.TOGGLE)
+        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
         callService(service)
     }
 
-    void callService(CallService callService) {
-        logger.info("Calling service {}", callService)
+    void callService(Service service) {
+        logger.info("Calling service {}", service)
 
-        def message = new CallServiceWebSocketMessage(callService)
+        def jsonService = serviceMapper.map(service)
+
+        def message = new CallServiceWebSocketMessage(jsonService)
         message.subscriptionId = idGenerator.generateId()
 
         session.sendMessage(webSocketMessageConverter.toTextMessage(message))
