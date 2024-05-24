@@ -59,6 +59,8 @@ class HomeAssistantWebSocketClient {
 
         def message = new EventWebSocketMessage(event)
 
+        // TODO: Mode idPopulator and session to new WebSocketMessageDispatcher class
+        // which can also then register the listeners.
         idPopulator.linkMessageToListener(message, listener)
         session.sendMessage(webSocketMessageConverter.toTextMessage(message))
 
@@ -90,9 +92,31 @@ class HomeAssistantWebSocketClient {
         callService(service)
     }
 
+    // TODO: Take in a domain object that wraps all of this?
+    void turnOn(String entityId, Map<String, Object> additionalData) {
+        def service = new Service(ServiceType.TURN_ON)
+        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
+        service.serviceData = additionalData
+        callService(service)
+    }
+
     void turnOff(String entityId) {
         def service = new Service(ServiceType.TURN_OFF)
         service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
+        callService(service)
+    }
+
+    void turnOff(String entityId, Map<String, Object> additionalData) {
+        def service = new Service(ServiceType.TURN_OFF)
+        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
+        service.serviceData = additionalData
+        callService(service)
+    }
+
+    void toggle(String entityId, Map<String, Object> additionalData) {
+        def service = new Service(ServiceType.TOGGLE)
+        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
+        service.serviceData = additionalData
         callService(service)
     }
 

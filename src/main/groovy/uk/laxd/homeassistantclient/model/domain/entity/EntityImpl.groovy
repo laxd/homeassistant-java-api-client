@@ -1,11 +1,11 @@
-package uk.laxd.homeassistantclient.model.domain
+package uk.laxd.homeassistantclient.model.domain.entity
 
 import groovy.transform.ToString
 import uk.laxd.homeassistantclient.model.json.HomeAssistantEntity
 import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 
 @ToString(includes = "entityId,state")
-class Entity {
+class EntityImpl implements Entity {
 
     private HomeAssistantWebSocketClient wsClient
 
@@ -15,7 +15,7 @@ class Entity {
     Date lastUpdated
     Map<String, Object> attributes
 
-    Entity(HomeAssistantWebSocketClient wsClient, HomeAssistantEntity entity) {
+    EntityImpl(HomeAssistantWebSocketClient wsClient, HomeAssistantEntity entity) {
         this.wsClient = wsClient
         this.entityId = entity.entityId
         this.state = entity.state
@@ -28,12 +28,24 @@ class Entity {
         this.wsClient.turnOn(this.entityId)
     }
 
+    void turnOn(Map<String, Object> additionalData) {
+        this.wsClient.turnOn(this.entityId, additionalData)
+    }
+
     void turnOff() {
         this.wsClient.turnOff(this.entityId)
     }
 
+    void turnOff(Map<String, Object> additionalData) {
+        this.wsClient.turnOff(this.entityId, additionalData)
+    }
+
     void toggle() {
         this.wsClient.toggle(this.entityId)
+    }
+
+    void toggle(Map<String, Object> additionalData) {
+        this.wsClient.toggle(this.entityId, additionalData)
     }
 
     String getType() {
