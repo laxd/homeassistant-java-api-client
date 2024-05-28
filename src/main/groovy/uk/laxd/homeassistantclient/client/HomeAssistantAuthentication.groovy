@@ -1,10 +1,13 @@
 package uk.laxd.homeassistantclient.client
 
-import jakarta.inject.Singleton
-import org.springframework.stereotype.Component
+import groovy.transform.TupleConstructor
 
-@Component
-@Singleton
+/**
+ * Authentication container for REST and WebSocket APIs, to be populated at client start
+ * and then maintains a reference to the URL and Token provided in case e.g. the
+ * WebSocket connection needs to be re-authenticated.
+ */
+@TupleConstructor
 class HomeAssistantAuthentication {
     String url
     String token

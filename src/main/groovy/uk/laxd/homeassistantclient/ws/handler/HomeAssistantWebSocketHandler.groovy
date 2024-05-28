@@ -1,9 +1,7 @@
-package uk.laxd.homeassistantclient.ws
+package uk.laxd.homeassistantclient.ws.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.CloseStatus
@@ -11,26 +9,23 @@ import org.springframework.web.socket.WebSocketHandler
 import org.springframework.web.socket.WebSocketMessage
 import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantWebSocketMessage
-import uk.laxd.homeassistantclient.ws.message.MessageHandlerDelegate
 
 @Component
+@Slf4j
 class HomeAssistantWebSocketHandler implements WebSocketHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(HomeAssistantWebSocketHandler.class)
-
     private messageBuilder = new StringBuilder()
-    private final MessageHandlerDelegate messageHandler
     private final ObjectMapper objectMapper
+    private final MessageHandlerDelegate messageHandler
 
     @Autowired
-    HomeAssistantWebSocketHandler(MessageHandlerDelegate messageHandler, ObjectMapper objectMapper) {
-        this.messageHandler = messageHandler
+    HomeAssistantWebSocketHandler(ObjectMapper objectMapper, MessageHandlerDelegate messageHandler) {
         this.objectMapper = objectMapper
-        this.objectMapper.registerModule(new JavaTimeModule())
+        this.messageHandler = messageHandler
     }
 
     void afterConnectionEstablished(WebSocketSession session) {
-        logger.info("WebSocket Connection established")
+        log.info("WebSocket Connection established")
     }
 
     void handleMessage(WebSocketSession session, WebSocketMessage<?> message) {
@@ -40,13 +35,13 @@ class HomeAssistantWebSocketHandler implements WebSocketHandler {
 
                 def parsedMessage = objectMapper.readValue(payload, HomeAssistantWebSocketMessage.class)
 
-                logger.info("Received message: {}", payload)
+                log.info("Received message: {}", payload)
 
                 messageHandler.handle(session, parsedMessage)
             }
             catch (Exception e) {
                 // Avoid propagating exception up to websocket, to avoid closing if a listener throws an exception
-                logger.error("Encountered error while handling WebSocket message: {}", e.message)
+                log.error("Encountered error while handling WebSocket message: {}", e.message)
             }
         } else {
             messageBuilder.append(message.payload)
@@ -54,11 +49,11 @@ class HomeAssistantWebSocketHandler implements WebSocketHandler {
     }
 
     void handleTransportError(WebSocketSession session, Throwable exception) {
-        logger.error("WebSocket Error {}", exception)
+        log.error("WebSocket Error {}", exception)
     }
 
     void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
-        logger.info("WebSocket connection closed: {}", closeStatus)
+        log.info("WebSocket connection closed: {}", closeStatus)
     }
 
     boolean supportsPartialMessages() {

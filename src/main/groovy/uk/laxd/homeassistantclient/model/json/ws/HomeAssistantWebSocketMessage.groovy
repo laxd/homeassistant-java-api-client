@@ -15,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSubTypes([
     @Type(value = HomeAssistantAuthRequiredMessage, name = "auth_required"),
+    @Type(value = HomeAssistantAuthSuccessfulMessage, name = "auth_ok"),
+    @Type(value = HomeAssistantAuthFailedMessage, name = "auth_invalid"),
     @Type(value = HomeAssistantEventMessage, name = "event")
 ])
 class HomeAssistantWebSocketMessage {

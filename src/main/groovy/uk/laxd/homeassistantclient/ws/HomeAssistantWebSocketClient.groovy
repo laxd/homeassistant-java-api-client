@@ -5,8 +5,7 @@ import jakarta.inject.Inject
 import jakarta.inject.Named
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.context.annotation.Lazy
-import org.springframework.web.socket.WebSocketSession
+import uk.laxd.homeassistantclient.client.HomeAssistantAuthenticationProvider
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
 import uk.laxd.homeassistantclient.model.domain.service.Service
@@ -22,16 +21,17 @@ import uk.laxd.homeassistantclient.ws.message.model.EventWebSocketMessage
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
 import uk.laxd.homeassistantclient.ws.message.model.PingWebSocketMessage
 import uk.laxd.homeassistantclient.ws.message.model.TriggerWebSocketMessage
+import uk.laxd.homeassistantclient.ws.session.WebSocketSessionProvider
 
 @Named
-@Lazy
 class HomeAssistantWebSocketClient {
 
     private static final Logger logger = LoggerFactory.getLogger(HomeAssistantWebSocketClient)
 
     private WebSocketSubscriptionIdPopulator idPopulator
     private IdGenerator idGenerator
-    private WebSocketSession session
+    private WebSocketSessionProvider webSocketSessionProvider
+    private HomeAssistantAuthenticationProvider authenticationProvider
     private HomeAssistantEventListenerRegistry registry
     private JacksonWebSocketMessageConverter webSocketMessageConverter
     private TriggerMapperFactory triggerMapperFactory
@@ -40,18 +40,26 @@ class HomeAssistantWebSocketClient {
     @Inject
     HomeAssistantWebSocketClient(WebSocketSubscriptionIdPopulator idPopulator,
                                  IdGenerator idGenerator,
-                                 WebSocketSession session,
+                                 WebSocketSessionProvider webSocketSessionProvider,
                                  HomeAssistantEventListenerRegistry registry,
                                  JacksonWebSocketMessageConverter webSocketMessageConverter,
                                  TriggerMapperFactory triggerMapperFactory,
-                                 ServiceMapper serviceMapper) {
+                                 ServiceMapper serviceMapper, HomeAssistantAuthenticationProvider authenticationProvider) {
         this.idPopulator = idPopulator
         this.idGenerator = idGenerator
-        this.session = session
+        this.webSocketSessionProvider = webSocketSessionProvider
         this.registry = registry
         this.webSocketMessageConverter = webSocketMessageConverter
         this.triggerMapperFactory = triggerMapperFactory
         this.serviceMapper = serviceMapper
+        this.authenticationProvider = authenticationProvider
+    }
+
+    void connect(String url, String token) {
+        authenticationProvider.authenticate(url, token)
+
+        // Get the session to ensure it is valid
+        webSocketSessionProvider.getOrCreateAuthenticatedSession()
     }
 
     void listenToEvents(String event, HomeAssistantEventListener listener) {
@@ -62,7 +70,8 @@ class HomeAssistantWebSocketClient {
         // TODO: Mode idPopulator and session to new WebSocketMessageDispatcher class
         // which can also then register the listeners.
         idPopulator.linkMessageToListener(message, listener)
-        session.sendMessage(webSocketMessageConverter.toTextMessage(message))
+        webSocketSessionProvider.getOrCreateAuthenticatedSession()
+                .sendMessage(webSocketMessageConverter.toTextMessage(message))
 
         registry.register(listener)
     }
@@ -81,7 +90,8 @@ class HomeAssistantWebSocketClient {
         def message = new TriggerWebSocketMessage(jsonTriggers)
 
         idPopulator.linkMessageToListener(message, listener)
-        session.sendMessage(webSocketMessageConverter.toTextMessage(message))
+        webSocketSessionProvider.getOrCreateAuthenticatedSession()
+                .sendMessage(webSocketMessageConverter.toTextMessage(message))
 
         registry.register(listener)
     }
@@ -134,13 +144,15 @@ class HomeAssistantWebSocketClient {
         def message = new CallServiceWebSocketMessage(jsonService)
         message.subscriptionId = idGenerator.generateId()
 
-        session.sendMessage(webSocketMessageConverter.toTextMessage(message))
+        webSocketSessionProvider.getOrCreateAuthenticatedSession()
+                .sendMessage(webSocketMessageConverter.toTextMessage(message))
     }
 
     void ping() {
         def msg = new PingWebSocketMessage()
         msg.subscriptionId = idGenerator.generateId()
-        session.sendMessage(webSocketMessageConverter.toTextMessage(msg))
+        webSocketSessionProvider.getOrCreateAuthenticatedSession()
+                .sendMessage(webSocketMessageConverter.toTextMessage(msg))
     }
 
 }

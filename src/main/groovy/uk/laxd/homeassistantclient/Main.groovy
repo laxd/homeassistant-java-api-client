@@ -9,7 +9,8 @@ class Main {
 
     static void main(String[] args) {
 
-        def client = HomeAssistant.createClient(args[0], args[1])
+        def client = HomeAssistant.createClient()
+            .connect(args[0], args[1])
 
         def livingRoomCeiling1 = client.getEntity("light.living_room_ceiling_1")
 

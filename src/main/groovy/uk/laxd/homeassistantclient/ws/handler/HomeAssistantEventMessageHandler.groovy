@@ -1,27 +1,34 @@
-package uk.laxd.homeassistantclient.ws.message
+package uk.laxd.homeassistantclient.ws.handler
 
+import groovy.util.logging.Slf4j
 import jakarta.inject.Inject
 import jakarta.inject.Named
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
 import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantEventMessage
 import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantWebSocketMessage
 
+/**
+ * Handles event messages and finds any listeners that are listening to the given subscription ID
+ * and notifies them.
+ */
 @Named
-class EventMessageHandler implements MessageHandler<HomeAssistantEventMessage> {
+@Slf4j
+class HomeAssistantEventMessageHandler implements MessageHandler<HomeAssistantEventMessage> {
 
-    private static final Logger logger = LoggerFactory.getLogger(EventMessageHandler.class)
-    @Inject
     private HomeAssistantEventListenerRegistry registry
+
+    @Inject
+    HomeAssistantEventMessageHandler(HomeAssistantEventListenerRegistry registry) {
+        this.registry = registry
+    }
 
     @Override
     void handle(WebSocketSession session, HomeAssistantEventMessage message) {
         registry.registeredListeners.stream().filter {
             it.subscriptionId == message.subscriptionId
         }.each {
-            logger.info("Passing {} to listener {}", message, it)
+            log.info("Passing {} to listener {}", message, it)
             it.handleMessage(message.event)
         }
     }
