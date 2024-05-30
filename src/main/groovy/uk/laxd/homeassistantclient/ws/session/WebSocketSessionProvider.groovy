@@ -40,7 +40,6 @@ class WebSocketSessionProvider {
 
             this.existingSession = new LoggingWebSocketSessionDecorator(client.execute(handler, wsUrl).get())
 
-
             while(!authSync.isAuthenticated()) {
                 log.debug("Waiting for authentication response...")
                 synchronized (authSync.sync) {
