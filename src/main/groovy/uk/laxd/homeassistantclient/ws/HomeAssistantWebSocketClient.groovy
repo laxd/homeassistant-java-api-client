@@ -8,12 +8,13 @@ import org.slf4j.LoggerFactory
 import uk.laxd.homeassistantclient.client.HomeAssistantAuthenticationProvider
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
+import uk.laxd.homeassistantclient.model.domain.response.HomeAssistantPongMessage
 import uk.laxd.homeassistantclient.model.domain.service.Service
 import uk.laxd.homeassistantclient.model.domain.service.ServiceTarget
 import uk.laxd.homeassistantclient.model.domain.service.ServiceType
 import uk.laxd.homeassistantclient.model.domain.service.TargetType
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
-import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantResponseMessage
+import uk.laxd.homeassistantclient.model.mapper.WebSocketMessageMapper
 import uk.laxd.homeassistantclient.model.mapper.service.ServiceMapper
 import uk.laxd.homeassistantclient.model.mapper.trigger.TriggerMapperFactory
 
@@ -38,13 +39,17 @@ class HomeAssistantWebSocketClient {
     private TriggerMapperFactory triggerMapperFactory
     private ServiceMapper serviceMapper
     private HomeAssistantWebSocketMessageDispatcher messageDispatcher
+    private WebSocketMessageMapper messageMapper
 
     @Inject
     HomeAssistantWebSocketClient(WebSocketSessionProvider webSocketSessionProvider,
                                  HomeAssistantEventListenerRegistry registry,
                                  JacksonWebSocketMessageConverter webSocketMessageConverter,
                                  TriggerMapperFactory triggerMapperFactory,
-                                 ServiceMapper serviceMapper, HomeAssistantAuthenticationProvider authenticationProvider, HomeAssistantWebSocketMessageDispatcher messageDispatcher) {
+                                 ServiceMapper serviceMapper,
+                                 HomeAssistantAuthenticationProvider authenticationProvider,
+                                 HomeAssistantWebSocketMessageDispatcher messageDispatcher,
+                                 WebSocketMessageMapper messageMapper) {
         this.webSocketSessionProvider = webSocketSessionProvider
         this.registry = registry
         this.webSocketMessageConverter = webSocketMessageConverter
@@ -52,6 +57,7 @@ class HomeAssistantWebSocketClient {
         this.serviceMapper = serviceMapper
         this.authenticationProvider = authenticationProvider
         this.messageDispatcher = messageDispatcher
+        this.messageMapper = messageMapper
     }
 
     void connect(String url, String token) {
@@ -134,9 +140,11 @@ class HomeAssistantWebSocketClient {
         messageDispatcher.sendSingleMessage(message)
     }
 
-    HomeAssistantResponseMessage ping() {
+    HomeAssistantPongMessage ping() {
         def message = new PingWebSocketMessage()
-        messageDispatcher.sendMessageAndWaitForResponse(message, Duration.ofSeconds(10))
+        def response = messageDispatcher.sendMessageAndWaitForResponse(message, Duration.ofSeconds(10))
+
+        messageMapper.map(response)
     }
 
 }

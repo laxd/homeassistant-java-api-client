@@ -5,7 +5,7 @@ import jakarta.inject.Inject
 import jakarta.inject.Named
 import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
-import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantEventMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.EventWebSocketMessage
 import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessage
 
 /**
@@ -14,7 +14,7 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessa
  */
 @Named
 @Slf4j
-class HomeAssistantEventMessageHandler implements MessageHandler<HomeAssistantEventMessage> {
+class HomeAssistantEventMessageHandler implements MessageHandler<EventWebSocketMessage> {
 
     private HomeAssistantEventListenerRegistry registry
 
@@ -24,7 +24,7 @@ class HomeAssistantEventMessageHandler implements MessageHandler<HomeAssistantEv
     }
 
     @Override
-    void handle(WebSocketSession session, HomeAssistantEventMessage message) {
+    void handle(WebSocketSession session, EventWebSocketMessage message) {
         registry.registeredListeners.stream().filter {
             it.subscriptionId == message.subscriptionId
         }.each {
@@ -35,6 +35,6 @@ class HomeAssistantEventMessageHandler implements MessageHandler<HomeAssistantEv
 
     @Override
     boolean canHandle(IncomingWebSocketMessage message) {
-        return message instanceof HomeAssistantEventMessage
+        return message instanceof EventWebSocketMessage
     }
 }

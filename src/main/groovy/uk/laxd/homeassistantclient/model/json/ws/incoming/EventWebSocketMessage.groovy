@@ -2,9 +2,8 @@ package uk.laxd.homeassistantclient.model.json.ws.incoming
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import uk.laxd.homeassistantclient.model.json.event.Event
-import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantResponseMessage
 
-class HomeAssistantEventMessage extends HomeAssistantResponseMessage {
+class EventWebSocketMessage extends ResponseWebSocketMessage {
 
     @JsonProperty("event")
     Event event

@@ -4,7 +4,7 @@ import jakarta.inject.Inject
 import jakarta.inject.Named
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
-import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantResponseMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.ResponseWebSocketMessage
 import uk.laxd.homeassistantclient.ws.handler.HomeAssistantWebSocketHandler
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.SubscriptionWebSocketMessage
@@ -56,7 +56,7 @@ class HomeAssistantWebSocketMessageDispatcher {
      * @param message
      * @return
      */
-    HomeAssistantResponseMessage sendMessageAndWaitForResponse(SubscriptionWebSocketMessage message, Duration timeout) {
+    ResponseWebSocketMessage sendMessageAndWaitForResponse(SubscriptionWebSocketMessage message, Duration timeout) {
         message.subscriptionId = idGenerator.generateId()
 
         webSocketSessionProvider.getOrCreateAuthenticatedSession()

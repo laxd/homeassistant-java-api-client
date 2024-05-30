@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
  * and as such has no fields but captures every piece of data returned in the
  * data field
  */
-class UnknownHomeAssistantWebSocketMessage extends IncomingWebSocketMessage {
+class UnknownWebSocketMessage extends IncomingWebSocketMessage {
 
     Map<String, Object> data = [:]
 

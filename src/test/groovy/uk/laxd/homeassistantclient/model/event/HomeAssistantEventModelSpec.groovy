@@ -3,7 +3,7 @@ package uk.laxd.homeassistantclient.model.event
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
 import uk.laxd.homeassistantclient.model.json.event.StateChangedEvent
-import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantEventMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.EventWebSocketMessage
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
 import java.time.LocalDateTime
@@ -69,7 +69,7 @@ class HomeAssistantEventModelSpec extends Specification {
         """
 
         when:
-        def message = mapper.readValue(testJson, HomeAssistantEventMessage)
+        def message = mapper.readValue(testJson, EventWebSocketMessage)
         def event = message.event as StateChangedEvent
 
         then:

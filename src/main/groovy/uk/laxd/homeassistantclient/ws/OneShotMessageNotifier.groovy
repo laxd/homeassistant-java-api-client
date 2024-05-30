@@ -3,7 +3,7 @@ package uk.laxd.homeassistantclient.ws
 
 import groovy.util.logging.Slf4j
 import jakarta.inject.Named
-import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantResponseMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.ResponseWebSocketMessage
 
 import java.util.concurrent.TimeoutException
 
@@ -11,11 +11,11 @@ import java.util.concurrent.TimeoutException
 @Slf4j
 class OneShotMessageNotifier {
 
-    private final Map<Integer, HomeAssistantResponseMessage> messageMap = [:]
+    private final Map<Integer, ResponseWebSocketMessage> messageMap = [:]
     private final List<Integer> expectedIds = []
     private final Object lock = new Object()
 
-    void addMessage(HomeAssistantResponseMessage message) {
+    void addMessage(ResponseWebSocketMessage message) {
         log.debug("Adding message ${message} to notify map and notifying waiting threads")
         synchronized (lock) {
             messageMap.put(message.subscriptionId, message)
@@ -27,7 +27,7 @@ class OneShotMessageNotifier {
         id in expectedIds
     }
 
-    HomeAssistantResponseMessage waitForMessageWithId(Integer id, long timeoutMillis) {
+    ResponseWebSocketMessage waitForMessageWithId(Integer id, long timeoutMillis) {
         expectedIds.add(id)
         def expiryTime = System.currentTimeMillis() + timeoutMillis
         while(true) {

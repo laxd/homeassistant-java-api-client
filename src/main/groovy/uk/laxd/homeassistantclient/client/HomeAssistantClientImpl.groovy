@@ -1,13 +1,14 @@
 package uk.laxd.homeassistantclient.client
 
 import jakarta.inject.Inject
+import uk.laxd.homeassistantclient.client.exception.NoSuchEntityException
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.model.domain.entity.Entity
 import uk.laxd.homeassistantclient.model.domain.entity.EntityImpl
+import uk.laxd.homeassistantclient.model.domain.response.HomeAssistantPongMessage
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
 import uk.laxd.homeassistantclient.model.json.event.Event
 import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
-import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantResponseMessage
 import uk.laxd.homeassistantclient.rest.HomeAssistantRestClient
 import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 
@@ -26,11 +27,11 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
         this.wsClient = wsClient
     }
 
-    HomeAssistantResponseMessage ping() {
+    HomeAssistantPongMessage ping() {
         wsClient.ping()
     }
 
-    Entity getEntity(String entityId) {
+    Entity getEntity(String entityId) throws NoSuchEntityException {
         def entity = restClient.getEntity(entityId)
         return new EntityImpl(wsClient, entity)
     }
