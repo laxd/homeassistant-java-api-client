@@ -7,7 +7,7 @@ import uk.laxd.homeassistantclient.model.domain.entity.EntityImpl
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
 import uk.laxd.homeassistantclient.model.json.event.Event
 import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
-import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantResponseMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantResponseMessage
 import uk.laxd.homeassistantclient.rest.HomeAssistantRestClient
 import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 

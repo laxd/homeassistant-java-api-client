@@ -5,7 +5,7 @@ import uk.laxd.homeassistantclient.model.domain.entity.Entity
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
 import uk.laxd.homeassistantclient.model.json.event.Event
 import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
-import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantResponseMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantResponseMessage
 
 // TODO: Add some documentation
 interface HomeAssistantClient {

@@ -1,9 +1,9 @@
 package uk.laxd.homeassistantclient.ws
 
-import groovy.transform.TimedInterrupt
+
 import groovy.util.logging.Slf4j
 import jakarta.inject.Named
-import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantResponseMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantResponseMessage
 
 import java.util.concurrent.TimeoutException
 

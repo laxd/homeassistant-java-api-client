@@ -8,7 +8,7 @@ import org.springframework.web.socket.CloseStatus
 import org.springframework.web.socket.WebSocketHandler
 import org.springframework.web.socket.WebSocketMessage
 import org.springframework.web.socket.WebSocketSession
-import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessage
 
 @Component
 @Slf4j
@@ -33,7 +33,7 @@ class HomeAssistantWebSocketHandler implements WebSocketHandler {
             try {
                 def payload = messageBuilder.isEmpty() ? message.payload.toString() : messageBuilder.append(message.payload.toString()).toString()
 
-                def parsedMessage = objectMapper.readValue(payload, HomeAssistantWebSocketMessage.class)
+                def parsedMessage = objectMapper.readValue(payload, IncomingWebSocketMessage.class)
 
                 log.info("Received message: {}", payload)
 

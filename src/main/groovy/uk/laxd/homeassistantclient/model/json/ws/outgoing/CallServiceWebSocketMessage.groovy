@@ -1,4 +1,4 @@
-package uk.laxd.homeassistantclient.ws.message.model
+package uk.laxd.homeassistantclient.model.json.ws.outgoing
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped
 import uk.laxd.homeassistantclient.model.json.service.JsonService

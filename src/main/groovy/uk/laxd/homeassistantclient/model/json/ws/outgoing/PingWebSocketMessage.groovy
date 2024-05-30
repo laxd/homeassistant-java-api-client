@@ -1,4 +1,4 @@
-package uk.laxd.homeassistantclient.ws.message.model
+package uk.laxd.homeassistantclient.model.json.ws.outgoing
 
 class PingWebSocketMessage extends SubscriptionWebSocketMessage {
     PingWebSocketMessage() {

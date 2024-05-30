@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.client.HomeAssistantAuthenticationProvider
-import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantAuthRequiredMessage
-import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantWebSocketMessage
-import uk.laxd.homeassistantclient.ws.IdGenerator
-import uk.laxd.homeassistantclient.ws.message.model.AuthenticationWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuthRequiredMessage
+
+import uk.laxd.homeassistantclient.model.json.ws.outgoing.AuthenticationWebSocketMessage
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
 
 @Component
@@ -34,7 +34,7 @@ class AuthenticationMessageHandler implements MessageHandler<HomeAssistantAuthRe
         session.sendMessage(webSocketMessageConverter.toTextMessage(authMessage))
     }
 
-    boolean canHandle(HomeAssistantWebSocketMessage message) {
+    boolean canHandle(IncomingWebSocketMessage message) {
         return message instanceof HomeAssistantAuthRequiredMessage
     }
 }

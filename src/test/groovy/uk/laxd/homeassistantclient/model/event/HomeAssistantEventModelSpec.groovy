@@ -3,7 +3,7 @@ package uk.laxd.homeassistantclient.model.event
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
 import uk.laxd.homeassistantclient.model.json.event.StateChangedEvent
-import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantEventMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantEventMessage
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
 import java.time.LocalDateTime

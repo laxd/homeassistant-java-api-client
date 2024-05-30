@@ -4,11 +4,11 @@ import jakarta.inject.Inject
 import jakarta.inject.Named
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
-import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantResponseMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantResponseMessage
 import uk.laxd.homeassistantclient.ws.handler.HomeAssistantWebSocketHandler
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
-import uk.laxd.homeassistantclient.ws.message.model.SubscriptionWebSocketMessage
-import uk.laxd.homeassistantclient.ws.message.model.WebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.outgoing.SubscriptionWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.WebSocketMessage
 import uk.laxd.homeassistantclient.ws.session.WebSocketSessionProvider
 
 import java.time.Duration

@@ -1,10 +1,10 @@
-package uk.laxd.homeassistantclient.ws.message.model
+package uk.laxd.homeassistantclient.model.json.ws.outgoing
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.TupleConstructor
 
 @TupleConstructor
-class AuthenticationWebSocketMessage extends WebSocketMessage {
+class AuthenticationWebSocketMessage extends OutgoingWebSocketMessage {
 
     @JsonProperty("access_token")
     String token

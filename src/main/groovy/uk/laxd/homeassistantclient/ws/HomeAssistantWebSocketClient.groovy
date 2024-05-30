@@ -13,16 +13,15 @@ import uk.laxd.homeassistantclient.model.domain.service.ServiceTarget
 import uk.laxd.homeassistantclient.model.domain.service.ServiceType
 import uk.laxd.homeassistantclient.model.domain.service.TargetType
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
-import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantResponseMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantResponseMessage
 import uk.laxd.homeassistantclient.model.mapper.service.ServiceMapper
 import uk.laxd.homeassistantclient.model.mapper.trigger.TriggerMapperFactory
 
-import uk.laxd.homeassistantclient.ws.message.model.CallServiceWebSocketMessage
-import uk.laxd.homeassistantclient.ws.message.model.EventWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.outgoing.CallServiceWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.outgoing.EventWebSocketMessage
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
-import uk.laxd.homeassistantclient.ws.message.model.PingWebSocketMessage
-import uk.laxd.homeassistantclient.ws.message.model.TriggerWebSocketMessage
-import uk.laxd.homeassistantclient.ws.message.model.WebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.outgoing.PingWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.outgoing.TriggerWebSocketMessage
 import uk.laxd.homeassistantclient.ws.session.WebSocketSessionProvider
 
 import java.time.Duration

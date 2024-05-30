@@ -4,8 +4,8 @@ import groovy.util.logging.Slf4j
 import jakarta.inject.Inject
 import jakarta.inject.Named
 import org.springframework.web.socket.WebSocketSession
-import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantResponseMessage
-import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.HomeAssistantResponseMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessage
 import uk.laxd.homeassistantclient.ws.OneShotMessageNotifier
 
 @Named
@@ -26,12 +26,7 @@ class OneShotNotifierMessageHandler implements MessageHandler<HomeAssistantRespo
     }
 
     @Override
-    boolean canHandle(HomeAssistantWebSocketMessage message) {
-        def canHandle = message instanceof HomeAssistantResponseMessage && notifier.isExpecting(message.subscriptionId)
-
-        log.info("Notifiable ${message.unknown}? ${canHandle}")
-
-        canHandle
-
+    boolean canHandle(IncomingWebSocketMessage message) {
+        message instanceof HomeAssistantResponseMessage && notifier.isExpecting(message.subscriptionId)
     }
 }
