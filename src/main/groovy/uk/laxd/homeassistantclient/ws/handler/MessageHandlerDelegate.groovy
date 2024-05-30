@@ -8,8 +8,7 @@ import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantWebSocketMessage
 @Named
 class MessageHandlerDelegate {
 
-    private List<MessageHandler> messageHandlers
-
+    List<MessageHandler> messageHandlers
 
     @Inject
     MessageHandlerDelegate(List<MessageHandler> messageHandlers) {

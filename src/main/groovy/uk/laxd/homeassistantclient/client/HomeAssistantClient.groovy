@@ -5,11 +5,13 @@ import uk.laxd.homeassistantclient.model.domain.entity.Entity
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
 import uk.laxd.homeassistantclient.model.json.event.Event
 import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
+import uk.laxd.homeassistantclient.model.json.ws.HomeAssistantResponseMessage
 
 // TODO: Add some documentation
 interface HomeAssistantClient {
 
-    void ping()
+    // TODO: Update this to avoid leaking the json implementation
+    HomeAssistantResponseMessage ping()
     Entity getEntity(String entityId)
     void onEvent(String eventType, HomeAssistantEventListener<Event> listener)
     void on(Trigger trigger, HomeAssistantEventListener<TriggerEvent> listener)
