@@ -5,6 +5,9 @@ import uk.laxd.homeassistantclient.model.json.event.StateChangedEvent
 import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+
 class IncomingWebSocketMessageSpec extends Specification {
 
     def objectMapper = new ObjectMapperFactory().createObjectMapper()
@@ -27,7 +30,15 @@ class IncomingWebSocketMessageSpec extends Specification {
         then:
         stateChangedEvent.oldState.state == "off"
         stateChangedEvent.newState.state == "on"
-        // TODO: Flesh this out to include more state changed details
+        stateChangedEvent.entityId == "light.bed_light"
+        stateChangedEvent.oldState.entityId == "light.bed_light"
+        stateChangedEvent.oldState.lastChanged == OffsetDateTime.of(2016, 11, 26, 01, 37, 10, 466994 * 1000, ZoneOffset.of("+0"))
+        stateChangedEvent.newState.attributes == ["rgb_color": [254,208,0], "color_temp":380, "supported_features":147, "xy_color":[0.5, 0.5], "brightness":180, "white_value":200, "friendly_name":"Bed Light"]
+        stateChangedEvent.oldState.attributes == ["supported_features":147, "friendly_name":"Bed Light"]
+        stateChangedEvent.newState.state == "on"
+        stateChangedEvent.context.id == "326ef27d19415c60c492fe330945f954"
+        stateChangedEvent.origin == "LOCAL"
+        stateChangedEvent.timeFired == OffsetDateTime.of(2016, 11, 26, 01, 37, 24, 265429 * 1000, ZoneOffset.of("+0"))
     }
 
     def "Trigger web socket message can be parsed"() {

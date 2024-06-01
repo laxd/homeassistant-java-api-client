@@ -10,6 +10,12 @@ import uk.laxd.homeassistantclient.model.json.event.State
 import uk.laxd.homeassistantclient.model.json.event.StateChangedEvent
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
+import java.time.OffsetDateTime
+
+/**
+ * Required to skip the "data" attribute in the JSON that is sent back from HA
+ * Everything else is pretty much just doing what Jackson would normally do
+ */
 class StateDeserialiser extends JsonDeserializer<StateChangedEvent> {
     @Override
     StateChangedEvent deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JacksonException {
@@ -25,6 +31,8 @@ class StateDeserialiser extends JsonDeserializer<StateChangedEvent> {
         event.setEntityId(dataNode.get("entity_id").textValue())
         event.setOldState(mapper.treeToValue(oldStateTree, State))
         event.setNewState(mapper.treeToValue(newStateTree, State))
+        event.setOrigin(rootNode.get("origin").textValue())
+        event.setTimeFired(mapper.treeToValue(rootNode.get("time_fired"), OffsetDateTime))
 
         // Populate superclass attributes too
         mapper.readerForUpdating(event).treeToValue(rootNode, Event)
