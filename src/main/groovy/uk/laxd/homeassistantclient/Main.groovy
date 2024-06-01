@@ -12,6 +12,10 @@ class Main {
         def client = HomeAssistant.createClient()
             .connect(args[0], args[1])
 
+        def responseMessage = client.ping()
+
+        println("Ping response: ${responseMessage.response}")
+
         def livingRoomCeiling1 = client.getEntity("light.living_room_ceiling_1")
 
         livingRoomCeiling1.toggle()
