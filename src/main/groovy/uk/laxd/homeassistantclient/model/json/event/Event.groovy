@@ -9,26 +9,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 import java.time.LocalDateTime
 
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXTERNAL_PROPERTY,
-        property = "event_type",
-        defaultImpl = UnknownEvent
+        use = JsonTypeInfo.Id.DEDUCTION
 )
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSubTypes([
-    @JsonSubTypes.Type(value = StateChangedEvent, name = "state_changed"),
-    @JsonSubTypes.Type(value = TriggerEvent, name = "event")
+    @JsonSubTypes.Type(StateChangedEvent),
+    @JsonSubTypes.Type(TriggerEvent)
 ])
 class Event {
-
-    @JsonProperty("data")
-    Map<String, Object> data
-
-    String origin
-
-    @JsonProperty("time_fired")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.[SSSSSS]XXX")
-    LocalDateTime timeFired
 
     @JsonProperty("context")
     Map<String, Object> context
