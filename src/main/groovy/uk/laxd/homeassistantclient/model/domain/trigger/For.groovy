@@ -1,7 +1,16 @@
 package uk.laxd.homeassistantclient.model.domain.trigger
 
+import groovy.transform.EqualsAndHashCode
+
 import java.time.Duration
 
+/**
+ * Represents a duration that a specific entity should be in a specific state for.
+ *
+ * Incoming messages will always have the {@link #duration} set, but outgoing messages
+ * may use either constructor to create a new instance that way.
+ */
+@EqualsAndHashCode
 class For {
 
     For(Duration duration) {

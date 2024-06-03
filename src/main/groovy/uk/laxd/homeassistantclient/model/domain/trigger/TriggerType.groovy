@@ -1,7 +1,5 @@
 package uk.laxd.homeassistantclient.model.domain.trigger
 
-import com.fasterxml.jackson.annotation.JsonValue
-
 enum TriggerType {
     EVENT("not_implemented"),
     HOME_ASSISTANT("not_implemented"),

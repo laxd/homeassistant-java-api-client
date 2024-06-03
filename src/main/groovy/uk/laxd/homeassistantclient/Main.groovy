@@ -21,8 +21,7 @@ class Main {
         livingRoomCeiling1.toggle()
 
         client.on(TriggerBuilder.onStateChange("light.living_room_ceiling_1").duration(Duration.ofSeconds(5)).build(), (e) -> {
-            // TODO: Figure out why this is an unknown event?
-            println("Changed ${e}")
+            println("${e.entityId} Changed: ${e}")
         })
 
         Thread.sleep(5000)

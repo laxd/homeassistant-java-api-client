@@ -1,10 +1,12 @@
 package uk.laxd.homeassistantclient.model.json.ws.incoming
 
 import spock.lang.Specification
+import uk.laxd.homeassistantclient.model.domain.trigger.For
 import uk.laxd.homeassistantclient.model.json.event.StateChangedEvent
 import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
@@ -52,8 +54,20 @@ class IncomingWebSocketMessageSpec extends Specification {
         eventWebSocketMessage.subscriptionId == 3
         eventWebSocketMessage.type == "event"
         eventWebSocketMessage.event instanceof TriggerEvent
-        // TODO: Flesh this out to include trigger details
+
+        when:
+        def triggerEvent = eventWebSocketMessage.event as TriggerEvent
+
+        then:
+        triggerEvent.platform == "state"
+        triggerEvent.duration == new For(Duration.ofSeconds(5))
+        triggerEvent.fromState.state == "on"
+        triggerEvent.fromState.attributes["min_color_temp_kelvin"] == 2000
+        triggerEvent.fromState.context.id == "01HZ53DZ7WPTFB1YJTFMS8NGC9"
+        triggerEvent.toState.state == "off"
+        triggerEvent.toState.attributes["max_color_temp_kelvin"] == 6535
+        triggerEvent.toState.context.id == "01HZ53E499AM8XQ2V9JDAPKAJZ"
+        triggerEvent.entityId == "light.living_room_ceiling_1"
     }
-    
-    
+
 }

@@ -2,6 +2,7 @@ package uk.laxd.homeassistantclient.model.json.event.jackson
 
 import com.fasterxml.jackson.core.JacksonException
 import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonNode
@@ -16,7 +17,7 @@ import java.time.OffsetDateTime
  * Required to skip the "data" attribute in the JSON that is sent back from HA
  * Everything else is pretty much just doing what Jackson would normally do
  */
-class StateDeserialiser extends JsonDeserializer<StateChangedEvent> {
+class StateChangedEventDeserialiser extends JsonDeserializer<StateChangedEvent> {
     @Override
     StateChangedEvent deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JacksonException {
         def mapper = new ObjectMapperFactory().createObjectMapper()
@@ -34,8 +35,7 @@ class StateDeserialiser extends JsonDeserializer<StateChangedEvent> {
         event.setOrigin(rootNode.get("origin").textValue())
         event.setTimeFired(mapper.treeToValue(rootNode.get("time_fired"), OffsetDateTime))
 
-        // Populate superclass attributes too
-        mapper.readerForUpdating(event).treeToValue(rootNode, Event)
+        event.setContext(mapper.convertValue(rootNode.get("context"), new TypeReference<Map<String, Object>>(){}))
 
         event
     }
