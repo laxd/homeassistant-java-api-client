@@ -1,6 +1,8 @@
 package uk.laxd.homeassistantclient.model.json.event
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 
 /**
  * Represents the context of a given event and related changes. Changes that happen as a result
@@ -8,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * share the same {@code parentId}
  * See https://data.home-assistant.io/docs/context/ for more details.
  */
+@ToString
+@EqualsAndHashCode
 class Context {
 
     /**
