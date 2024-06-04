@@ -28,6 +28,6 @@ class HomeAssistant {
         def restClient = context.getBean(HomeAssistantRestClientFactory)
                 .createRestClient(url, token)
 
-        new HomeAssistantClientImpl(restClient, wsClient)
+        new HomeAssistantClientImpl(restClient, wsClient, null)
     }
 }

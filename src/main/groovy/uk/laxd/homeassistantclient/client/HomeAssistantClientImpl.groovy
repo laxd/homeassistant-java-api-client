@@ -4,7 +4,7 @@ import jakarta.inject.Inject
 import uk.laxd.homeassistantclient.client.exception.NoSuchEntityException
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.model.domain.entity.Entity
-import uk.laxd.homeassistantclient.model.domain.entity.EntityImpl
+import uk.laxd.homeassistantclient.model.domain.entity.EntityFactory
 import uk.laxd.homeassistantclient.model.domain.response.HomeAssistantPongMessage
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
 import uk.laxd.homeassistantclient.model.json.event.Event
@@ -20,11 +20,13 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
 
     private HomeAssistantRestClient restClient
     private HomeAssistantWebSocketClient wsClient
+    private final EntityFactory entityFactory
 
     @Inject
-    HomeAssistantClientImpl(HomeAssistantRestClient restClient, HomeAssistantWebSocketClient wsClient) {
+    HomeAssistantClientImpl(HomeAssistantRestClient restClient, HomeAssistantWebSocketClient wsClient, EntityFactory entityFactory) {
         this.restClient = restClient
         this.wsClient = wsClient
+        this.entityFactory = entityFactory
     }
 
     HomeAssistantPongMessage ping() {
@@ -33,7 +35,8 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
 
     Entity getEntity(String entityId) throws NoSuchEntityException {
         def entity = restClient.getEntity(entityId)
-        return new EntityImpl(wsClient, entity)
+
+        entityFactory.createEntity(entity)
     }
 
     void onEvent(String eventType, HomeAssistantEventListener<Event> listener) {

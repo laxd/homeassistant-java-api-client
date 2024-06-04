@@ -1,11 +1,12 @@
 package uk.laxd.homeassistantclient.model.domain.entity
 
 import groovy.transform.ToString
+import uk.laxd.homeassistantclient.model.domain.service.Service
 import uk.laxd.homeassistantclient.model.json.HomeAssistantEntity
 import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 
 @ToString(includes = "entityId,state")
-class EntityImpl implements Entity {
+class GenericEntity implements Entity {
 
     private HomeAssistantWebSocketClient wsClient
 
@@ -15,7 +16,7 @@ class EntityImpl implements Entity {
     Date lastUpdated
     Map<String, Object> attributes
 
-    EntityImpl(HomeAssistantWebSocketClient wsClient, HomeAssistantEntity entity) {
+    GenericEntity(HomeAssistantWebSocketClient wsClient, HomeAssistantEntity entity) {
         this.wsClient = wsClient
         this.entityId = entity.entityId
         this.state = entity.state
@@ -24,26 +25,37 @@ class EntityImpl implements Entity {
         this.attributes = entity.attributes
     }
 
+    @Override
+    void callService(Service service) {
+        this.wsClient.callService(service)
+    }
+
+    @Override
     void turnOn() {
         this.wsClient.turnOn(this.entityId)
     }
 
+    @Override
     void turnOn(Map<String, Object> additionalData) {
         this.wsClient.turnOn(this.entityId, additionalData)
     }
 
+    @Override
     void turnOff() {
         this.wsClient.turnOff(this.entityId)
     }
 
+    @Override
     void turnOff(Map<String, Object> additionalData) {
         this.wsClient.turnOff(this.entityId, additionalData)
     }
 
+    @Override
     void toggle() {
         this.wsClient.toggle(this.entityId)
     }
 
+    @Override
     void toggle(Map<String, Object> additionalData) {
         this.wsClient.toggle(this.entityId, additionalData)
     }
