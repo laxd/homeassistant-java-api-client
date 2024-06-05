@@ -22,12 +22,10 @@ class HomeAssistant {
     HomeAssistantClient connect(String url, String token) {
         def context = new AnnotationConfigApplicationContext(HomeAssistantClientConfiguration.class)
 
-        def wsClient = context.getBean(HomeAssistantWebSocketClient.class)
-        wsClient.connect(url, token)
+        def client = context.getBean(HomeAssistantClientImpl)
 
-        def restClient = context.getBean(HomeAssistantRestClientFactory)
-                .createRestClient(url, token)
+        client.connect(url, token)
 
-        new HomeAssistantClientImpl(restClient, wsClient, null)
+        client
     }
 }

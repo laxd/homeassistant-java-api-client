@@ -1,9 +1,11 @@
 package uk.laxd.homeassistantclient.rest
 
+import jakarta.inject.Named
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.service.annotation.GetExchange
 import uk.laxd.homeassistantclient.model.json.HomeAssistantEntity
 
+@Named
 interface HomeAssistantRestClient {
 
     @GetExchange("/")

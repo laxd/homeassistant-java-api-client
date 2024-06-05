@@ -1,5 +1,6 @@
 package uk.laxd.homeassistantclient.client
 
+import uk.laxd.homeassistantclient.client.exception.InvalidEntityException
 import uk.laxd.homeassistantclient.client.exception.NoSuchEntityException
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
 import uk.laxd.homeassistantclient.model.domain.entity.Entity
@@ -11,6 +12,20 @@ import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
 interface HomeAssistantClient {
 
     /**
+     * Initiates a connection with the Home Assistant server. This method must be
+     * called before any other methods on this object.
+     *
+     * Specifically, registers the URL and Token provided with the REST API for future calls
+     * and initiates communication with the Home Assistant web socket API via an
+     * {@link AuthenticationWebSocketMessage}.
+     *
+     * @param url Home Assistant URL to connect to. This should be the root URL of the server
+     *      e.g. https://homeassistant.example.com
+     * @param token A long lived access token
+     */
+    void connect(String url, String token)
+
+    /**
      * Sends a message to the Home Assistant server, confirming it is up and accepting connections, and that
      * authorisation is correct.
      * @return A HomeAssistantPongMessage containing the response from the server ('pong')
@@ -20,10 +35,22 @@ interface HomeAssistantClient {
     /**
      * Retrieves the given entity from the Home Assistant server.
      * @param entityId An entity ID, including the domain e.g. 'light.kitchen'
-     * @return An {@link Entity} referring to the requested ID, or a {@link NoSuchEntityException} if the
-     *  entity does not exist.
+     * @return An {@link Entity} referring to the requested ID
+     * @throws NoSuchEntityException if the entity does not exist.
      */
     Entity getEntity(String entityId) throws NoSuchEntityException
+
+    /**
+     * Retrieves the given entity from the Home Assistant server and attempts to cast it to
+     * the given type of entity.
+     * @param entityId An entity ID, including the domain e.g. 'light.kitchen'
+     * @param entityClass The {@link Entity} subtype that the returned entity should be
+     * @return An {@link Entity} referring to the requested ID
+     * @throws NoSuchEntityException if the entity does not exist.
+     * @throws InvalidEntityException If the entity ID provided does not map to an entity of type {@code entityClass}.
+     *      e.g. providing sensor.motion_sensor with entity class LightEntity
+     */
+    <E extends Entity> E getEntity(String entityId, Class<E> entityClass) throws NoSuchEntityException, InvalidEntityException
 
     /**
      * Register the given listener to trigger whenever the event given is fired in the Home Assistant server.

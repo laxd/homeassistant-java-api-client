@@ -1,9 +1,8 @@
 package uk.laxd.homeassistantclient.model.domain.entity
 
-import com.sun.org.apache.xerces.internal.dom.EntityImpl
 import jakarta.inject.Inject
 import jakarta.inject.Named
-import org.springframework.web.socket.client.WebSocketClient
+import uk.laxd.homeassistantclient.model.domain.entity.light.LightEntity
 import uk.laxd.homeassistantclient.model.json.HomeAssistantEntity
 import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 
@@ -18,7 +17,18 @@ class EntityFactoryImpl implements EntityFactory {
     }
 
     @Override
-    Entity createEntity(HomeAssistantEntity homeAssistantEntity) {
-        new GenericEntity(webSocketClient, homeAssistantEntity)
+    <E extends Entity> E createEntity(HomeAssistantEntity homeAssistantEntity) {
+        switch (homeAssistantEntity.domain) {
+            case "light":
+                return createLightEntity(homeAssistantEntity) as E
+            default:
+                return new GenericEntity(webSocketClient, homeAssistantEntity) as E
+        }
     }
+
+    @Override
+    LightEntity createLightEntity(HomeAssistantEntity homeAssistantEntity) {
+        new LightEntity(webSocketClient, homeAssistantEntity)
+    }
+
 }

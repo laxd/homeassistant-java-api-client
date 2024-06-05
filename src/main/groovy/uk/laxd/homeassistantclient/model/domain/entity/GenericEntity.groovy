@@ -8,7 +8,7 @@ import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 @ToString(includes = "entityId,state")
 class GenericEntity implements Entity {
 
-    private HomeAssistantWebSocketClient wsClient
+    protected HomeAssistantWebSocketClient wsClient
 
     String entityId
     String state

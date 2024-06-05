@@ -18,8 +18,8 @@ class HomeAssistantEntity {
 
     Map<String, Object> attributes
 
-    String getType() {
-        return entityId.split(".")[0]
+    String getDomain() {
+        return entityId.split("\\.")[0]
     }
 
     @Override

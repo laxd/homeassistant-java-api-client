@@ -1,4 +1,4 @@
 package uk.laxd.homeassistantclient.client.exception
 
-class NoSuchEntityException extends Exception {
+class NoSuchEntityException extends RuntimeException {
 }
