@@ -1,6 +1,7 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'groovy'
+    id 'idea'
 }
 
 group = 'uk.laxd.homeassistant'
@@ -10,22 +11,10 @@ repositories {
     mavenCentral()
 }
 
-// Setup integration test configurations
+// Create integration test configuration
 configurations {
     integrationTestImplementation.extendsFrom testImplementation
     integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
-}
-
-// Integration test sources
-sourceSets {
-    integrationTest {
-        test {
-            groovy.srcDir "$projectDir/src/integrationTest/groovy"
-            resources.srcDir "$projectDir/src/integrationTest/resources"
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-        }
-    }
 }
 
 dependencies {
@@ -57,15 +46,17 @@ dependencies {
     integrationTestImplementation project
 }
 
-tasks.register('integrationTest', Test) {
-    description = 'Runs integration tests.'
-    group = 'verification'
+// Setup integration tests
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+        }
 
-    testClassesDirs = sourceSets.integrationTest.output.classesDirs
-    classpath = sourceSets.integrationTest.runtimeClasspath
-    shouldRunAfter test
-}
-
-tasks.withType(Test).configureEach {
-    useJUnitPlatform()
+        integrationTest(JvmTestSuite) {
+            dependencies {
+                implementation project()
+            }
+        }
+    }
 }
