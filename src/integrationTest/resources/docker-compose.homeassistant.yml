@@ -3,7 +3,7 @@ services:
     image: "homeassistant/home-assistant:${HA_VERSION}"
     container_name: homeassistant
     volumes:
-      - "${GITHUB_WORKSPACE}/src/integrationTest/test_config:/config"
+      - "../test_config:/config"
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "8123:8123"

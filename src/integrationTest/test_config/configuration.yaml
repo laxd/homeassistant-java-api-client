@@ -1,0 +1,10 @@
+default_config:
+
+light:
+  - lights:
+      kitchen:
+        # Dummy turn on/turn off commands
+        turn_off: null
+        turn_on: null
+    platform: template
+
