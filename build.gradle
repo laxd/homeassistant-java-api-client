@@ -10,28 +10,10 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation 'org.apache.groovy:groovy:4.0.14'
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-
-    implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
-    implementation 'org.springframework.boot:spring-boot-starter-web:3.2.5'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket:3.2.5'
-    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
-    implementation 'org.jetbrains.kotlin:kotlin-reflect'
-
-    // Required to allow jackson to parse LocalDateTime objects
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1'
-
-    // SLF4J
-    implementation 'org.slf4j:slf4j-api:2.0.13'
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.5'
-
-    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-4.0")
-    testImplementation "org.spockframework:spock-core"
-    testImplementation "org.spockframework:spock-junit4"
+// Setup integration test configurations
+configurations {
+    integrationTestImplementation.extendsFrom testImplementation
+    integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 // Integration test sources
@@ -40,20 +22,39 @@ sourceSets {
         test {
             groovy.srcDir "$projectDir/src/integrationTest/groovy"
             resources.srcDir "$projectDir/src/integrationTest/resources"
-            compileClasspath += main.output
-            runtimeClasspath += main.output
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
         }
     }
 }
 
-configurations {
-    integrationTestImplementation.extendsFrom testImplementation
-    integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
-}
-
 dependencies {
-    integrationTestImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
-    integrationTestRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Groovy and jakarta dependencies
+    implementation 'org.apache.groovy:groovy:4.0.14'
+    implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
+
+    // Spring
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.2.5'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:3.2.5'
+
+    // Required to allow jackson to parse LocalDateTime objects
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1'
+
+    // SLF4J
+    implementation 'org.slf4j:slf4j-api:2.0.13'
+
+    // JUnit
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // Spring test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.5'
+    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-4.0")
+    testImplementation "org.spockframework:spock-core"
+    testImplementation "org.spockframework:spock-junit4"
+
+    // Integration test depends on the project itself - Test dependencies are copied from testImplementation
+    integrationTestImplementation project
 }
 
 tasks.register('integrationTest', Test) {
