@@ -44,6 +44,9 @@ dependencies {
 
     // Integration test depends on the project itself - Test dependencies are copied from testImplementation
     integrationTestImplementation project
+    // Test containers to spin up HA container for testing
+    integrationTestImplementation "org.testcontainers:spock:1.19.8"
+
 }
 
 // Setup integration tests
