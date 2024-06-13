@@ -1,4 +1,6 @@
 default_config:
+logger:
+  default: debug
 
 light:
   - lights:
