@@ -42,12 +42,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: "Start Home Assistant"
-        env:
-          HA_VERSION: ${{ matrix.HA_VERSION }}
-        run: docker compose -f src/integrationTest/resources/docker-compose.homeassistant.yml up -d
-      - name: "Wait for docker to finish building"
-        run: until curl --fail http://localhost:8123 ; do sleep 5; done
       - name: "Execute integration test"
         run: ./gradlew integrationTest --info --stacktrace
 
