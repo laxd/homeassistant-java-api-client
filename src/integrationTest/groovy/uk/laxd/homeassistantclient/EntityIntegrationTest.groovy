@@ -1,6 +1,11 @@
 package uk.laxd.homeassistantclient
 
 import uk.laxd.homeassistantclient.model.domain.entity.light.LightEntity
+import uk.laxd.homeassistantclient.model.domain.trigger.builder.TriggerBuilder
+
+import java.time.Duration
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.TimeUnit
 
 class EntityIntegrationTest extends AbstractIntegrationTest {
 
@@ -26,4 +31,20 @@ class EntityIntegrationTest extends AbstractIntegrationTest {
         }
     }
 
+    def "On state change trigger runs listener"() {
+        given:
+        def client = getClient()
+        def kitchenLight = client.getEntity("light.kitchen")
+
+        def future = new CompletableFuture<>()
+
+        when:
+        client.on(TriggerBuilder.onStateChange("light.kitchen").duration(Duration.ofSeconds(1)).build(), (e) -> {
+            future.complete("Kitchen light triggered")
+        })
+        kitchenLight.turnOn()
+
+        then:
+        future.get(5, TimeUnit.SECONDS)
+    }
 }
