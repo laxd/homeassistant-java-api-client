@@ -22,7 +22,8 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuth
 
         // Other types of messages after authentication
         @JsonSubTypes.Type(value = EventWebSocketMessage, name = "event"),
-        @JsonSubTypes.Type(value = PongWebSocketMessage, name = "pong")
+        @JsonSubTypes.Type(value = PongWebSocketMessage, name = "pong"),
+        @JsonSubTypes.Type(value = SingleResponseWebSocketMessage, name = "result")
 ])
 abstract class IncomingWebSocketMessage implements WebSocketMessage {
     abstract String getType()
