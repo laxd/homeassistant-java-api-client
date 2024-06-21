@@ -19,7 +19,7 @@ import uk.laxd.homeassistantclient.model.mapper.service.ServiceMapper
 import uk.laxd.homeassistantclient.model.mapper.trigger.TriggerMapperFactory
 
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.CallServiceWebSocketMessage
-import uk.laxd.homeassistantclient.model.json.ws.outgoing.EventWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.outgoing.EventSubscriptionWebSocketMessage
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.PingWebSocketMessage
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.TriggerWebSocketMessage
@@ -70,7 +70,7 @@ class HomeAssistantWebSocketClient {
     void listenToEvents(String event, HomeAssistantEventListener listener) {
         logger.info("Subscribing to events of type '{}', listener='{}'", event, listener)
 
-        def message = new EventWebSocketMessage(event)
+        def message = new EventSubscriptionWebSocketMessage(event)
         messageDispatcher.sendMessageWithResponseListener(message, listener)
     }
 
