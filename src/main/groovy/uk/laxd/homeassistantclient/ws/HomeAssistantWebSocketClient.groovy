@@ -25,7 +25,7 @@ import uk.laxd.homeassistantclient.model.json.ws.outgoing.PingWebSocketMessage
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.TriggerWebSocketMessage
 import uk.laxd.homeassistantclient.ws.session.WebSocketSessionProvider
 
-import java.time.Duration
+import java.util.concurrent.TimeUnit
 
 @Named
 class HomeAssistantWebSocketClient {
@@ -142,9 +142,9 @@ class HomeAssistantWebSocketClient {
 
     HomeAssistantPongMessage ping() {
         def message = new PingWebSocketMessage()
-        def response = messageDispatcher.sendMessageAndWaitForResponse(message, Duration.ofSeconds(10))
-
-        messageMapper.map(response)
+        def response = messageDispatcher.sendMessage(message)
+        def b = response.get(10, TimeUnit.SECONDS)
+        messageMapper.map(b)
     }
 
 }

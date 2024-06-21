@@ -11,7 +11,7 @@ import uk.laxd.homeassistantclient.model.json.ws.outgoing.SubscriptionWebSocketM
 import uk.laxd.homeassistantclient.model.json.ws.WebSocketMessage
 import uk.laxd.homeassistantclient.ws.session.WebSocketSessionProvider
 
-import java.time.Duration
+import java.util.concurrent.Future
 
 @Named
 class HomeAssistantWebSocketMessageDispatcher {
@@ -56,13 +56,13 @@ class HomeAssistantWebSocketMessageDispatcher {
      * @param message
      * @return
      */
-    ResponseWebSocketMessage sendMessageAndWaitForResponse(SubscriptionWebSocketMessage message, Duration timeout) {
+    Future<ResponseWebSocketMessage> sendMessage(SubscriptionWebSocketMessage message) {
         message.subscriptionId = idGenerator.generateId()
 
         webSocketSessionProvider.getOrCreateAuthenticatedSession()
                 .sendMessage(webSocketMessageConverter.toTextMessage(message))
 
-        oneShotMessageNotifier.waitForMessageWithId(message.subscriptionId, timeout.toMillis())
+        oneShotMessageNotifier.waitForMessageWithId(message.subscriptionId)
     }
 
     void sendSingleMessage(WebSocketMessage message) {
