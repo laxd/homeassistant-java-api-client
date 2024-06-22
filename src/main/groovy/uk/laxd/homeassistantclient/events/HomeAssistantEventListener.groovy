@@ -7,10 +7,10 @@ import uk.laxd.homeassistantclient.ws.WebSocketListener
 
 /**
  * A listener for home assistant {@link Event}s. Instances of this class will ONLY receive messages that match
- * the {@see subscriptionId} provided.
+ * the {@link HomeAssistantEventListener#subscriptionId} provided.
  *
  * For messages that do match the given subscription ID, the given {@link Event} is extracted from the message
- * and delegated to the handleEvent method.
+ * and delegated to the {@link HomeAssistantEventListener#handleEvent} method.
  * @param <E>
  */
 @ToString
