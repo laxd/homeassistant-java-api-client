@@ -23,15 +23,13 @@ class HomeAssistantEventMessageHandler implements MessageHandler<EventWebSocketM
         this.registry = registry
     }
 
-    // TODO: Expand this so instead of just pulling the event out we can process any type of message
-    // and e.g. either pass through the full message, extract a given path of hte message?
     @Override
     void handle(WebSocketSession session, EventWebSocketMessage message) {
         registry.registeredListeners.stream().filter {
             it.subscriptionId == message.subscriptionId
         }.each {
             log.info("Passing {} to listener {}", message, it)
-            it.handle(message.event)
+            it.handle(message)
         }
     }
 

@@ -7,7 +7,7 @@ import uk.laxd.homeassistantclient.model.json.event.Event
 class TestListener extends HomeAssistantEventListener<Event> {
     private static final Logger logger = LoggerFactory.getLogger(TestListener.class)
 
-    void handle(Event event) {
+    void handleEvent(Event event) {
         logger.info("Got event: {}", event)
     }
 }

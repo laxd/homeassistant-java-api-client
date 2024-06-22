@@ -2,6 +2,7 @@ package uk.laxd.homeassistantclient
 
 import uk.laxd.homeassistantclient.model.domain.entity.light.LightEntity
 import uk.laxd.homeassistantclient.model.domain.trigger.builder.TriggerBuilder
+import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
 
 import java.time.Duration
 import java.util.concurrent.CompletableFuture
@@ -39,7 +40,7 @@ class EntityIntegrationTest extends AbstractIntegrationTest {
         def future = new CompletableFuture<>()
 
         when:
-        client.on(TriggerBuilder.onStateChange("light.kitchen").duration(Duration.ofSeconds(1)).build(), (e) -> {
+        client.on(TriggerBuilder.onStateChange("light.kitchen").duration(Duration.ofSeconds(1)).build(), (TriggerEvent e) -> {
             future.complete("Kitchen light triggered")
         })
         kitchenLight.turnOn()

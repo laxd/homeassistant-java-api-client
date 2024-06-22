@@ -6,9 +6,9 @@ import uk.laxd.homeassistantclient.model.json.ws.WebSocketMessage
 /**
  * A listener that listens to {@link WebSocketMessage}s coming from the Home Assistant server.
  *
- * No filtering is done and all web socket messages are passed through to the {@link #handle} method
+ * The {@link WebSocketMessage} is passed to the handle message without any filtering
  */
-abstract class WebSocketListener implements HomeAssistantListener<WebSocketMessage> {
+abstract class WebSocketListener<M extends WebSocketMessage> implements HomeAssistantListener<M> {
     @Override
-    abstract void handle(WebSocketMessage object)
+    abstract void handle(M object)
 }
