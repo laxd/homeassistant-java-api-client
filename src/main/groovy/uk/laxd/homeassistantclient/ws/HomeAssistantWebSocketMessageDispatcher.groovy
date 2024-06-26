@@ -40,14 +40,11 @@ class HomeAssistantWebSocketMessageDispatcher {
 
     void sendMessageWithResponseListener(SubscriptionWebSocketMessage message, HomeAssistantEventListener listener) {
         def id = idGenerator.generateId()
-
         message.subscriptionId = id
-        listener.subscriptionId = id
+        registry.register(listener, id)
 
         webSocketSessionProvider.getOrCreateAuthenticatedSession()
                 .sendMessage(webSocketMessageConverter.toTextMessage(message))
-
-        registry.register(listener)
     }
 
     /**

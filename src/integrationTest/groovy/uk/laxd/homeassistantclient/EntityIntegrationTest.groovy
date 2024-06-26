@@ -43,6 +43,7 @@ class EntityIntegrationTest extends AbstractIntegrationTest {
         client.on(TriggerBuilder.onStateChange("light.kitchen").duration(Duration.ofSeconds(1)).build(), (TriggerEvent e) -> {
             future.complete("Kitchen light triggered")
         })
+        Thread.sleep(1000)
         kitchenLight.turnOn()
 
         then:

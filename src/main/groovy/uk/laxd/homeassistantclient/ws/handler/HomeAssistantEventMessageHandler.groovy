@@ -7,6 +7,7 @@ import org.springframework.web.socket.WebSocketSession
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
 import uk.laxd.homeassistantclient.model.json.ws.incoming.EventWebSocketMessage
 import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.ResponseWebSocketMessage
 
 /**
  * Handles event messages and finds any listeners that are listening to the given subscription ID
@@ -14,7 +15,7 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessa
  */
 @Named
 @Slf4j
-class HomeAssistantEventMessageHandler implements MessageHandler<EventWebSocketMessage> {
+class HomeAssistantEventMessageHandler implements MessageHandler<ResponseWebSocketMessage> {
 
     private HomeAssistantEventListenerRegistry registry
 
@@ -24,17 +25,14 @@ class HomeAssistantEventMessageHandler implements MessageHandler<EventWebSocketM
     }
 
     @Override
-    void handle(WebSocketSession session, EventWebSocketMessage message) {
-        registry.registeredListeners.stream().filter {
-            it.subscriptionId == message.subscriptionId
-        }.each {
-            log.info("Passing {} to listener {}", message, it)
-            it.handle(message)
-        }
+    void handle(WebSocketSession session, ResponseWebSocketMessage message) {
+        registry.processMessage(message)
     }
 
     @Override
     boolean canHandle(IncomingWebSocketMessage message) {
-        return message instanceof EventWebSocketMessage
+        // Only messages with a subscription ID, i.e. messages sent in response to something
+        // can be actioned by listeners
+        return message instanceof ResponseWebSocketMessage
     }
 }
