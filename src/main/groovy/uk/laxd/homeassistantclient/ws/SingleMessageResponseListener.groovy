@@ -16,7 +16,7 @@ class SingleMessageResponseListener {
     Map<Integer, MessageAwaitingResponse> messagesAwaitingResponse = [:]
 
     void checkResponseMessage(ResponseWebSocketMessage message) {
-        log.debug("Checking message ${message.subscriptionId} of type ${message.class} for listeners")
+        log.debug("Checking message ${message.subscriptionId} of type ${message.class.simpleName} for listeners")
         log.debug("Current messages awaiting response: $messagesAwaitingResponse")
 
         def messageAwaitingResponse = messagesAwaitingResponse.remove(message.subscriptionId)
@@ -27,7 +27,7 @@ class SingleMessageResponseListener {
     }
 
     <M extends ResponseWebSocketMessage> Future<M> getResponse(Integer responseId, Class<M> messageClass) {
-        log.debug("Awaiting message of type $messageClass with ID $responseId")
+        log.debug("Waiting for ${messageClass.simpleName} with ID $responseId")
 
         Future<M> future = new CompletableFuture<>()
 
