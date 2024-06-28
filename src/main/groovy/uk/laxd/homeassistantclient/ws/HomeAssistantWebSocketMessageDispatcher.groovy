@@ -2,7 +2,7 @@ package uk.laxd.homeassistantclient.ws
 
 import jakarta.inject.Inject
 import jakarta.inject.Named
-
+import org.springframework.web.socket.WebSocketMessage
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
 import uk.laxd.homeassistantclient.events.HomeAssistantListener
 import uk.laxd.homeassistantclient.model.json.ws.incoming.ResponseWebSocketMessage
@@ -10,7 +10,6 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.ResultWebSocketMessage
 import uk.laxd.homeassistantclient.ws.handler.HomeAssistantWebSocketHandler
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.SubscriptionWebSocketMessage
-import uk.laxd.homeassistantclient.model.json.ws.WebSocketMessage
 import uk.laxd.homeassistantclient.ws.session.WebSocketSessionProvider
 
 import java.util.concurrent.Future
@@ -40,15 +39,21 @@ class HomeAssistantWebSocketMessageDispatcher {
         this.singleMessageResponseListener = singleMessageResponseListener
     }
 
+    <M extends ResponseWebSocketMessage> Future<M> sendMessageWithResponse(Integer id, WebSocketMessage message, Class<M> expectedResponseClass) {
+        def future = singleMessageResponseListener.getResponse(id, expectedResponseClass)
+
+        webSocketSessionProvider.getOrCreateAuthenticatedSession()
+                .sendMessage(message)
+
+        future
+    }
+
     Future<ResultWebSocketMessage> sendMessageWithListener(SubscriptionWebSocketMessage message, HomeAssistantListener listener) {
         def id = idGenerator.generateId()
         message.subscriptionId = id
         registry.register(listener, id)
 
-        webSocketSessionProvider.getOrCreateAuthenticatedSession()
-                .sendMessage(webSocketMessageConverter.toTextMessage(message))
-
-        singleMessageResponseListener.getResult(id)
+        sendMessageWithResponse(id, webSocketMessageConverter.toTextMessage(message), ResultWebSocketMessage)
     }
 
     /**
@@ -60,30 +65,13 @@ class HomeAssistantWebSocketMessageDispatcher {
     Future<ResponseWebSocketMessage> sendMessage(SubscriptionWebSocketMessage message) {
         message.subscriptionId = idGenerator.generateId()
 
-        webSocketSessionProvider.getOrCreateAuthenticatedSession()
-                .sendMessage(webSocketMessageConverter.toTextMessage(message))
-
-        singleMessageResponseListener.getResponse(message.subscriptionId)
+        sendMessageWithResponse(message.subscriptionId, webSocketMessageConverter.toTextMessage(message), ResponseWebSocketMessage)
     }
 
 
     <M extends ResponseWebSocketMessage> Future<M> sendMessage(SubscriptionWebSocketMessage message, Class<M> expectedResponseClass) {
         message.subscriptionId = idGenerator.generateId()
 
-        webSocketSessionProvider.getOrCreateAuthenticatedSession()
-                .sendMessage(webSocketMessageConverter.toTextMessage(message))
-
-        singleMessageResponseListener.getResponse(message.subscriptionId, expectedResponseClass)
-    }
-
-
-
-    void sendSingleMessage(WebSocketMessage message) {
-        if (message instanceof SubscriptionWebSocketMessage) {
-            message.subscriptionId = idGenerator.generateId()
-        }
-
-        webSocketSessionProvider.getOrCreateAuthenticatedSession()
-                .sendMessage(webSocketMessageConverter.toTextMessage(message))
+        sendMessageWithResponse(message.subscriptionId, webSocketMessageConverter.toTextMessage(message), expectedResponseClass)
     }
 }

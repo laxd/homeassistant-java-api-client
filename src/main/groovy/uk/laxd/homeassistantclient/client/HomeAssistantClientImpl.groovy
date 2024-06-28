@@ -88,15 +88,15 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
     }
 
     void turnOn(String entityId) {
-        wsClient.turnOn(entityId)
+        wsClient.turnOn(entityId).get(10, TimeUnit.SECONDS)
     }
 
     void turnOff(String entityId) {
-        wsClient.turnOff(entityId)
+        wsClient.turnOff(entityId).get(10, TimeUnit.SECONDS)
     }
 
     void toggle(String entityId) {
-        wsClient.toggle(entityId)
+        wsClient.toggle(entityId).get(10, TimeUnit.SECONDS)
     }
 
 }

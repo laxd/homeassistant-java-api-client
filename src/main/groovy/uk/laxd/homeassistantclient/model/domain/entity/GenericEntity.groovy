@@ -5,6 +5,8 @@ import uk.laxd.homeassistantclient.model.domain.service.Service
 import uk.laxd.homeassistantclient.model.json.HomeAssistantEntity
 import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 
+import java.util.concurrent.TimeUnit
+
 @ToString(includes = "entityId,state")
 class GenericEntity implements Entity {
 
@@ -27,37 +29,37 @@ class GenericEntity implements Entity {
 
     @Override
     void callService(Service service) {
-        this.wsClient.callService(service)
+        this.wsClient.callService(service).get(10, TimeUnit.SECONDS)
     }
 
     @Override
     void turnOn() {
-        this.wsClient.turnOn(this.entityId)
+        this.wsClient.turnOn(this.entityId).get(10, TimeUnit.SECONDS)
     }
 
     @Override
     void turnOn(Map<String, Object> additionalData) {
-        this.wsClient.turnOn(this.entityId, additionalData)
+        this.wsClient.turnOn(this.entityId, additionalData).get(10, TimeUnit.SECONDS)
     }
 
     @Override
     void turnOff() {
-        this.wsClient.turnOff(this.entityId)
+        this.wsClient.turnOff(this.entityId).get(10, TimeUnit.SECONDS)
     }
 
     @Override
     void turnOff(Map<String, Object> additionalData) {
-        this.wsClient.turnOff(this.entityId, additionalData)
+        this.wsClient.turnOff(this.entityId, additionalData).get(10, TimeUnit.SECONDS)
     }
 
     @Override
     void toggle() {
-        this.wsClient.toggle(this.entityId)
+        this.wsClient.toggle(this.entityId).get(10, TimeUnit.SECONDS)
     }
 
     @Override
     void toggle(Map<String, Object> additionalData) {
-        this.wsClient.toggle(this.entityId, additionalData)
+        this.wsClient.toggle(this.entityId, additionalData).get(10, TimeUnit.SECONDS)
     }
 
     String getType() {
