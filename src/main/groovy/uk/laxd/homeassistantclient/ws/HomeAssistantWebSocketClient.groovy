@@ -6,14 +6,17 @@ import jakarta.inject.Named
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import uk.laxd.homeassistantclient.client.HomeAssistantAuthenticationProvider
-import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
+
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
+import uk.laxd.homeassistantclient.events.HomeAssistantListener
 import uk.laxd.homeassistantclient.model.domain.response.HomeAssistantPongMessage
 import uk.laxd.homeassistantclient.model.domain.service.Service
 import uk.laxd.homeassistantclient.model.domain.service.ServiceTarget
 import uk.laxd.homeassistantclient.model.domain.service.ServiceType
 import uk.laxd.homeassistantclient.model.domain.service.TargetType
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
+import uk.laxd.homeassistantclient.model.json.ws.incoming.PongWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.ResultWebSocketMessage
 import uk.laxd.homeassistantclient.model.mapper.WebSocketMessageMapper
 import uk.laxd.homeassistantclient.model.mapper.service.ServiceMapper
 import uk.laxd.homeassistantclient.model.mapper.trigger.TriggerMapperFactory
@@ -25,6 +28,7 @@ import uk.laxd.homeassistantclient.model.json.ws.outgoing.PingWebSocketMessage
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.TriggerWebSocketMessage
 import uk.laxd.homeassistantclient.ws.session.WebSocketSessionProvider
 
+import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 
 @Named
@@ -67,18 +71,18 @@ class HomeAssistantWebSocketClient {
         webSocketSessionProvider.getOrCreateAuthenticatedSession()
     }
 
-    void listenToEvents(String event, HomeAssistantEventListener listener) {
+    Future<ResultWebSocketMessage> listenToEvents(String event, HomeAssistantListener listener) {
         logger.info("Subscribing to events of type '{}', listener='{}'", event, listener)
 
         def message = new EventSubscriptionWebSocketMessage(event)
-        messageDispatcher.sendMessageWithResponseListener(message, listener)
+        messageDispatcher.sendMessageWithListener(message, listener)
     }
 
-    void listenToTrigger(Trigger trigger, HomeAssistantEventListener listener) {
+    Future<ResultWebSocketMessage> listenToTrigger(Trigger trigger, HomeAssistantListener listener) {
         listenToTriggers([trigger], listener)
     }
 
-    void listenToTriggers(Collection<Trigger> triggers, HomeAssistantEventListener listener) {
+    Future<ResultWebSocketMessage> listenToTriggers(Collection<Trigger> triggers, HomeAssistantListener listener) {
         logger.info("Subscribing with triggers [{}], listener='{}'", triggers, listener)
 
         def jsonTriggers = triggers.collect {
@@ -87,7 +91,7 @@ class HomeAssistantWebSocketClient {
 
         def message = new TriggerWebSocketMessage(jsonTriggers)
 
-        messageDispatcher.sendMessageWithResponseListener(message, listener)
+        messageDispatcher.sendMessageWithListener(message, listener)
     }
 
     void turnOn(String entityId) {
@@ -142,7 +146,7 @@ class HomeAssistantWebSocketClient {
 
     HomeAssistantPongMessage ping() {
         def message = new PingWebSocketMessage()
-        def response = messageDispatcher.sendMessage(message)
+        def response = messageDispatcher.sendMessage(message, PongWebSocketMessage)
         def b = response.get(10, TimeUnit.SECONDS)
         messageMapper.map(b)
     }

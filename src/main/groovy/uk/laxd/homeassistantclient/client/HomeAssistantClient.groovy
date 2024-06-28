@@ -2,7 +2,7 @@ package uk.laxd.homeassistantclient.client
 
 import uk.laxd.homeassistantclient.client.exception.InvalidEntityException
 import uk.laxd.homeassistantclient.client.exception.NoSuchEntityException
-import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
+import uk.laxd.homeassistantclient.events.HomeAssistantListener
 import uk.laxd.homeassistantclient.model.domain.entity.Entity
 import uk.laxd.homeassistantclient.model.domain.response.HomeAssistantPongMessage
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
@@ -57,26 +57,26 @@ interface HomeAssistantClient {
      * @param eventType The event to execute the given listener on
      * @param listener Listener to execute
      */
-    void onEvent(String eventType, HomeAssistantEventListener<Event> listener)
+    void onEvent(String eventType, HomeAssistantListener<Event> listener)
 
     /**
      * Register the given listener to trigger whenever the given {@link Trigger} occurs. The trigger can be
      * built using the {@link uk.laxd.homeassistantclient.model.domain.trigger.builder.TriggerBuilder}.
      *
-     * Multiple triggers can be registered to the same listener by using {@link #on(Collection, HomeAssistantEventListener)}.
+     * Multiple triggers can be registered to the same listener by using {@link #on(Collection, HomeAssistantListener)}.
      * @param trigger Trigger to fire on
      * @param listener Listener to fire when trigger is triggered
      */
-    void on(Trigger trigger, HomeAssistantEventListener<TriggerEvent> listener)
+    void on(Trigger trigger, HomeAssistantListener<TriggerEvent> listener)
 
     /**
      * Register the given listener to trigger whenever ANY of the given {@link Trigger}s occur.
      *
-     * @see #on(Trigger, HomeAssistantEventListener) for more details
+     * @see #on(Trigger, HomeAssistantListener) for more details
      * @param triggers Collection of Triggers to fire on
      * @param listener Listener to fire when any triggers are triggered
      */
-    void on(Collection<Trigger> triggers, HomeAssistantEventListener<TriggerEvent> listener)
+    void on(Collection<Trigger> triggers, HomeAssistantListener<TriggerEvent> listener)
 
     /**
      * Attempts to turn the given entity on. Any entity that supports being turned on can be turned on with this

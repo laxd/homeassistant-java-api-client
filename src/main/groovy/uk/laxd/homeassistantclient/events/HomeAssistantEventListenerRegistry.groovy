@@ -3,9 +3,12 @@ package uk.laxd.homeassistantclient.events
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessage
-import uk.laxd.homeassistantclient.model.json.ws.incoming.ResponseWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.EventWebSocketMessage
 
+/**
+ * Registers listeners to perform actions when a message arrives from the Home Assistant server with
+ * a matching subscription ID.
+ */
 @Component
 class HomeAssistantEventListenerRegistry {
 
@@ -21,13 +24,20 @@ class HomeAssistantEventListenerRegistry {
     void unregister(HomeAssistantListener listener) {
         conversationIdToListenerMap.removeAll {it == listener }
         logger.debug("Removed listener {}", listener)
+
+        // TODO: Remove the listener from HA too.
     }
 
-    void processMessage(ResponseWebSocketMessage message) {
+    void processMessage(EventWebSocketMessage message) {
+        if (message || message.event) {
+            logger.error("Cannot process null EventWebSocketMessage or message containing a null Event.")
+        }
+
         def listener = conversationIdToListenerMap[message.subscriptionId]
 
         if (listener) {
-            listener.handle(message)
+            // TODO: The types should match, but might need to do some error handling here
+            listener.handle(message.event)
         }
         else {
             logger.warn("Received ResponseWebSocketMessage with subscription ID ${message.subscriptionId}, but no listener was registered with this ID")

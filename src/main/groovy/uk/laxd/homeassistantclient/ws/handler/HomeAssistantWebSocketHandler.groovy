@@ -35,7 +35,7 @@ class HomeAssistantWebSocketHandler implements WebSocketHandler {
 
                 def parsedMessage = objectMapper.readValue(payload, IncomingWebSocketMessage.class)
 
-                log.info("Received message: {}", payload)
+                log.info("Received ${parsedMessage.class.simpleName}: $payload")
 
                 messageHandler.handle(session, parsedMessage)
             }

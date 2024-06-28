@@ -4,7 +4,7 @@ import jakarta.inject.Inject
 import jakarta.inject.Named
 import uk.laxd.homeassistantclient.client.exception.InvalidEntityException
 import uk.laxd.homeassistantclient.client.exception.NoSuchEntityException
-import uk.laxd.homeassistantclient.events.HomeAssistantEventListener
+import uk.laxd.homeassistantclient.events.HomeAssistantListener
 import uk.laxd.homeassistantclient.model.domain.entity.Entity
 import uk.laxd.homeassistantclient.model.domain.entity.EntityFactory
 import uk.laxd.homeassistantclient.model.domain.entity.light.LightEntity
@@ -15,6 +15,8 @@ import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
 import uk.laxd.homeassistantclient.rest.HomeAssistantRestClient
 import uk.laxd.homeassistantclient.rest.HomeAssistantRestClientFactory
 import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
+
+import java.util.concurrent.TimeUnit
 
 /**
  * A Home Assistant client implementation that combined REST API and WebSockets
@@ -73,16 +75,16 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
         entityFactory.createLightEntity(entity)
     }
 
-    void onEvent(String eventType, HomeAssistantEventListener<Event> listener) {
-        wsClient.listenToEvents(eventType, listener)
+    void onEvent(String eventType, HomeAssistantListener<Event> listener) {
+        wsClient.listenToEvents(eventType, listener).get(10, TimeUnit.SECONDS)
     }
 
-    void on(Trigger trigger, HomeAssistantEventListener<TriggerEvent> listener) {
-        wsClient.listenToTrigger(trigger, listener)
+    void on(Trigger trigger, HomeAssistantListener<TriggerEvent> listener) {
+        wsClient.listenToTrigger(trigger, listener).get(10, TimeUnit.SECONDS)
     }
 
-    void on(Collection<Trigger> triggers, HomeAssistantEventListener<TriggerEvent> listener) {
-        wsClient.listenToTriggers(triggers, listener)
+    void on(Collection<Trigger> triggers, HomeAssistantListener<TriggerEvent> listener) {
+        wsClient.listenToTriggers(triggers, listener).get(10, TimeUnit.SECONDS)
     }
 
     void turnOn(String entityId) {

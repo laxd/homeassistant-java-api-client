@@ -15,7 +15,7 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.ResponseWebSocketMessa
  */
 @Named
 @Slf4j
-class HomeAssistantEventMessageHandler implements MessageHandler<ResponseWebSocketMessage> {
+class HomeAssistantEventMessageHandler implements MessageHandler<EventWebSocketMessage> {
 
     private HomeAssistantEventListenerRegistry registry
 
@@ -25,14 +25,12 @@ class HomeAssistantEventMessageHandler implements MessageHandler<ResponseWebSock
     }
 
     @Override
-    void handle(WebSocketSession session, ResponseWebSocketMessage message) {
+    void handle(WebSocketSession session, EventWebSocketMessage message) {
         registry.processMessage(message)
     }
 
     @Override
     boolean canHandle(IncomingWebSocketMessage message) {
-        // Only messages with a subscription ID, i.e. messages sent in response to something
-        // can be actioned by listeners
-        return message instanceof ResponseWebSocketMessage
+        return message instanceof EventWebSocketMessage
     }
 }
