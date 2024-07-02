@@ -6,7 +6,7 @@ import spock.lang.Unroll
 class HomeAssistantEntitySpec extends Specification {
 
     @Unroll
-    def "domain is parsed correctly"() {
+    def "domain of '#entityId' is parsed to '#expectedDomain'"() {
         given:
         def entity = new HomeAssistantEntity()
         entity.entityId = entityId

@@ -2,6 +2,7 @@ package uk.laxd.homeassistantclient.model.ws
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
+import spock.lang.Unroll
 import uk.laxd.homeassistantclient.model.json.ws.incoming.EventResponseWebSocketMessage
 import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessage
 import uk.laxd.homeassistantclient.model.json.ws.incoming.PongWebSocketMessage
@@ -32,7 +33,8 @@ class HomeAssistantWsModelSpec extends Specification {
         message instanceof HomeAssistantAuthRequiredMessage && message.homeAssistantVersion == "2021.5.3"
     }
 
-    def "message types get parsed to correct class"() {
+    @Unroll
+    def "message with type=#type get parsed to #messageClass"() {
         given:
         def json = """
         {
