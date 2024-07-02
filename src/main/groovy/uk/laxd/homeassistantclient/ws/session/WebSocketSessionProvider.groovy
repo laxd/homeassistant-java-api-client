@@ -6,7 +6,6 @@ import jakarta.inject.Named
 import org.springframework.web.socket.WebSocketSession
 import org.springframework.web.socket.client.WebSocketClient
 import org.springframework.web.socket.client.standard.StandardWebSocketClient
-import uk.laxd.homeassistantclient.client.HomeAssistantAuthenticationProvider
 import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuthFailedMessage
 import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuthRequiredMessage
 import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuthResponseMessage
@@ -27,14 +26,12 @@ class WebSocketSessionProvider {
     private WebSocketSession existingSession
     private boolean isAuthenticated = false
 
-    private final HomeAssistantAuthenticationProvider authenticationProvider
     private final HomeAssistantWebSocketHandler handler
     private final MessageResponseListener messageResponseListener
     private final JacksonWebSocketMessageConverter webSocketMessageConverter
 
     @Inject
-    WebSocketSessionProvider(HomeAssistantAuthenticationProvider authenticationProvider, HomeAssistantWebSocketHandler handler, MessageResponseListener messageResponseListener, JacksonWebSocketMessageConverter webSocketMessageConverter) {
-        this.authenticationProvider = authenticationProvider
+    WebSocketSessionProvider(HomeAssistantWebSocketHandler handler, MessageResponseListener messageResponseListener, JacksonWebSocketMessageConverter webSocketMessageConverter) {
         this.handler = handler
         this.messageResponseListener = messageResponseListener
         this.webSocketMessageConverter = webSocketMessageConverter

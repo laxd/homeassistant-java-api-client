@@ -5,7 +5,6 @@ import jakarta.inject.Inject
 import jakarta.inject.Named
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import uk.laxd.homeassistantclient.client.HomeAssistantAuthenticationProvider
 
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
 import uk.laxd.homeassistantclient.events.HomeAssistantListener
@@ -37,7 +36,6 @@ class HomeAssistantWebSocketClient {
     private static final Logger logger = LoggerFactory.getLogger(HomeAssistantWebSocketClient)
 
     private WebSocketSessionProvider webSocketSessionProvider
-    private HomeAssistantAuthenticationProvider authenticationProvider
     private HomeAssistantEventListenerRegistry registry
     private JacksonWebSocketMessageConverter webSocketMessageConverter
     private TriggerMapperFactory triggerMapperFactory
@@ -51,7 +49,6 @@ class HomeAssistantWebSocketClient {
                                  JacksonWebSocketMessageConverter webSocketMessageConverter,
                                  TriggerMapperFactory triggerMapperFactory,
                                  ServiceMapper serviceMapper,
-                                 HomeAssistantAuthenticationProvider authenticationProvider,
                                  HomeAssistantWebSocketMessageDispatcher messageDispatcher,
                                  WebSocketMessageMapper messageMapper) {
         this.webSocketSessionProvider = webSocketSessionProvider
@@ -59,7 +56,6 @@ class HomeAssistantWebSocketClient {
         this.webSocketMessageConverter = webSocketMessageConverter
         this.triggerMapperFactory = triggerMapperFactory
         this.serviceMapper = serviceMapper
-        this.authenticationProvider = authenticationProvider
         this.messageDispatcher = messageDispatcher
         this.messageMapper = messageMapper
     }
