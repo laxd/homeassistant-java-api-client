@@ -4,7 +4,7 @@ import groovy.util.logging.Slf4j
 import jakarta.inject.Inject
 import jakarta.inject.Named
 import org.springframework.web.socket.WebSocketSession
-import uk.laxd.homeassistantclient.model.json.ws.incoming.EventWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.EventResponseWebSocketMessage
 import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessage
 import uk.laxd.homeassistantclient.ws.MessageResponseListener
 
@@ -33,6 +33,6 @@ class MessageResponseHandler implements MessageHandler<IncomingWebSocketMessage>
         // Any type of response can be handled by the SingleMessageResponseListener, but
         // we don't want to handle EventWebSocketMessages in case we miss the initial ResultWebSocketMessage
         // when subscribing to Events/Triggers
-        !(message instanceof EventWebSocketMessage)
+        !(message instanceof EventResponseWebSocketMessage)
     }
 }

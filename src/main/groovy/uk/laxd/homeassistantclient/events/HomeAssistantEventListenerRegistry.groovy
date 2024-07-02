@@ -3,7 +3,7 @@ package uk.laxd.homeassistantclient.events
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import uk.laxd.homeassistantclient.model.json.ws.incoming.EventWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.EventResponseWebSocketMessage
 
 /**
  * Registers listeners to perform actions when a message arrives from the Home Assistant server with
@@ -28,7 +28,7 @@ class HomeAssistantEventListenerRegistry {
         // TODO: Remove the listener from HA too.
     }
 
-    void processMessage(EventWebSocketMessage message) {
+    void processMessage(EventResponseWebSocketMessage message) {
         if (message || message.event) {
             logger.error("Cannot process null EventWebSocketMessage or message containing a null Event.")
         }

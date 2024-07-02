@@ -7,8 +7,7 @@ import uk.laxd.homeassistantclient.model.json.event.Event
  * A message in response to a {@link uk.laxd.homeassistantclient.model.json.ws.outgoing.EventSubscriptionWebSocketMessage}
  * that we sent previously.
  */
-// TODO: Rename EventResponseWebSocketMessage
-class EventWebSocketMessage extends ResponseWebSocketMessage {
+class EventResponseWebSocketMessage extends ResponseWebSocketMessage {
 
     @JsonProperty("event")
     Event event

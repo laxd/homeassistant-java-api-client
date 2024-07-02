@@ -21,10 +21,15 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuth
         @JsonSubTypes.Type(value = HomeAssistantAuthFailedMessage, name = "auth_invalid"),
 
         // Other types of messages after authentication
-        @JsonSubTypes.Type(value = EventWebSocketMessage, name = "event"),
+        @JsonSubTypes.Type(value = EventResponseWebSocketMessage, name = "event"),
         @JsonSubTypes.Type(value = PongWebSocketMessage, name = "pong"),
         @JsonSubTypes.Type(value = ResultWebSocketMessage, name = "result")
 ])
 abstract class IncomingWebSocketMessage implements WebSocketMessage {
+
+    /**
+     * The type as indicated in the web socket message.
+     * @return
+     */
     abstract String getType()
 }
