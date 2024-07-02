@@ -28,9 +28,13 @@ abstract class AbstractIntegrationTest extends Specification {
             .withClasspathResourceMapping("test_config", "/config", BindMode.READ_WRITE)
             .waitingFor(Wait.forLogMessage(".*\\[homeassistant\\.core\\] Starting Home Assistant.*", 1))
 
+    String getClientUrl() {
+        "http://${container.host}:${container.firstMappedPort}"
+    }
+
     HomeAssistantClient getClient() {
         if (!this.client) {
-            String url = "http://${container.host}:${container.firstMappedPort}"
+            String url = getClientUrl()
 
             log.info("Creating new HA client - $url")
 

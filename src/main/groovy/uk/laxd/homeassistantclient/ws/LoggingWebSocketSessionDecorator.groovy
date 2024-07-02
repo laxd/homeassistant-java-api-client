@@ -15,7 +15,7 @@ class LoggingWebSocketSessionDecorator extends WebSocketSessionDecorator {
 
     @Override
     void sendMessage(WebSocketMessage<?> message) throws IOException {
-        logger.info("Sending message: {}", message.payload)
+        logger.debug("Sending message: {}", message.payload)
         super.sendMessage(message)
     }
 }

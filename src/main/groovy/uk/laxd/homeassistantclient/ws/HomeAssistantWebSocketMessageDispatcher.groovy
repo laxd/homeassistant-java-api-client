@@ -22,7 +22,7 @@ class HomeAssistantWebSocketMessageDispatcher {
     private final HomeAssistantEventListenerRegistry registry
     private final JacksonWebSocketMessageConverter webSocketMessageConverter
     private final HomeAssistantWebSocketHandler webSocketHandler
-    private final SingleMessageResponseListener singleMessageResponseListener
+    private final MessageResponseListener singleMessageResponseListener
 
     @Inject
     HomeAssistantWebSocketMessageDispatcher(IdGenerator idGenerator,
@@ -30,7 +30,7 @@ class HomeAssistantWebSocketMessageDispatcher {
                                             HomeAssistantEventListenerRegistry registry,
                                             JacksonWebSocketMessageConverter webSocketMessageConverter,
                                             HomeAssistantWebSocketHandler webSocketHandler,
-                                            SingleMessageResponseListener singleMessageResponseListener) {
+                                            MessageResponseListener singleMessageResponseListener) {
         this.idGenerator = idGenerator
         this.webSocketSessionProvider = webSocketSessionProvider
         this.registry = registry
@@ -42,7 +42,7 @@ class HomeAssistantWebSocketMessageDispatcher {
     <M extends ResponseWebSocketMessage> Future<M> sendMessageWithResponse(Integer id, WebSocketMessage message, Class<M> expectedResponseClass) {
         def future = singleMessageResponseListener.getResponse(id, expectedResponseClass)
 
-        webSocketSessionProvider.getOrCreateAuthenticatedSession()
+        webSocketSessionProvider.getAuthenticatedSession()
                 .sendMessage(message)
 
         future

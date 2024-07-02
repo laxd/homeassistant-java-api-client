@@ -65,10 +65,7 @@ class HomeAssistantWebSocketClient {
     }
 
     void connect(String url, String token) {
-        authenticationProvider.authenticate(url, token)
-
-        // Get the session to ensure it is valid
-        webSocketSessionProvider.getOrCreateAuthenticatedSession()
+        webSocketSessionProvider.authenticate(url, token)
     }
 
     Future<ResultWebSocketMessage> listenToEvents(String event, HomeAssistantListener listener) {
