@@ -30,7 +30,9 @@ class BasicEntityInteraction extends AbstractExample {
             println("${e.entityId} Changed: ${e}")
         })
 
-        Thread.sleep(5000)
+        // For this example, we need to keep this thread alive so that we can see
+        // the listener executing
+        Thread.sleep(10000)
     }
 
 
