@@ -1,19 +1,20 @@
 package uk.laxd.homeassistantclient.model.ws
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import spock.lang.Specification
+import uk.laxd.homeassistantclient.model.json.ws.incoming.EventResponseWebSocketMessage
 import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.PongWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.ResultWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.UnknownWebSocketMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuthFailedMessage
 import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuthRequiredMessage
+import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuthSuccessfulMessage
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
 class HomeAssistantWsModelSpec extends Specification {
 
     ObjectMapper mapper = new ObjectMapperFactory().createObjectMapper()
-
-    def "setup"() {
-        mapper.registerModule(new Jdk8Module())
-    }
 
     def "auth message can be parsed"() {
         given:
@@ -29,5 +30,27 @@ class HomeAssistantWsModelSpec extends Specification {
 
         then:
         message instanceof HomeAssistantAuthRequiredMessage && message.homeAssistantVersion == "2021.5.3"
+    }
+
+    def "message types get parsed to correct class"() {
+        given:
+        def json = """
+        {
+            "type": "$type"
+        }
+        """
+
+        expect:
+        mapper.readValue(json, IncomingWebSocketMessage).class == messageClass
+
+        where:
+        type || messageClass
+        "auth_required" || HomeAssistantAuthRequiredMessage
+        "auth_ok" || HomeAssistantAuthSuccessfulMessage
+        "auth_invalid" || HomeAssistantAuthFailedMessage
+        "event" || EventResponseWebSocketMessage
+        "pong" || PongWebSocketMessage
+        "result" || ResultWebSocketMessage
+        "qwertyuiop" || UnknownWebSocketMessage
     }
 }
