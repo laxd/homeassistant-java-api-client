@@ -15,17 +15,17 @@ import uk.laxd.homeassistantclient.ws.MessageResponseListener
 @Slf4j
 class MessageResponseHandler implements MessageHandler<IncomingWebSocketMessage> {
 
-    private final MessageResponseListener singleMessageResponseListener
+    private final MessageResponseListener messageResponseListener
 
     @Inject
-    MessageResponseHandler(MessageResponseListener singleMessageResponseListener) {
-        this.singleMessageResponseListener = singleMessageResponseListener
+    MessageResponseHandler(MessageResponseListener messageResponseListener) {
+        this.messageResponseListener = messageResponseListener
     }
 
 
     @Override
     void handle(WebSocketSession session, IncomingWebSocketMessage message) {
-        singleMessageResponseListener.checkForMessagesAwaitingResponse(message)
+        messageResponseListener.checkForMessagesAwaitingResponse(message)
     }
 
     @Override

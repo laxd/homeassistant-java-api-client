@@ -19,7 +19,13 @@ class HomeAssistantEntity {
     Map<String, Object> attributes
 
     String getDomain() {
-        return entityId.split("\\.")[0]
+        if (entityId == null) {
+            null
+        }
+
+        def parts = entityId.split("\\.")
+
+        parts.length > 1 ? parts[0] : null
     }
 
     @Override

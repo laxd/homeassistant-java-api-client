@@ -35,7 +35,7 @@ class MessageResponseListener {
 
     <M extends WebSocketMessage> Future<M> waitForMessage(Class<M> messageClass, MessageCondition<M> condition = null) {
         if (condition == null) {
-            condition = new NoOpMessageCondition()
+            condition = new NoOpMessageCondition<M>()
         }
 
         log.debug("Waiting for ${messageClass.simpleName} with condition $condition")

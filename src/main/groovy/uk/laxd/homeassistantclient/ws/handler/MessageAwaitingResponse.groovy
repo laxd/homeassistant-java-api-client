@@ -52,9 +52,9 @@ class MessageIdCondition<M extends ResponseWebSocketMessage> implements MessageC
     }
 }
 
-class NoOpMessageCondition implements MessageCondition<WebSocketMessage> {
+class NoOpMessageCondition<M extends WebSocketMessage> implements MessageCondition<M> {
     @Override
-    boolean isValid(WebSocketMessage message) {
+    boolean isValid(M message) {
         return true
     }
 }
