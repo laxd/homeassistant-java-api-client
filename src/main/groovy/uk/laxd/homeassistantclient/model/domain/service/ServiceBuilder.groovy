@@ -15,23 +15,23 @@ class ServiceBuilder {
     }
 
     ServiceBuilder forArea(String area) {
-        callService.serviceTargets << new ServiceTarget(TargetType.AREA, area)
+        service.serviceTargets << new ServiceTarget(TargetType.AREA, area)
         this
     }
 
     ServiceBuilder forDevice(String device) {
-        callService.serviceTargets << new ServiceTarget(TargetType.DEVICE, device)
+        service.serviceTargets << new ServiceTarget(TargetType.DEVICE, device)
         this
     }
 
 
     ServiceBuilder forEntity(String entity) {
-        callService.serviceTargets << new ServiceTarget(TargetType.ENTITY, entity)
+        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entity)
         this
     }
 
     JsonService build() {
-        callService
+        service
     }
 
 }
