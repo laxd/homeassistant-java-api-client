@@ -10,19 +10,10 @@ class Service {
     Map<String, Object> serviceData = [:]
     Collection<ServiceTarget> serviceTargets = []
 
-}
 
-enum ServiceType {
-    TURN_ON("homeassistant", "turn_on"),
-    TURN_OFF("homeassistant", "turn_off"),
-    TOGGLE("homeassistant", "toggle")
-
-    String domain
-    String service
-
-    ServiceType(String domain, String service) {
-        this.domain = domain
-        this.service = service
+    @Override
+    String toString() {
+        return "$type - $serviceTargets"
     }
-
 }
+

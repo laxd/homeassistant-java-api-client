@@ -36,6 +36,12 @@ class MessageAwaitingResponse<M extends WebSocketMessage> {
             log.warn("Awaiting message of type $messageClass, but got ${message.class} for matching condition")
         }
     }
+
+
+    @Override
+    String toString() {
+        return "Condition(messageClass=${messageClass.simpleName}, condition=${condition})"
+    }
 }
 
 interface MessageCondition<M extends WebSocketMessage> {
@@ -50,11 +56,21 @@ class MessageIdCondition<M extends ResponseWebSocketMessage> implements MessageC
     boolean isValid(ResponseWebSocketMessage message) {
         return message.subscriptionId == messageId
     }
+
+    @Override
+    String toString() {
+        return "messageId=$messageId"
+    }
 }
 
 class NoOpMessageCondition<M extends WebSocketMessage> implements MessageCondition<M> {
     @Override
     boolean isValid(M message) {
         return true
+    }
+
+    @Override
+    String toString() {
+        return "true";
     }
 }

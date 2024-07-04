@@ -21,13 +21,10 @@ class MessageResponseListener {
     List<MessageAwaitingResponse> messagesAwaitingResponse = []
 
     void checkForMessagesAwaitingResponse(IncomingWebSocketMessage message) {
-        log.debug("Checking message $message of type ${message.class.simpleName} for listeners")
-        log.debug("Current messages awaiting response: $messagesAwaitingResponse")
-
         def messageAwaitingResponse = messagesAwaitingResponse.find { it.condition.isValid(message) }
 
         if (messageAwaitingResponse) {
-            log.debug("Found ${message.class.simpleName} for [${messagesAwaitingResponse}] - $message")
+            log.debug("Found ${message.class.simpleName} matching ${messageAwaitingResponse.condition}")
             messagesAwaitingResponse.remove(messageAwaitingResponse)
             messageAwaitingResponse.respond(message)
         }
@@ -38,7 +35,7 @@ class MessageResponseListener {
             condition = new NoOpMessageCondition<M>()
         }
 
-        log.debug("Waiting for ${messageClass.simpleName} with condition $condition")
+        log.debug("Waiting for ${messageClass.simpleName} with condition [$condition]")
 
         Future<M> future = new CompletableFuture<>()
 
