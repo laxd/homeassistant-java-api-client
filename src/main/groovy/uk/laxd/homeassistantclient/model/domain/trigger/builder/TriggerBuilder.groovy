@@ -1,5 +1,6 @@
 package uk.laxd.homeassistantclient.model.domain.trigger.builder
 
+import uk.laxd.homeassistantclient.model.domain.trigger.NumericStateTrigger
 import uk.laxd.homeassistantclient.model.domain.trigger.StateTrigger
 import uk.laxd.homeassistantclient.model.domain.trigger.TemplateTrigger
 import uk.laxd.homeassistantclient.model.domain.trigger.TimePatternTrigger
@@ -34,6 +35,26 @@ class TriggerBuilder<T extends Trigger> {
     static TemplateTriggerBuilder valueTemplate(String template) {
         def builder = new TemplateTriggerBuilder()
         builder.result = new TemplateTrigger(template)
+        builder
+    }
+
+    static NumericStateTriggerBuilder onNumericStateChange(String entityId) {
+        def builder = new NumericStateTriggerBuilder()
+        builder.result = new NumericStateTrigger(entityId)
+        builder
+    }
+
+    static NumericStateTriggerBuilder onNumericAttributeChange(String entityId, String attribute) {
+        def builder = new NumericStateTriggerBuilder()
+        builder.result = new NumericStateTrigger(entityId)
+        builder.result.attribute = attribute
+        builder
+    }
+
+    static NumericStateTriggerBuilder onNumericStateChangeTemplate(String entityId, String valueTemplate) {
+        def builder = new NumericStateTriggerBuilder()
+        builder.result = new NumericStateTrigger(entityId)
+        builder.result.attribute = valueTemplate
         builder
     }
 

@@ -4,7 +4,7 @@ enum TriggerType {
     EVENT("not_implemented"),
     HOME_ASSISTANT("not_implemented"),
     MQTT("not_implemented"),
-    NUMERIC_STATE("not_implemented"),
+    NUMERIC_STATE("numeric_state"),
     STATE("state"),
     SUN("not_implemented"),
     TAG("not_implemented"),

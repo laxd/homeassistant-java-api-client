@@ -2,6 +2,7 @@ package uk.laxd.homeassistantclient.model.domain.entity
 
 import jakarta.inject.Inject
 import jakarta.inject.Named
+import uk.laxd.homeassistantclient.model.domain.entity.helpers.InputNumber
 import uk.laxd.homeassistantclient.model.domain.entity.light.LightEntity
 import uk.laxd.homeassistantclient.model.json.HomeAssistantEntity
 import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
@@ -21,6 +22,8 @@ class EntityFactoryImpl implements EntityFactory {
         switch (homeAssistantEntity.domain) {
             case "light":
                 return createLightEntity(homeAssistantEntity) as E
+            case "input_number":
+                return createInputNumber(homeAssistantEntity) as E
             default:
                 return new GenericEntity(webSocketClient, homeAssistantEntity) as E
         }
@@ -31,4 +34,8 @@ class EntityFactoryImpl implements EntityFactory {
         new LightEntity(webSocketClient, homeAssistantEntity)
     }
 
+    @Override
+    InputNumber createInputNumber(HomeAssistantEntity homeAssistantEntity) {
+        new InputNumber(webSocketClient, homeAssistantEntity)
+    }
 }

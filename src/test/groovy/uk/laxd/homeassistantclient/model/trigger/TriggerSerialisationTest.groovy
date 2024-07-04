@@ -3,10 +3,12 @@ package uk.laxd.homeassistantclient.model.trigger
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
 import uk.laxd.homeassistantclient.model.domain.trigger.For
+import uk.laxd.homeassistantclient.model.domain.trigger.NumericStateTrigger
 import uk.laxd.homeassistantclient.model.domain.trigger.StateTrigger
 import uk.laxd.homeassistantclient.model.domain.trigger.TemplateTrigger
 import uk.laxd.homeassistantclient.model.domain.trigger.TimePatternTrigger
 import uk.laxd.homeassistantclient.model.domain.trigger.TimeTrigger
+import uk.laxd.homeassistantclient.model.mapper.trigger.NumericStateTriggerMapper
 import uk.laxd.homeassistantclient.model.mapper.trigger.StateTriggerMapper
 import uk.laxd.homeassistantclient.model.mapper.trigger.TemplateTriggerMapper
 import uk.laxd.homeassistantclient.model.mapper.trigger.TimePatternTriggerMapper
@@ -152,5 +154,43 @@ class TriggerSerialisationTest extends Specification {
         node.get("platform").textValue() == "template"
         node.get("value_template").textValue() == "{{ is_state('device_tracker.paulus', 'home') }}"
         node.get("for").textValue() == "00:05:00"
+    }
+
+    def "minimal numeric state trigger can be serialised"() {
+        given:
+        def trigger = new NumericStateTrigger("light.bedroom")
+
+        def mapped = new NumericStateTriggerMapper().mapToJson(trigger)
+
+        when:
+        def node = objectMapper.valueToTree(mapped)
+
+        then:
+        node.fieldNames().toList().sort() == ["platform", "entity_id"].sort()
+        node.get("platform").textValue() == "numeric_state"
+        node.get("entity_id").textValue() == "light.bedroom"
+    }
+
+    def "numeric state trigger with all values can be serialised"() {
+        given:
+        def trigger = new NumericStateTrigger("light.bedroom")
+        trigger.below = 30
+        trigger.above = 0
+        trigger.attribute = "luminance"
+        trigger.valueTemplate = "{{ state.attribute.luminance - 100 }}"
+
+        def mapped = new NumericStateTriggerMapper().mapToJson(trigger)
+
+        when:
+        def node = objectMapper.valueToTree(mapped)
+
+        then:
+        node.fieldNames().toList().sort() == ["platform","entity_id", "below", "above", "attribute", "value_template"].sort()
+        node.get("platform").textValue() == "numeric_state"
+        node.get("entity_id").textValue() == "light.bedroom"
+        node.get("below").textValue() == "30"
+        node.get("above").textValue() == "0"
+        node.get("attribute").textValue() == "luminance"
+        node.get("value_template").textValue() == "{{ state.attribute.luminance - 100 }}"
     }
 }

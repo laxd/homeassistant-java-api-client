@@ -1,6 +1,5 @@
 package uk.laxd.homeassistantclient.model.domain.service
 
-import groovy.transform.ToString
 import groovy.transform.TupleConstructor
 
 @TupleConstructor

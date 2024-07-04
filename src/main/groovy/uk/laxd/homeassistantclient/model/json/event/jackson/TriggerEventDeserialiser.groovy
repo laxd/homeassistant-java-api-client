@@ -37,7 +37,9 @@ class TriggerEventDeserialiser extends JsonDeserializer<TriggerEvent> {
 
         def totalSeconds = mapper.treeToValue(triggerNode.get("for").get("total_seconds"), Integer)
 
-        event.duration = new For(Duration.ofSeconds(totalSeconds))
+        if (totalSeconds) {
+            event.duration = new For(Duration.ofSeconds(totalSeconds))
+        }
 
         event.context = mapper.convertValue(rootNode.get("context"), new TypeReference<Map<String, Object>>(){})
 

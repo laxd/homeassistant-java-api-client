@@ -10,3 +10,10 @@ light:
         turn_on: null
     platform: template
 
+input_number:
+  test_number_1:
+    name: Test Number
+    initial: 30
+    min: -20
+    max: 35
+    step: 1

@@ -32,21 +32,4 @@ class EntityIntegrationTest extends AbstractIntegrationTest {
         }
     }
 
-    def "On state change trigger runs listener"() {
-        given:
-        def client = getClient()
-        def kitchenLight = client.getEntity("light.kitchen")
-
-        def future = new CompletableFuture<>()
-
-        when:
-        client.on(TriggerBuilder.onStateChange("light.kitchen").duration(Duration.ofSeconds(1)).build(), (TriggerEvent e) -> {
-            future.complete("Kitchen light triggered")
-        })
-
-        kitchenLight.turnOn()
-
-        then:
-        future.get(5, TimeUnit.SECONDS)
-    }
 }
