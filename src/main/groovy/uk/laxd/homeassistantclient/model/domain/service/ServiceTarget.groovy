@@ -11,7 +11,7 @@ class ServiceTarget {
 
     @Override
     String toString() {
-        return value
+        return "$type($value)"
     }
 }
 

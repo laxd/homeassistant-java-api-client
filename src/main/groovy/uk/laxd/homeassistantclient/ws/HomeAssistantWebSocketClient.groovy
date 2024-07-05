@@ -89,41 +89,41 @@ class HomeAssistantWebSocketClient {
 
     Future<ResultWebSocketMessage> turnOn(String entityId) {
         def service = new Service(ServiceType.TURN_ON)
-        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
+        service.targets << new ServiceTarget(TargetType.ENTITY, entityId)
         callService(service)
     }
 
     // TODO: Take in a domain object that wraps all of this?
     Future<ResultWebSocketMessage> turnOn(String entityId, Map<String, Object> additionalData) {
         def service = new Service(ServiceType.TURN_ON)
-        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
-        service.serviceData = additionalData
+        service.targets << new ServiceTarget(TargetType.ENTITY, entityId)
+        service.data = additionalData
         callService(service)
     }
 
     Future<ResultWebSocketMessage> turnOff(String entityId) {
         def service = new Service(ServiceType.TURN_OFF)
-        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
+        service.targets << new ServiceTarget(TargetType.ENTITY, entityId)
         callService(service)
     }
 
     Future<ResultWebSocketMessage> turnOff(String entityId, Map<String, Object> additionalData) {
         def service = new Service(ServiceType.TURN_OFF)
-        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
-        service.serviceData = additionalData
+        service.targets << new ServiceTarget(TargetType.ENTITY, entityId)
+        service.data = additionalData
         callService(service)
     }
 
     Future<ResultWebSocketMessage> toggle(String entityId, Map<String, Object> additionalData) {
         def service = new Service(ServiceType.TOGGLE)
-        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
-        service.serviceData = additionalData
+        service.targets << new ServiceTarget(TargetType.ENTITY, entityId)
+        service.data = additionalData
         callService(service)
     }
 
     Future<ResultWebSocketMessage> toggle(String entityId) {
         def service = new Service(ServiceType.TOGGLE)
-        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, entityId)
+        service.targets << new ServiceTarget(TargetType.ENTITY, entityId)
         callService(service)
     }
 

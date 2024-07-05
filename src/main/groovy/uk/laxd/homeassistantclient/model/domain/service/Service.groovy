@@ -2,18 +2,17 @@ package uk.laxd.homeassistantclient.model.domain.service
 
 class Service {
 
-    Service(ServiceType type) {
+    Service(String type) {
         this.type = type
     }
 
-    ServiceType type
-    Map<String, Object> serviceData = [:]
-    Collection<ServiceTarget> serviceTargets = []
-
+    String type
+    Map<String, Object> data = [:]
+    Collection<ServiceTarget> targets = []
 
     @Override
     String toString() {
-        return "$type - $serviceTargets"
+        return "$type - $targets"
     }
 }
 

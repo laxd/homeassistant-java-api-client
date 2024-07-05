@@ -12,16 +12,16 @@ class ServiceMapper {
         JsonService jsonService = new JsonService(service.type)
 
         // TODO: Map entities, devices and areas to a single target map
-        service.serviceTargets.findAll { it.type == TargetType.ENTITY }
+        service.targets.findAll { it.type == TargetType.ENTITY }
                 .each { jsonService.target.entities << it.value }
 
-        service.serviceTargets.findAll { it.type == TargetType.DEVICE }
+        service.targets.findAll { it.type == TargetType.DEVICE }
                 .each { jsonService.target.devices << it.value}
 
-        service.serviceTargets.findAll { it.type == TargetType.AREA }
+        service.targets.findAll { it.type == TargetType.AREA }
                 .each { jsonService.target.areas << it.value}
 
-        jsonService.serviceData = service.serviceData
+        jsonService.serviceData = service.data
 
         jsonService
     }

@@ -2,13 +2,13 @@ package uk.laxd.homeassistantclient.model.json.service
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import uk.laxd.homeassistantclient.model.domain.service.ServiceType
 
 class JsonService {
 
-    JsonService(ServiceType serviceType) {
-        this.domain = serviceType.domain
-        this.service = serviceType.service
+    JsonService(String serviceCall) {
+        def parts = serviceCall.split("\\.")
+        this.domain = parts[0]
+        this.service = parts[1]
     }
 
     String type = "call_service"

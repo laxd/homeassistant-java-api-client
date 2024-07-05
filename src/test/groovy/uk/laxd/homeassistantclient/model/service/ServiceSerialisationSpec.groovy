@@ -13,7 +13,7 @@ class ServiceSerialisationSpec extends Specification {
     def "minimal service can be serialised"() {
         given:
         def service = new Service(ServiceType.TURN_ON)
-        service.serviceTargets << new ServiceTarget(TargetType.ENTITY, "light.bedroom")
+        service.targets << new ServiceTarget(TargetType.ENTITY, "light.bedroom")
 
         when:
         def jsonService = new ServiceMapper().map(service)
