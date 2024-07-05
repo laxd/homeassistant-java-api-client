@@ -2,7 +2,13 @@ package uk.laxd.homeassistantclient.model.domain.entity
 
 import uk.laxd.homeassistantclient.model.domain.service.Service
 
-interface Entity {
+interface Entity<S> {
+
+    /**
+     * The state of the entity at the time it was retrieved from the HA server.
+     * @return
+     */
+    S getState()
 
     /**
      * Calls the given service with only this entity as the target (any other entries are removed.

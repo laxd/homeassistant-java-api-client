@@ -9,6 +9,7 @@ import uk.laxd.homeassistantclient.model.domain.entity.Entity
 import uk.laxd.homeassistantclient.model.domain.entity.EntityFactory
 import uk.laxd.homeassistantclient.model.domain.entity.light.LightEntity
 import uk.laxd.homeassistantclient.model.domain.response.HomeAssistantPongMessage
+import uk.laxd.homeassistantclient.model.domain.service.Service
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
 import uk.laxd.homeassistantclient.model.json.event.Event
 import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
@@ -97,6 +98,10 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
 
     void toggle(String entityId) {
         wsClient.toggle(entityId).get(10, TimeUnit.SECONDS)
+    }
+
+    void callService(Service service) {
+        wsClient.callService(service).get(10, TimeUnit.SECONDS)
     }
 
 }

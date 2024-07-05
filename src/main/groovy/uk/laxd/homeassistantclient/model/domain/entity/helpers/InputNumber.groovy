@@ -7,7 +7,7 @@ import uk.laxd.homeassistantclient.model.domain.service.ServiceTarget
 import uk.laxd.homeassistantclient.model.domain.service.TargetType
 
 @InheritConstructors
-class InputNumber extends GenericEntity {
+class InputNumber extends GenericEntity<Float> {
 
     public static final SET_VALUE_SERVICE = "input_number.set_value"
     public static final INCREMENT_SERVICE = "input_number.increment"

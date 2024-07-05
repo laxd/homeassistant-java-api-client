@@ -8,7 +8,7 @@ import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 import java.util.concurrent.TimeUnit
 
 @ToString(includes = "entityId,state")
-class GenericEntity implements Entity {
+class GenericEntity<S> implements Entity<S> {
 
     protected HomeAssistantWebSocketClient wsClient
 

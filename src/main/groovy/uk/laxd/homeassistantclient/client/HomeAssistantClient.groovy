@@ -5,6 +5,7 @@ import uk.laxd.homeassistantclient.client.exception.NoSuchEntityException
 import uk.laxd.homeassistantclient.events.HomeAssistantListener
 import uk.laxd.homeassistantclient.model.domain.entity.Entity
 import uk.laxd.homeassistantclient.model.domain.response.HomeAssistantPongMessage
+import uk.laxd.homeassistantclient.model.domain.service.Service
 import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
 import uk.laxd.homeassistantclient.model.json.event.Event
 import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
@@ -96,4 +97,19 @@ interface HomeAssistantClient {
      */
     void toggle(String entityId)
 
+    /**
+     * Calls the given service.
+     *
+     * A {@link Service} can either be created manually, or using the {@code ServiceBuilder} class instead. e.g.
+     *<pre>
+     * {@code
+     *     ServiceBuilder.createServiceCall("light.turn_on")
+     *         .forEntity("light.bedroom")
+     *         .withAttribute("brightness", 255)
+     *         .build()
+     * }
+     * </pre>
+     * @param service
+     */
+    void callService(Service service)
 }

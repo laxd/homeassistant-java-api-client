@@ -30,6 +30,11 @@ class ServiceBuilder {
         this
     }
 
+    ServiceBuilder withAttribute(String key, Object value) {
+        service.data[key] = value
+        this
+    }
+
     Service build() {
         service
     }

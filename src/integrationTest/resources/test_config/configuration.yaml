@@ -16,4 +16,4 @@ input_number:
     initial: 30
     min: -20
     max: 35
-    step: 1
+    step: 5
