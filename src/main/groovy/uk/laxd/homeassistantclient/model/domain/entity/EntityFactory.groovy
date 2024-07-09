@@ -14,7 +14,7 @@ interface EntityFactory {
      * calling this with a {@link HomeAssistantEntity} with an entity ID of "light.kitchen" will
      * return a {@link uk.laxd.homeassistantclient.model.domain.entity.light.LightEntity}
      * @param homeAssistantEntity entity from HA to construct this entity from
-     * @return An {@link Entity} matching the domain of the given entity ID. Returns a {@link GenericEntity} if
+     * @return An {@link Entity} matching the domain of the given entity ID. Returns a {@link AbstractEntity} if
      *      the domain is not recognised or implemented.
      */
     <E extends Entity> E createEntity(HomeAssistantEntity homeAssistantEntity)

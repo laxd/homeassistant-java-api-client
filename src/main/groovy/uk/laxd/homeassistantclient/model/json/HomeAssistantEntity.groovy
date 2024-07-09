@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import java.util.Date
 
+/**
+ * A JSON representation of a home assistant entity, as contained within a {@code WebSocketMessage} received.
+ */
 class HomeAssistantEntity {
 
     @JsonProperty("entity_id")

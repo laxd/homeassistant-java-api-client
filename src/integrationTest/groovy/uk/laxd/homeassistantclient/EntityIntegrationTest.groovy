@@ -1,12 +1,7 @@
 package uk.laxd.homeassistantclient
 
 import uk.laxd.homeassistantclient.model.domain.entity.light.LightEntity
-import uk.laxd.homeassistantclient.model.domain.trigger.builder.TriggerBuilder
-import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
-
-import java.time.Duration
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.TimeUnit
+import uk.laxd.homeassistantclient.model.domain.entity.state.State
 
 class EntityIntegrationTest extends AbstractIntegrationTest {
 
@@ -20,7 +15,7 @@ class EntityIntegrationTest extends AbstractIntegrationTest {
 
         then:
         waitUntil {
-            client.getEntity("light.kitchen", LightEntity).state == 'off'
+            client.getEntity("light.kitchen", LightEntity).state == State.OFF
         }
 
         when:
@@ -28,7 +23,7 @@ class EntityIntegrationTest extends AbstractIntegrationTest {
 
         then:
         waitUntil {
-            client.getEntity("light.kitchen", LightEntity).state == 'on'
+            client.getEntity("light.kitchen", LightEntity).state == State.ON
         }
     }
 

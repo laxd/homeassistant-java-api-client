@@ -19,7 +19,7 @@ class ServiceIntegrationTest extends AbstractIntegrationTest {
         client.callService(service)
 
         then:
-        client.getEntity("input_number.test_number_1", InputNumber).state == "15.0"
+        client.getEntity("input_number.test_number_1", InputNumber).state == 15.0
     }
 
 }

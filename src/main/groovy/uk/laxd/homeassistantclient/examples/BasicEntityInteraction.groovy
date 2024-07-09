@@ -18,7 +18,7 @@ class BasicEntityInteraction extends AbstractExample {
         livingRoomCeiling1.turnOn()
 
         // Some are available only on certain types, e.g. lights have brightness
-        println("Living room light at ${livingRoomCeiling1.brightnessPercent}% brightness")
+        println("Living room light ${livingRoomCeiling1.state} at ${livingRoomCeiling1.brightnessPercent}% brightness")
 
         // And entities can be changed using the convenience methods too
         livingRoomCeiling1.setBrightness(200.shortValue())

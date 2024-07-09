@@ -1,13 +1,13 @@
 package uk.laxd.homeassistantclient.model.domain.entity.helpers
 
 import groovy.transform.InheritConstructors
-import uk.laxd.homeassistantclient.model.domain.entity.GenericEntity
+import uk.laxd.homeassistantclient.model.domain.entity.AbstractEntity
 import uk.laxd.homeassistantclient.model.domain.service.Service
 import uk.laxd.homeassistantclient.model.domain.service.ServiceTarget
 import uk.laxd.homeassistantclient.model.domain.service.TargetType
 
 @InheritConstructors
-class InputNumber extends GenericEntity<Float> {
+class InputNumber extends AbstractEntity<Float> {
 
     public static final SET_VALUE_SERVICE = "input_number.set_value"
     public static final INCREMENT_SERVICE = "input_number.increment"

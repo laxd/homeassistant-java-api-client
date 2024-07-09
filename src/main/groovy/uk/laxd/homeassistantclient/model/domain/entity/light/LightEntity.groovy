@@ -1,12 +1,13 @@
 package uk.laxd.homeassistantclient.model.domain.entity.light
 
 import groovy.transform.InheritConstructors
-import uk.laxd.homeassistantclient.model.domain.entity.GenericEntity
+import uk.laxd.homeassistantclient.model.domain.entity.AbstractEntity
+import uk.laxd.homeassistantclient.model.domain.entity.state.State
 
 import java.util.concurrent.TimeUnit
 
 @InheritConstructors
-class LightEntity extends GenericEntity {
+class LightEntity extends AbstractEntity<State> {
 
     void setBrightness(short brightness) {
         this.wsClient.turnOn(this.entityId, ["brightness": brightness]).get(10, TimeUnit.SECONDS)
