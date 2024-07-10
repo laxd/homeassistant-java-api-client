@@ -17,9 +17,10 @@ class MessageHandlerDelegate {
 
     void handle(WebSocketSession session, IncomingWebSocketMessage message) {
         messageHandlers
-                .findAll { it.canHandle(message)}
+                .findAll { it.canHandle(message) }
                 .each {
                     it.handle(session, message)
                 }
     }
+
 }

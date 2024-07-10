@@ -1,10 +1,8 @@
 package uk.laxd.homeassistantclient.ws
 
-
+import groovy.util.logging.Slf4j
 import jakarta.inject.Inject
 import jakarta.inject.Named
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 import uk.laxd.homeassistantclient.events.HomeAssistantEventListenerRegistry
 import uk.laxd.homeassistantclient.events.HomeAssistantListener
@@ -30,18 +28,17 @@ import uk.laxd.homeassistantclient.ws.session.WebSocketSessionProvider
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 
+@Slf4j
 @Named
 class HomeAssistantWebSocketClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(HomeAssistantWebSocketClient)
-
-    private WebSocketSessionProvider webSocketSessionProvider
-    private HomeAssistantEventListenerRegistry registry
-    private JacksonWebSocketMessageConverter webSocketMessageConverter
-    private TriggerMapperFactory triggerMapperFactory
-    private ServiceMapper serviceMapper
-    private HomeAssistantWebSocketMessageDispatcher messageDispatcher
-    private WebSocketMessageMapper messageMapper
+    private final WebSocketSessionProvider webSocketSessionProvider
+    private final HomeAssistantEventListenerRegistry registry
+    private final JacksonWebSocketMessageConverter webSocketMessageConverter
+    private final TriggerMapperFactory triggerMapperFactory
+    private final ServiceMapper serviceMapper
+    private final HomeAssistantWebSocketMessageDispatcher messageDispatcher
+    private final WebSocketMessageMapper messageMapper
 
     @Inject
     HomeAssistantWebSocketClient(WebSocketSessionProvider webSocketSessionProvider,
@@ -65,7 +62,7 @@ class HomeAssistantWebSocketClient {
     }
 
     Future<ResultWebSocketMessage> listenToEvents(String event, HomeAssistantListener listener) {
-        logger.info("Subscribing to events of type '{}', listener='{}'", event, listener)
+        log.info("Subscribing to events of type '{}', listener='{}'", event, listener)
 
         def message = new EventSubscriptionWebSocketMessage(event)
         messageDispatcher.sendMessageWithListener(message, listener)
@@ -76,7 +73,7 @@ class HomeAssistantWebSocketClient {
     }
 
     Future<ResultWebSocketMessage> listenToTriggers(Collection<Trigger> triggers, HomeAssistantListener listener) {
-        logger.info("Subscribing with triggers [{}], listener='{}'", triggers, listener)
+        log.info("Subscribing with triggers [{}], listener='{}'", triggers, listener)
 
         def jsonTriggers = triggers.collect {
             triggerMapperFactory.getTriggerMapperForTrigger(it).mapToJson(it)
@@ -128,7 +125,7 @@ class HomeAssistantWebSocketClient {
     }
 
     Future<ResultWebSocketMessage> callService(Service service) {
-        logger.info("Calling service {}", service)
+        log.info("Calling service {}", service)
 
         def jsonService = serviceMapper.map(service)
 
@@ -145,4 +142,3 @@ class HomeAssistantWebSocketClient {
     }
 
 }
-

@@ -1,8 +1,6 @@
 package uk.laxd.homeassistantclient.model.json
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonTypeInfo
-import java.util.Date
 
 /**
  * A JSON representation of a home assistant entity, as contained within a {@code WebSocketMessage} received.
@@ -23,7 +21,7 @@ class HomeAssistantEntity {
 
     String getDomain() {
         if (entityId == null) {
-            null
+            return null
         }
 
         def parts = entityId.split("\\.")
@@ -33,6 +31,7 @@ class HomeAssistantEntity {
 
     @Override
     String toString() {
-        return "$entityId - $attributes"
+        "$entityId - $attributes"
     }
+
 }

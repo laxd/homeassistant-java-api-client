@@ -1,6 +1,5 @@
 package uk.laxd.homeassistantclient.model.domain.trigger
 
-
 import groovy.transform.ToString
 
 @ToString(includeNames = true, includes = "entities,from,to")
@@ -19,4 +18,5 @@ class StateTrigger extends Trigger {
     TriggerType triggerType() {
         TriggerType.STATE
     }
+
 }

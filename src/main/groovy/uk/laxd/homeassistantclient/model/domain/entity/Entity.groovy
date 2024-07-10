@@ -6,7 +6,6 @@ interface Entity<S> {
 
     /**
      * The state of the entity at the time it was retrieved from the HA server.
-     * @return
      */
     S getState()
 
@@ -14,7 +13,6 @@ interface Entity<S> {
      * Calls the given service with only this entity as the target (any other entries are removed.
      *
      * The original {@link Service} object passed through is NOT modified
-     * @param service
      */
     void callService(Service service)
 
@@ -24,10 +22,9 @@ interface Entity<S> {
     void turnOn()
 
     /**
-     * Turn the given entity on, if it supports being turned on, with some additional data
-     * (see <a href="https://www.home-assistant.io/docs/scripts/service-calls/#passing-data-to-the-service-call">here</a>)
+     * Turn the given entity on, if it supports being turned on, with some additional data (see
+     * <a href="https://www.home-assistant.io/docs/scripts/service-calls/#passing-data-to-the-service-call">here</a>)
      * for additional details on what kind of data Home Assistant accepts for what entities)
-     * @param additionalData
      */
     void turnOn(Map<String, Object> additionalData)
 
@@ -38,8 +35,8 @@ interface Entity<S> {
 
     /**
 
-     * Turn the given entity off, if it supports being turned off, with some additional data
-     * (see <a href="https://www.home-assistant.io/docs/scripts/service-calls/#passing-data-to-the-service-call">here</a>)
+     * Turn the given entity off, if it supports being turned off, with some additional data (see
+     * <a href="https://www.home-assistant.io/docs/scripts/service-calls/#passing-data-to-the-service-call">here</a>)
      * for additional details on what kind of data Home Assistant accepts for what entities)
      * @param additionalData     * @param additionalData
      */
@@ -53,9 +50,10 @@ interface Entity<S> {
 
     /**
      * Toggles the state of this entity, if it supports being toggled, with some additional data.
-     * An entity that is turned on will be turned off, and an entity that is off will be turned on.
-     * (see <a href="https://www.home-assistant.io/docs/scripts/service-calls/#passing-data-to-the-service-call">here</a>)
+     * An entity that is turned on will be turned off, and an entity that is off will be turned on. (see
+     * <a href="https://www.home-assistant.io/docs/scripts/service-calls/#passing-data-to-the-service-call">here</a>)
      * for additional details on what kind of data Home Assistant accepts for what entities)
      */
     void toggle(Map<String, Object> additionalData)
+
 }

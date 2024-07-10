@@ -1,14 +1,16 @@
 package uk.laxd.homeassistantclient.examples
 
-class PingToCheckConnection extends AbstractExample {
+import groovy.util.logging.Slf4j
+
+@Slf4j
+class PingToCheckConnection extends BaseExample {
 
     static void main(String[] args) {
-        def client = createClient()
+        def client = newClient()
 
         // We can ping the server to ensure it's up
         def responseMessage = client.ping()
-        println("Ping response: ${responseMessage.response}")
+        log.info("Ping response: ${responseMessage.response}")
     }
-
 
 }

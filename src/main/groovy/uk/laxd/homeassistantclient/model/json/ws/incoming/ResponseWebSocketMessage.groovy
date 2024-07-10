@@ -11,4 +11,7 @@ abstract class ResponseWebSocketMessage extends IncomingWebSocketMessage {
     @JsonProperty("id")
     Integer subscriptionId
 
+    @Override
+    abstract String getType()
+
 }

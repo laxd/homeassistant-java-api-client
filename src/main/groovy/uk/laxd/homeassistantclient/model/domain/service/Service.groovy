@@ -12,7 +12,8 @@ class Service {
 
     @Override
     String toString() {
-        return "$type - $targets"
+        "$type - $targets"
     }
+
 }
 

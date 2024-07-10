@@ -4,6 +4,7 @@ import uk.laxd.homeassistantclient.model.domain.trigger.NumericStateTrigger
 import uk.laxd.homeassistantclient.model.json.trigger.JsonTrigger
 
 class NumericStateTriggerMapper extends TriggerMapper<NumericStateTrigger> {
+
     @Override
     JsonTrigger mapToJson(NumericStateTrigger trigger) {
         def jsonTrigger = super.mapToJson(trigger)
@@ -22,4 +23,5 @@ class NumericStateTriggerMapper extends TriggerMapper<NumericStateTrigger> {
 
         jsonTrigger
     }
+
 }

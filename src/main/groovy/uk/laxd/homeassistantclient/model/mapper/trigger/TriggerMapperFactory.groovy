@@ -12,14 +12,15 @@ import uk.laxd.homeassistantclient.model.domain.trigger.Trigger
 class TriggerMapperFactory {
 
     <T extends Trigger> TriggerMapper<T> getTriggerMapperForTrigger(T trigger) {
-        return switch (trigger) {
-            case StateTrigger -> new StateTriggerMapper()
-            case TimeTrigger -> new TimeTriggerMapper()
-            case TimePatternTrigger -> new TimePatternTriggerMapper()
-            case TemplateTrigger -> new TemplateTriggerMapper()
-            case NumericStateTrigger -> new NumericStateTriggerMapper()
-            default -> throw new IllegalArgumentException("Mapper for Trigger of type ${trigger.triggerType()} not implemented yet")
-        } as TriggerMapper<T>
+        switch (trigger) {
+            case StateTrigger -> new StateTriggerMapper() as TriggerMapper<T>
+            case TimeTrigger -> new TimeTriggerMapper() as TriggerMapper<T>
+            case TimePatternTrigger -> new TimePatternTriggerMapper() as TriggerMapper<T>
+            case TemplateTrigger -> new TemplateTriggerMapper() as TriggerMapper<T>
+            case NumericStateTrigger -> new NumericStateTriggerMapper() as TriggerMapper<T>
+            default -> throw new IllegalArgumentException("Mapper for Trigger of type ${trigger.triggerType()} " +
+                    "not implemented yet")
+        }
     }
 
 }

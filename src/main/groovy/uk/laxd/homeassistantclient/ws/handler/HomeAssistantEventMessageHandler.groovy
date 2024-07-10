@@ -16,7 +16,7 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessa
 @Slf4j
 class HomeAssistantEventMessageHandler implements MessageHandler<EventResponseWebSocketMessage> {
 
-    private HomeAssistantEventListenerRegistry registry
+    private final HomeAssistantEventListenerRegistry registry
 
     @Inject
     HomeAssistantEventMessageHandler(HomeAssistantEventListenerRegistry registry) {
@@ -30,6 +30,7 @@ class HomeAssistantEventMessageHandler implements MessageHandler<EventResponseWe
 
     @Override
     boolean canHandle(IncomingWebSocketMessage message) {
-        return message instanceof EventResponseWebSocketMessage
+        EventResponseWebSocketMessage.isInstance(message)
     }
+
 }

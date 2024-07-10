@@ -1,6 +1,5 @@
 package uk.laxd.homeassistantclient.model.json.event
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
@@ -31,4 +30,6 @@ class State {
     String toString() {
         "$entityId - $state"
     }
+
 }
+

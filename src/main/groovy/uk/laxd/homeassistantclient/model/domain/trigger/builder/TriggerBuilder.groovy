@@ -11,7 +11,7 @@ class TriggerBuilder<T extends Trigger> {
 
     T result
 
-    protected TriggerBuilder() {}
+    protected TriggerBuilder() { }
 
     static StateTriggerBuilder onStateChange(String entityId, String... additionalEntityIds) {
         def builder = new StateTriggerBuilder()
@@ -61,4 +61,6 @@ class TriggerBuilder<T extends Trigger> {
     Trigger build() {
         this.result
     }
+
 }
+

@@ -8,11 +8,16 @@ import java.time.Duration
 
 class DurationSerialiser extends JsonSerializer<Duration> {
 
+    private static final int DIGIT_COUNT = 2
+    private static final String PADDING_CHAR = '0'
+
     @Override
     void serialize(Duration value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        def hours = value.toHoursPart().toString().padLeft(2, '0')
-        def minutes = value.toMinutesPart().toString().padLeft(2, '0')
-        def seconds = value.toSecondsPart().toString().padLeft(2, '0')
+        def hours = value.toHoursPart().toString().padLeft(DIGIT_COUNT, PADDING_CHAR)
+        def minutes = value.toMinutesPart().toString().padLeft(DIGIT_COUNT, PADDING_CHAR)
+        def seconds = value.toSecondsPart().toString().padLeft(DIGIT_COUNT, PADDING_CHAR)
         gen.writeString("$hours:$minutes:$seconds")
     }
+
 }
+

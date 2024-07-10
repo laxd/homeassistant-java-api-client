@@ -8,8 +8,7 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.PongWebSocketMessage
 class WebSocketMessageMapper {
 
     HomeAssistantPongMessage map(PongWebSocketMessage webSocketMessage) {
-        return new HomeAssistantPongMessage(webSocketMessage.type)
+        new HomeAssistantPongMessage(webSocketMessage.type)
     }
-
 
 }

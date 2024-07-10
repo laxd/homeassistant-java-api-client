@@ -16,10 +16,10 @@ class ServiceMapper {
                 .each { jsonService.target.entities << it.value }
 
         service.targets.findAll { it.type == TargetType.DEVICE }
-                .each { jsonService.target.devices << it.value}
+                .each { jsonService.target.devices << it.value }
 
         service.targets.findAll { it.type == TargetType.AREA }
-                .each { jsonService.target.areas << it.value}
+                .each { jsonService.target.areas << it.value }
 
         jsonService.serviceData = service.data
 

@@ -51,7 +51,8 @@ interface HomeAssistantClient {
      * @throws InvalidEntityException If the entity ID provided does not map to an entity of type {@code entityClass}.
      *      e.g. providing sensor.motion_sensor with entity class LightEntity
      */
-    <E extends Entity> E getEntity(String entityId, Class<E> entityClass) throws NoSuchEntityException, InvalidEntityException
+    <E extends Entity> E getEntity(String entityId, Class<E> entityClass)
+            throws NoSuchEntityException, InvalidEntityException
 
     /**
      * Register the given listener to trigger whenever the event given is fired in the Home Assistant server.
@@ -109,7 +110,7 @@ interface HomeAssistantClient {
      *         .build()
      * }
      * </pre>
-     * @param service
      */
     void callService(Service service)
+
 }

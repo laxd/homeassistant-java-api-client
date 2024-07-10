@@ -1,26 +1,29 @@
 package uk.laxd.homeassistantclient.model.domain.trigger
 
 enum TriggerType {
-    EVENT("not_implemented"),
-    HOME_ASSISTANT("not_implemented"),
-    MQTT("not_implemented"),
+
+    EVENT(NOT_IMPLEMENTED),
+    HOME_ASSISTANT(NOT_IMPLEMENTED),
+    MQTT(NOT_IMPLEMENTED),
     NUMERIC_STATE("numeric_state"),
     STATE("state"),
-    SUN("not_implemented"),
-    TAG("not_implemented"),
+    SUN(NOT_IMPLEMENTED),
+    TAG(NOT_IMPLEMENTED),
     TEMPLATE("template"),
     TIME("time"),
     TIME_PATTERN("time_pattern"),
-    PERSISTENT_NOTIFICATION("not_implemented"),
-    WEBHOOK("not_implemented"),
-    ZONE("not_implemented"),
-    GEO_LOCATION("not_implemented"),
-    CALENDAR("not_implemented"),
-    SENTENCE("not_implemented")
+    PERSISTENT_NOTIFICATION(NOT_IMPLEMENTED),
+    WEBHOOK(NOT_IMPLEMENTED),
+    ZONE(NOT_IMPLEMENTED),
+    GEO_LOCATION(NOT_IMPLEMENTED),
+    CALENDAR(NOT_IMPLEMENTED),
+    SENTENCE(NOT_IMPLEMENTED)
+    private static final String NOT_IMPLEMENTED = "not_implemented"
 
     String string
 
     TriggerType(String string) {
         this.string = string
     }
+
 }

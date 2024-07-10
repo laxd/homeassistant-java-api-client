@@ -6,8 +6,7 @@ class ResultWebSocketMessage extends ResponseWebSocketMessage {
     String error
     Map<String, Object> result
 
-    @Override
-    String getType() {
-        return "result"
-    }
+    final String type = "result"
+
 }
+

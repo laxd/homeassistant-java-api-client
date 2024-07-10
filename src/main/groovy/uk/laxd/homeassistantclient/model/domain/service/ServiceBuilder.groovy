@@ -1,12 +1,10 @@
 package uk.laxd.homeassistantclient.model.domain.service
 
-import uk.laxd.homeassistantclient.model.json.service.JsonService
-
 class ServiceBuilder {
 
     Service service
 
-    private ServiceBuilder() {}
+    private ServiceBuilder() { }
 
     static ServiceBuilder createServiceCall(String service) {
         def builder = new ServiceBuilder()
@@ -23,7 +21,6 @@ class ServiceBuilder {
         service.targets << new ServiceTarget(TargetType.DEVICE, device)
         this
     }
-
 
     ServiceBuilder forEntity(String entity) {
         service.targets << new ServiceTarget(TargetType.ENTITY, entity)

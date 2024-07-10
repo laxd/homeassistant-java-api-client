@@ -1,6 +1,5 @@
 package uk.laxd.homeassistantclient.model.json.ws.incoming
 
-
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import uk.laxd.homeassistantclient.model.json.ws.WebSocketMessage
@@ -23,13 +22,14 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuth
         // Other types of messages after authentication
         @JsonSubTypes.Type(value = EventResponseWebSocketMessage, name = "event"),
         @JsonSubTypes.Type(value = PongWebSocketMessage, name = "pong"),
-        @JsonSubTypes.Type(value = ResultWebSocketMessage, name = "result")
+        @JsonSubTypes.Type(value = ResultWebSocketMessage, name = "result"),
 ])
 abstract class IncomingWebSocketMessage implements WebSocketMessage {
 
     /**
      * The type as indicated in the web socket message.
-     * @return
      */
     abstract String getType()
+
 }
+

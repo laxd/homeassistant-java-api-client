@@ -1,6 +1,5 @@
 package uk.laxd.homeassistantclient.model.domain.trigger.builder
 
-
 import uk.laxd.homeassistantclient.model.domain.trigger.For
 import uk.laxd.homeassistantclient.model.domain.trigger.StateTrigger
 

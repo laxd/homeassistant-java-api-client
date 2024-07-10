@@ -12,7 +12,7 @@ import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 @Named
 class EntityFactoryImpl implements EntityFactory {
 
-    private HomeAssistantWebSocketClient webSocketClient
+    private final HomeAssistantWebSocketClient webSocketClient
 
     @Inject
     EntityFactoryImpl(HomeAssistantWebSocketClient webSocketClient) {
@@ -21,7 +21,6 @@ class EntityFactoryImpl implements EntityFactory {
 
     @Override
     <E extends Entity> E createEntity(HomeAssistantEntity homeAssistantEntity) {
-
         switch (homeAssistantEntity.domain) {
             case "light":
                 return createLightEntity(homeAssistantEntity) as E
@@ -41,4 +40,5 @@ class EntityFactoryImpl implements EntityFactory {
     InputNumber createInputNumber(HomeAssistantEntity homeAssistantEntity) {
         new InputNumber(webSocketClient, homeAssistantEntity, new NumericStateConverter())
     }
+
 }

@@ -5,5 +5,6 @@ package uk.laxd.homeassistantclient.model.domain.response
  *
  * This may be in response to a trigger being set up, or listening to events
  */
-class HomeAssistantMessage {
+interface HomeAssistantMessage {
+
 }

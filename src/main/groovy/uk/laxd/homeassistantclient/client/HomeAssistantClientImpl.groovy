@@ -26,6 +26,8 @@ import java.util.concurrent.TimeUnit
 @Named
 class HomeAssistantClientImpl implements HomeAssistantClient {
 
+    private static final int TIMEOUT_SECONDS = 10
+
     private final HomeAssistantRestClientFactory restClientFactory
 
     private HomeAssistantRestClient restClient
@@ -47,10 +49,12 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
         this.wsClient.connect(url, token)
     }
 
+    @Override
     HomeAssistantPongMessage ping() {
         wsClient.ping()
     }
 
+    @Override
     Entity getEntity(String entityId) throws NoSuchEntityException {
         def entity = restClient.getEntity(entityId)
 
@@ -58,7 +62,8 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
     }
 
     @Override
-    <E extends Entity> E getEntity(String entityId, Class<E> entityClass) throws NoSuchEntityException, InvalidEntityException {
+    <E extends Entity> E getEntity(String entityId, Class<E> entityClass)
+            throws NoSuchEntityException, InvalidEntityException {
         def entity = restClient.getEntity(entityId)
 
         def e = entityFactory.createEntity(entity)
@@ -76,32 +81,39 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
         entityFactory.createLightEntity(entity)
     }
 
+    @Override
     void onEvent(String eventType, HomeAssistantListener<Event> listener) {
-        wsClient.listenToEvents(eventType, listener).get(10, TimeUnit.SECONDS)
+        wsClient.listenToEvents(eventType, listener).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
+    @Override
     void on(Trigger trigger, HomeAssistantListener<TriggerEvent> listener) {
-        wsClient.listenToTrigger(trigger, listener).get(10, TimeUnit.SECONDS)
+        wsClient.listenToTrigger(trigger, listener).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
+    @Override
     void on(Collection<Trigger> triggers, HomeAssistantListener<TriggerEvent> listener) {
-        wsClient.listenToTriggers(triggers, listener).get(10, TimeUnit.SECONDS)
+        wsClient.listenToTriggers(triggers, listener).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
+    @Override
     void turnOn(String entityId) {
-        wsClient.turnOn(entityId).get(10, TimeUnit.SECONDS)
+        wsClient.turnOn(entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
+    @Override
     void turnOff(String entityId) {
-        wsClient.turnOff(entityId).get(10, TimeUnit.SECONDS)
+        wsClient.turnOff(entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
+    @Override
     void toggle(String entityId) {
-        wsClient.toggle(entityId).get(10, TimeUnit.SECONDS)
+        wsClient.toggle(entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
+    @Override
     void callService(Service service) {
-        wsClient.callService(service).get(10, TimeUnit.SECONDS)
+        wsClient.callService(service).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
 }

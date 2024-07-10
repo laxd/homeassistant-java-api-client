@@ -1,14 +1,14 @@
 package uk.laxd.homeassistantclient.events
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 import uk.laxd.homeassistantclient.model.json.event.Event
 
+@Slf4j
 class TestListener implements HomeAssistantListener<Event> {
-    private static final Logger logger = LoggerFactory.getLogger(TestListener.class)
 
     @Override
     void handle(Event event) {
-        logger.info("Got event: {}", event)
+        log.info("Got event: {}", event)
     }
+
 }

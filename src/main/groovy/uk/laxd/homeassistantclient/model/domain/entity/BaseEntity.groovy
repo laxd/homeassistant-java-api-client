@@ -9,7 +9,9 @@ import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 import java.util.concurrent.TimeUnit
 
 @ToString(includes = "entityId,state")
-abstract class AbstractEntity<S> implements Entity<S> {
+class BaseEntity<S> implements Entity<S> {
+
+    protected static final int TIMEOUT_SECONDS = 10
 
     protected HomeAssistantWebSocketClient wsClient
 
@@ -19,7 +21,9 @@ abstract class AbstractEntity<S> implements Entity<S> {
     Date lastUpdated
     Map<String, Object> attributes
 
-    AbstractEntity(HomeAssistantWebSocketClient wsClient, HomeAssistantEntity entity, StateConverter<S> converter) {
+    BaseEntity(HomeAssistantWebSocketClient wsClient,
+               HomeAssistantEntity entity,
+               StateConverter<S> converter) {
         this.wsClient = wsClient
         this.entityId = entity.entityId
         this.lastChanged = entity.lastChanged
@@ -31,41 +35,41 @@ abstract class AbstractEntity<S> implements Entity<S> {
 
     @Override
     void callService(Service service) {
-        this.wsClient.callService(service).get(10, TimeUnit.SECONDS)
+        this.wsClient.callService(service).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
     @Override
     void turnOn() {
-        this.wsClient.turnOn(this.entityId).get(10, TimeUnit.SECONDS)
+        this.wsClient.turnOn(this.entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
     @Override
     void turnOn(Map<String, Object> additionalData) {
-        this.wsClient.turnOn(this.entityId, additionalData).get(10, TimeUnit.SECONDS)
+        this.wsClient.turnOn(this.entityId, additionalData).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
     @Override
     void turnOff() {
-        this.wsClient.turnOff(this.entityId).get(10, TimeUnit.SECONDS)
+        this.wsClient.turnOff(this.entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
     @Override
     void turnOff(Map<String, Object> additionalData) {
-        this.wsClient.turnOff(this.entityId, additionalData).get(10, TimeUnit.SECONDS)
+        this.wsClient.turnOff(this.entityId, additionalData).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
     @Override
     void toggle() {
-        this.wsClient.toggle(this.entityId).get(10, TimeUnit.SECONDS)
+        this.wsClient.toggle(this.entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
     @Override
     void toggle(Map<String, Object> additionalData) {
-        this.wsClient.toggle(this.entityId, additionalData).get(10, TimeUnit.SECONDS)
+        this.wsClient.toggle(this.entityId, additionalData).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
     }
 
     String getType() {
-        return entityId.split(".")[0]
+        entityId.split(".")[0]
     }
 
 }

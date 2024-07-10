@@ -29,4 +29,5 @@ class TimeTrigger extends Trigger {
     TriggerType triggerType() {
         TriggerType.TIME
     }
+
 }

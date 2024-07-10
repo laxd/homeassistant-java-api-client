@@ -19,4 +19,5 @@ interface HomeAssistantRestClient {
      */
     @GetExchange("/states/{id}")
     HomeAssistantEntity getEntity(@PathVariable("id") String id)
+
 }

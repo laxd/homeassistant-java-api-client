@@ -11,8 +11,9 @@ import uk.laxd.homeassistantclient.model.json.event.jackson.EventDeserialiser
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(using = EventDeserialiser)
-class Event extends Response {
+class Event implements Response {
 
     @JsonProperty("context")
     Map<String, Object> context
+
 }

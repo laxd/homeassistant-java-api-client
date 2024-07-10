@@ -5,8 +5,6 @@ import groovy.transform.ToString
 @ToString
 class PongWebSocketMessage extends ResponseWebSocketMessage {
 
-    @Override
-    String getType() {
-        "pong"
-    }
+    final String type = "pong"
+
 }

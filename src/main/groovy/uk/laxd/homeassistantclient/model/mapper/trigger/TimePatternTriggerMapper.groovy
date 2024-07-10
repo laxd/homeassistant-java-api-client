@@ -4,6 +4,7 @@ import uk.laxd.homeassistantclient.model.domain.trigger.TimePatternTrigger
 import uk.laxd.homeassistantclient.model.json.trigger.JsonTrigger
 
 class TimePatternTriggerMapper extends TriggerMapper<TimePatternTrigger> {
+
     @Override
     JsonTrigger mapToJson(TimePatternTrigger trigger) {
         def jsonTrigger = super.mapToJson(trigger)
@@ -14,4 +15,5 @@ class TimePatternTriggerMapper extends TriggerMapper<TimePatternTrigger> {
 
         jsonTrigger
     }
+
 }

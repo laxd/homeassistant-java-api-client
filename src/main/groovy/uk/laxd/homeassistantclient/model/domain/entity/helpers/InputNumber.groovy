@@ -1,17 +1,17 @@
 package uk.laxd.homeassistantclient.model.domain.entity.helpers
 
 import groovy.transform.InheritConstructors
-import uk.laxd.homeassistantclient.model.domain.entity.AbstractEntity
+import uk.laxd.homeassistantclient.model.domain.entity.BaseEntity
 import uk.laxd.homeassistantclient.model.domain.service.Service
 import uk.laxd.homeassistantclient.model.domain.service.ServiceTarget
 import uk.laxd.homeassistantclient.model.domain.service.TargetType
 
 @InheritConstructors
-class InputNumber extends AbstractEntity<Float> {
+class InputNumber extends BaseEntity<Float> {
 
-    public static final SET_VALUE_SERVICE = "input_number.set_value"
-    public static final INCREMENT_SERVICE = "input_number.increment"
-    public static final DECREMENT_SERVICE = "input_number.decrement"
+    public static final String SET_VALUE_SERVICE = "input_number.set_value"
+    public static final String INCREMENT_SERVICE = "input_number.increment"
+    public static final String DECREMENT_SERVICE = "input_number.decrement"
 
     void setValue(int value) {
         def service = new Service(SET_VALUE_SERVICE)

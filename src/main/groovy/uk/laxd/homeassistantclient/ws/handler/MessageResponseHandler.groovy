@@ -22,7 +22,6 @@ class MessageResponseHandler implements MessageHandler<IncomingWebSocketMessage>
         this.messageResponseListener = messageResponseListener
     }
 
-
     @Override
     void handle(WebSocketSession session, IncomingWebSocketMessage message) {
         messageResponseListener.checkForMessagesAwaitingResponse(message)
@@ -33,6 +32,8 @@ class MessageResponseHandler implements MessageHandler<IncomingWebSocketMessage>
         // Any type of response can be handled by the SingleMessageResponseListener, but
         // we don't want to handle EventWebSocketMessages in case we miss the initial ResultWebSocketMessage
         // when subscribing to Events/Triggers
-        !(message instanceof EventResponseWebSocketMessage)
+        !EventResponseWebSocketMessage.isInstance(message)
     }
+
 }
+

@@ -8,7 +8,7 @@ import groovy.util.logging.Slf4j
 @ToString
 class SingleResponseWebSocketMessage extends ResponseWebSocketMessage {
 
-    Map<String, Object> attributes = new HashMap<>()
+    Map<String, Object> attributes = [:]
 
     @Override
     String getType() {
@@ -18,6 +18,7 @@ class SingleResponseWebSocketMessage extends ResponseWebSocketMessage {
     @JsonAnySetter
     void setAttribute(String key, Object value) {
         log.debug("Setting attribute $key - $value")
-        this.attributes.put(key, value);
+        this.attributes[key] = value
     }
+
 }

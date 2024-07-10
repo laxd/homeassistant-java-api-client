@@ -10,7 +10,7 @@ class JsonTrigger {
     String type
 
     @JsonIgnore
-    private Map<String, Object> attributes = [:]
+    private final Map<String, Object> attributes = [:]
 
     void addAttribute(String key, Object value) {
         if (value != null) {
@@ -21,6 +21,8 @@ class JsonTrigger {
     @JsonAnyGetter
     @JsonIgnore
     Map<String, Object> getMap() {
-        return attributes;
+        attributes
     }
+
 }
+

@@ -4,6 +4,7 @@ import uk.laxd.homeassistantclient.model.domain.trigger.TemplateTrigger
 import uk.laxd.homeassistantclient.model.json.trigger.JsonTrigger
 
 class TemplateTriggerMapper extends TriggerMapper<TemplateTrigger> {
+
     @Override
     JsonTrigger mapToJson(TemplateTrigger trigger) {
         def jsonTrigger = super.mapToJson(trigger)
@@ -18,4 +19,5 @@ class TemplateTriggerMapper extends TriggerMapper<TemplateTrigger> {
 
         jsonTrigger
     }
+
 }

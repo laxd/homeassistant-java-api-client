@@ -14,7 +14,7 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.IncomingWebSocketMessa
 @Slf4j
 class HomeAssistantWebSocketHandler implements WebSocketHandler {
 
-    private messageBuilder = new StringBuilder()
+    private final StringBuilder messageBuilder = new StringBuilder()
     private final ObjectMapper objectMapper
     private final MessageHandlerDelegate messageHandler
 
@@ -24,16 +24,20 @@ class HomeAssistantWebSocketHandler implements WebSocketHandler {
         this.messageHandler = messageHandler
     }
 
+    @Override
     void afterConnectionEstablished(WebSocketSession session) {
         log.info("WebSocket Connection established")
     }
 
+    @Override
     void handleMessage(WebSocketSession session, WebSocketMessage<?> message) {
-        if (message.isLast()) {
-            try {
-                def payload = messageBuilder.isEmpty() ? message.payload.toString() : messageBuilder.append(message.payload.toString()).toString()
+        messageBuilder.append(message.payload)
 
-                def parsedMessage = objectMapper.readValue(payload, IncomingWebSocketMessage.class)
+        if (message.last) {
+            try {
+                String payload = messageBuilder
+
+                def parsedMessage = objectMapper.readValue(payload, IncomingWebSocketMessage)
 
                 log.info("Received ${parsedMessage.class.simpleName}: $payload")
 
@@ -43,22 +47,22 @@ class HomeAssistantWebSocketHandler implements WebSocketHandler {
                 // Avoid propagating exception up to websocket, to avoid closing if a listener throws an exception
                 log.error("Encountered error while handling WebSocket message: {}", e.message)
             }
-        } else {
-            messageBuilder.append(message.payload)
         }
     }
 
+    @Override
     void handleTransportError(WebSocketSession session, Throwable exception) {
         log.error("WebSocket Error {}", exception)
     }
 
+    @Override
     void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
         log.info("WebSocket connection closed: {}", closeStatus)
     }
 
+    @Override
     boolean supportsPartialMessages() {
-        return true
+        true
     }
 
 }
-

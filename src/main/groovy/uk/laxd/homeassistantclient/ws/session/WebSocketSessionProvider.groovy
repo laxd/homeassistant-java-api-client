@@ -23,6 +23,12 @@ import java.util.concurrent.TimeUnit
 @Named
 @Slf4j
 class WebSocketSessionProvider {
+
+    private static final int TIMEOUT_SECONDS = 10
+    private static final String WEBSOCKET_PROTOCOL = "ws://"
+    private static final String HTTPS_PROTOCOL = "https://"
+    private static final String HTTP_PROTOCOL = "http://"
+
     private WebSocketSession existingSession
     private boolean isAuthenticated = false
 
@@ -31,15 +37,17 @@ class WebSocketSessionProvider {
     private final JacksonWebSocketMessageConverter webSocketMessageConverter
 
     @Inject
-    WebSocketSessionProvider(HomeAssistantWebSocketHandler handler, MessageResponseListener messageResponseListener, JacksonWebSocketMessageConverter webSocketMessageConverter) {
+    WebSocketSessionProvider(HomeAssistantWebSocketHandler handler,
+                             MessageResponseListener messageResponseListener,
+                             JacksonWebSocketMessageConverter webSocketMessageConverter) {
         this.handler = handler
         this.messageResponseListener = messageResponseListener
         this.webSocketMessageConverter = webSocketMessageConverter
     }
 
     void authenticate(String url, String token) {
-        String wsUrl = url.replace("https://", "ws://")
-                .replace("http://", "ws://") + "/api/websocket"
+        String wsUrl = url.replace(HTTPS_PROTOCOL, WEBSOCKET_PROTOCOL)
+                .replace(HTTP_PROTOCOL, WEBSOCKET_PROTOCOL) + "/api/websocket"
 
         log.debug("Connecting to WebSocket URL: {}", wsUrl)
 
@@ -50,7 +58,7 @@ class WebSocketSessionProvider {
         this.existingSession = new LoggingWebSocketSessionDecorator(client.execute(handler, wsUrl).get())
 
         // Wait for auth required message
-        authRequiredFuture.get(10, TimeUnit.SECONDS)
+        authRequiredFuture.get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
 
         // First register listener so we can catch auth response
         def authResponseFuture = messageResponseListener.waitForMessage(HomeAssistantAuthResponseMessage)
@@ -60,7 +68,7 @@ class WebSocketSessionProvider {
         this.existingSession.sendMessage(webSocketMessageConverter.toTextMessage(authMessage))
 
         // Wait for auth success
-        def authResponse = authResponseFuture.get(10, TimeUnit.SECONDS)
+        def authResponse = authResponseFuture.get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
 
         if (authResponse.successful) {
             log.info("Authenticated successfully")
@@ -76,10 +84,11 @@ class WebSocketSessionProvider {
 
     WebSocketSession getAuthenticatedSession() {
         if (!isAuthenticated) {
-            throw new NotAuthenticatedException("Must be authenticated first before fetching session - Make sure to call WebSocketSessionProvider.authenticate first.")
+            throw new NotAuthenticatedException("Must be authenticated first before fetching session. " +
+                    "Make sure to call WebSocketSessionProvider.authenticate first.")
         }
 
-        return this.existingSession
+        this.existingSession
     }
 
 }

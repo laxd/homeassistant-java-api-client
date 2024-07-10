@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'groovy'
     id 'idea'
+    id 'codenarc'
 }
 
 group = 'uk.laxd.homeassistant'
@@ -17,14 +18,17 @@ configurations {
     integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
+String groovyVersion = '4.0.14'
+String springVersion = '3.2.5'
+
 dependencies {
     // Groovy and jakarta dependencies
-    implementation 'org.apache.groovy:groovy:4.0.14'
+    implementation "org.apache.groovy:groovy:$groovyVersion"
     implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
 
     // Spring
-    implementation 'org.springframework.boot:spring-boot-starter-web:3.2.5'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket:3.2.5'
+    implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-websocket:$springVersion"
 
     // Required to allow jackson to parse LocalDateTime objects
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1'
@@ -38,15 +42,19 @@ dependencies {
 
     // Spring test
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.5'
-    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-4.0")
-    testImplementation "org.spockframework:spock-core"
-    testImplementation "org.spockframework:spock-junit4"
+    testImplementation platform('org.spockframework:spock-bom:2.3-groovy-4.0')
+    testImplementation 'org.spockframework:spock-core'
+    testImplementation 'org.spockframework:spock-junit4'
 
     // Integration test depends on the project itself - Test dependencies are copied from testImplementation
     integrationTestImplementation project
     // Test containers to spin up HA container for testing
-    integrationTestImplementation "org.testcontainers:spock:1.19.8"
+    integrationTestImplementation 'org.testcontainers:spock:1.19.8'
 
+    // Codenarc dependencies, and specify groovy version to use when analysing.
+    codenarc('org.codenarc:CodeNarc:3.5.0-groovy-4.0')
+    codenarc('org.gmetrics:GMetrics-Groovy4')
+    codenarc("org.apache.groovy:groovy:$groovyVersion")
 }
 
 // Setup integration tests
@@ -62,4 +70,16 @@ testing {
             }
         }
     }
+}
+
+codenarc {
+    configFile = rootProject.file('config/codenarc/codenarc.groovy')
+}
+
+codenarcMain {
+    compilationClasspath = sourceSets.main.compileClasspath + sourceSets.main.output
+}
+
+codenarcTest {
+    compilationClasspath = codenarcMain.compilationClasspath + sourceSets.test.compileClasspath + sourceSets.test.output
 }

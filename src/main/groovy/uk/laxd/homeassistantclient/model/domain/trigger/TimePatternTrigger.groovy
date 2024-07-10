@@ -10,4 +10,5 @@ class TimePatternTrigger extends Trigger {
     TriggerType triggerType() {
         TriggerType.TIME_PATTERN
     }
+
 }

@@ -7,9 +7,11 @@ import java.time.OffsetDateTime
 
 @JsonDeserialize(using = StateChangedEventDeserialiser)
 class StateChangedEvent extends Event {
+
     String origin
     OffsetDateTime timeFired
     State oldState
     State newState
     String entityId
+
 }

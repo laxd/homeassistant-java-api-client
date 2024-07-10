@@ -11,6 +11,7 @@ class AtomicMonotonicIdGenerator implements IdGenerator {
 
     @Override
     int generateId() {
-        return nextId.getAndIncrement()
+        nextId.getAndIncrement()
     }
+
 }

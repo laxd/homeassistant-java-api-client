@@ -7,8 +7,6 @@ class HomeAssistantAuthRequiredMessage extends HomeAssistantAuthMessage {
     @JsonProperty("ha_version")
     String homeAssistantVersion
 
-    @Override
-    String getType() {
-        "auth_required"
-    }
+    final String type = "auth_required"
+
 }

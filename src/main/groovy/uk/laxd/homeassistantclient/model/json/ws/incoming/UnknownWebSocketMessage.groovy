@@ -13,11 +13,9 @@ class UnknownWebSocketMessage extends IncomingWebSocketMessage {
 
     @JsonAnySetter
     void set(String name, Object value) {
-        data.put(name, value);
+        data[name] = value
     }
 
-    @Override
-    String getType() {
-        "unknown"
-    }
+    final String type = "unknown"
+
 }

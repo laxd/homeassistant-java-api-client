@@ -17,5 +17,3 @@ class EventSubscriptionWebSocketMessage extends SubscriptionWebSocketMessage {
     Collection<String> eventTypes
 
 }
-
-

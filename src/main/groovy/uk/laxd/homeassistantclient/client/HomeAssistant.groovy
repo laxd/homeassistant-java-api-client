@@ -1,13 +1,12 @@
 package uk.laxd.homeassistantclient.client
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
-import uk.laxd.homeassistantclient.rest.HomeAssistantRestClientFactory
 import uk.laxd.homeassistantclient.spring.HomeAssistantClientConfiguration
-import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 
 class HomeAssistant {
+
     static HomeAssistant createClient() {
-        return new HomeAssistant()
+        new HomeAssistant()
     }
 
     /**
@@ -20,7 +19,7 @@ class HomeAssistant {
      * Long-Lived access token</a>.
      */
     HomeAssistantClient connect(String url, String token) {
-        def context = new AnnotationConfigApplicationContext(HomeAssistantClientConfiguration.class)
+        def context = new AnnotationConfigApplicationContext(HomeAssistantClientConfiguration)
 
         def client = context.getBean(HomeAssistantClientImpl)
 
@@ -28,4 +27,5 @@ class HomeAssistant {
 
         client
     }
+
 }

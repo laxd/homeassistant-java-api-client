@@ -9,8 +9,6 @@ class AuthenticationWebSocketMessage extends OutgoingWebSocketMessage {
     @JsonProperty("access_token")
     String token
 
-    @Override
-    String getType() {
-        return "auth"
-    }
+    final String type = "auth"
+
 }

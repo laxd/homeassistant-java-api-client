@@ -18,5 +18,3 @@ class TriggerWebSocketMessage extends SubscriptionWebSocketMessage {
     Collection<JsonTrigger> triggers
 
 }
-
-

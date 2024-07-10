@@ -8,7 +8,7 @@ import org.springframework.web.socket.TextMessage
 @Named
 class JacksonWebSocketMessageConverter {
 
-    private ObjectMapper objectMapper
+    private final ObjectMapper objectMapper
 
     @Inject
     JacksonWebSocketMessageConverter(ObjectMapper objectMapper) {
@@ -20,4 +20,5 @@ class JacksonWebSocketMessageConverter {
 
         new TextMessage(stringMessage)
     }
+
 }

@@ -18,9 +18,9 @@ class Colour {
         new Colour(r, g, b)
     }
 
-
     @Override
     String toString() {
-        return "[$red, $green, $blue]"
+        "[$red, $green, $blue]"
     }
+
 }

@@ -7,6 +7,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory
 
 @Named
 class HomeAssistantRestClientFactory {
+
     HomeAssistantRestClient createRestClient(String url, String token) {
         def restClient = RestClient.builder()
             .baseUrl("${url}/api")
@@ -15,6 +16,7 @@ class HomeAssistantRestClientFactory {
         def adapter = RestClientAdapter.create(restClient)
         def factory = HttpServiceProxyFactory.builderFor(adapter).build()
 
-        return factory.createClient(HomeAssistantRestClient.class)
+        factory.createClient(HomeAssistantRestClient)
     }
+
 }

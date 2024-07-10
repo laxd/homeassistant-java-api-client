@@ -25,6 +25,7 @@ class JsonService {
 }
 
 class JsonTarget {
+
     @JsonProperty("entity_id")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     Collection<String> entities = []
@@ -36,4 +37,5 @@ class JsonTarget {
     @JsonProperty("area_id")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     Collection<String> areas = []
+
 }

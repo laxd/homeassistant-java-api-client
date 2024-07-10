@@ -39,16 +39,18 @@ class HomeAssistantWebSocketMessageDispatcher {
         this.singleMessageResponseListener = singleMessageResponseListener
     }
 
-    <M extends ResponseWebSocketMessage> Future<M> sendMessageWithResponse(Integer id, WebSocketMessage message, Class<M> expectedResponseClass) {
+    <M extends ResponseWebSocketMessage> Future<M> sendMessageWithResponse(Integer id,
+                                                                           WebSocketMessage message,
+                                                                           Class<M> expectedResponseClass) {
         def future = singleMessageResponseListener.getResponse(id, expectedResponseClass)
 
-        webSocketSessionProvider.getAuthenticatedSession()
-                .sendMessage(message)
+        webSocketSessionProvider.authenticatedSession.sendMessage(message)
 
         future
     }
 
-    Future<ResultWebSocketMessage> sendMessageWithListener(SubscriptionWebSocketMessage message, HomeAssistantListener listener) {
+    Future<ResultWebSocketMessage> sendMessageWithListener(SubscriptionWebSocketMessage message,
+                                                           HomeAssistantListener listener) {
         def id = idGenerator.generateId()
         message.subscriptionId = id
         registry.register(listener, id)
@@ -59,19 +61,26 @@ class HomeAssistantWebSocketMessageDispatcher {
     /**
      * Send a message and wait for a response. The first message that is received that
      * contains the same generated ID of the message will be returned.
-     * @param message
-     * @return
      */
     Future<ResponseWebSocketMessage> sendMessage(SubscriptionWebSocketMessage message) {
         message.subscriptionId = idGenerator.generateId()
 
-        sendMessageWithResponse(message.subscriptionId, webSocketMessageConverter.toTextMessage(message), ResponseWebSocketMessage)
+        sendMessageWithResponse(
+                message.subscriptionId,
+                webSocketMessageConverter.toTextMessage(message),
+                ResponseWebSocketMessage
+        )
     }
 
-
-    <M extends ResponseWebSocketMessage> Future<M> sendMessage(SubscriptionWebSocketMessage message, Class<M> expectedResponseClass) {
+    <M extends ResponseWebSocketMessage> Future<M> sendMessage(SubscriptionWebSocketMessage message,
+                                                               Class<M> expectedResponseClass) {
         message.subscriptionId = idGenerator.generateId()
 
-        sendMessageWithResponse(message.subscriptionId, webSocketMessageConverter.toTextMessage(message), expectedResponseClass)
+        sendMessageWithResponse(
+                message.subscriptionId,
+                webSocketMessageConverter.toTextMessage(message),
+                expectedResponseClass
+        )
     }
+
 }

@@ -1,7 +1,6 @@
 package uk.laxd.homeassistantclient.events
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 import org.springframework.stereotype.Component
 import uk.laxd.homeassistantclient.model.json.ws.incoming.EventResponseWebSocketMessage
 
@@ -10,27 +9,26 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.EventResponseWebSocket
  * a matching subscription ID.
  */
 @Component
+@Slf4j
 class HomeAssistantEventListenerRegistry {
-
-    private static final Logger logger = LoggerFactory.getLogger(HomeAssistantEventListenerRegistry.class)
 
     Map<Integer, HomeAssistantListener> conversationIdToListenerMap = [:]
 
     void register(HomeAssistantListener listener, Integer conversationId) {
         conversationIdToListenerMap.put(conversationId, listener)
-        logger.debug("Added listener {}", listener)
+        log.debug("Added listener $listener")
     }
 
     void unregister(HomeAssistantListener listener) {
-        conversationIdToListenerMap.removeAll {it == listener }
-        logger.debug("Removed listener {}", listener)
+        conversationIdToListenerMap.removeAll { it == listener }
+        log.debug("Removed listener $listener")
 
         // TODO: Remove the listener from HA too.
     }
 
     void processMessage(EventResponseWebSocketMessage message) {
         if (message || message.event) {
-            logger.error("Cannot process null EventWebSocketMessage or message containing a null Event.")
+            log.error("Cannot process null EventWebSocketMessage or message containing a null Event.")
         }
 
         def listener = conversationIdToListenerMap[message.subscriptionId]
@@ -40,7 +38,8 @@ class HomeAssistantEventListenerRegistry {
             listener.handle(message.event)
         }
         else {
-            logger.warn("Received ResponseWebSocketMessage with subscription ID ${message.subscriptionId}, but no listener was registered with this ID")
+            log.warn("Received ResponseWebSocketMessage with subscription ID ${message.subscriptionId}, " +
+                    "but no listener was registered with this ID")
         }
     }
 

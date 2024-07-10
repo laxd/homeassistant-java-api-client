@@ -18,11 +18,12 @@ import java.time.Duration
  * Everything else is pretty much just doing what Jackson would normally do
  */
 class TriggerEventDeserialiser extends JsonDeserializer<TriggerEvent> {
+
     @Override
     TriggerEvent deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JacksonException {
         def mapper = new ObjectMapperFactory().createObjectMapper()
 
-        JsonNode rootNode = jsonParser.getCodec().readTree(jsonParser)
+        JsonNode rootNode = jsonParser.codec.readTree(jsonParser)
         JsonNode triggerNode = rootNode.path("variables").path("trigger")
         JsonNode fromStateTree = triggerNode.path("from_state")
         JsonNode toStateTree = triggerNode.path("to_state")
@@ -41,8 +42,10 @@ class TriggerEventDeserialiser extends JsonDeserializer<TriggerEvent> {
             event.duration = new For(Duration.ofSeconds(totalSeconds))
         }
 
-        event.context = mapper.convertValue(rootNode.get("context"), new TypeReference<Map<String, Object>>(){})
+        event.context = mapper.convertValue(rootNode.get("context"), new TypeReference<Map<String, Object>>(){ })
 
         event
     }
+
 }
+

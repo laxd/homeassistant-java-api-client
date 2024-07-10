@@ -3,12 +3,12 @@ package uk.laxd.homeassistantclient.model.mapper.trigger
 import uk.laxd.homeassistantclient.model.domain.trigger.For
 
 class ForMapper {
-    
+
     Object mapForToObject(For f) {
         if (f && f.duration) {
             return f.duration
         }
-        else if(f && (f.hours || f.minutes || f.seconds)) {
+        else if (f && (f.hours || f.minutes || f.seconds)) {
             def fr = [:]
 
             if (f.hours) {
@@ -22,9 +22,11 @@ class ForMapper {
             if (f.seconds) {
                 fr["seconds"] = f.seconds
             }
-            return fr
+
+            fr
         }
-        return null
+
+        null
     }
-    
+
 }

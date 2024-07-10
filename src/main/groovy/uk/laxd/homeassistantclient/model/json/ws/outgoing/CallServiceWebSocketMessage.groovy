@@ -14,5 +14,3 @@ class CallServiceWebSocketMessage extends SubscriptionWebSocketMessage {
     JsonService callService
 
 }
-
-

@@ -8,10 +8,10 @@ class ServiceTarget {
     TargetType type
     String value
 
-
     @Override
     String toString() {
-        return "$type($value)"
+        "$type($value)"
     }
+
 }
 

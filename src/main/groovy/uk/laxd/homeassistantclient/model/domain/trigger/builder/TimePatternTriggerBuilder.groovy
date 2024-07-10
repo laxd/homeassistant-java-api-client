@@ -82,7 +82,8 @@ class TimePatternTriggerBuilder extends TriggerBuilder<TimePatternTrigger> {
      */
     TimePatternTrigger every(int amount, TimeUnit timeUnit) {
         if (!isAmountValidForTimeUnit(amount, timeUnit)) {
-            throw new IllegalArgumentException("Amounts must not exceed TimeUnit maximums (HOURS <= 24, MINUTES/SECONDS <= 60)")
+            throw new IllegalArgumentException("Amounts must not exceed TimeUnit maximums " +
+                    "(HOURS <= 24, MINUTES/SECONDS <= 60)")
         }
 
         switch (timeUnit) {
@@ -96,7 +97,9 @@ class TimePatternTriggerBuilder extends TriggerBuilder<TimePatternTrigger> {
                 this.result.seconds = "/$amount"
                 break
             default:
-                throw new IllegalArgumentException("TimeUnit value must be one of HOURS, MINUTES or SECONDS. To run something on a longer timescale, create a Time trigger and set a condition on which days to run it")
+                throw new IllegalArgumentException("TimeUnit value must be one of HOURS, MINUTES or SECONDS. " +
+                        "To run something on a longer timescale, create a Time trigger and set a condition on which " +
+                        "days to run it")
         }
 
         this.result

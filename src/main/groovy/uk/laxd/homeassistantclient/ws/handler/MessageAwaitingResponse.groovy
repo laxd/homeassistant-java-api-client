@@ -10,18 +10,13 @@ import java.util.concurrent.CompletableFuture
 @Slf4j
 @TupleConstructor
 class MessageAwaitingResponse<M extends WebSocketMessage> {
+
     CompletableFuture<M> future
     Class<M> messageClass
     MessageCondition<M> condition
 
-    MessageAwaitingResponse(CompletableFuture<M> future, Class<M> messageClass, MessageCondition<M> condition) {
-        this.future = future
-        this.messageClass = messageClass
-        this.condition = condition
-    }
-
     void respond(M message) {
-        if(!condition.isValid(message)) {
+        if (!condition.isValid(message)) {
             return
         }
 
@@ -37,40 +32,46 @@ class MessageAwaitingResponse<M extends WebSocketMessage> {
         }
     }
 
-
     @Override
     String toString() {
-        return "Condition(messageClass=${messageClass.simpleName}, condition=${condition})"
+        "Condition(messageClass=${messageClass.simpleName}, condition=${condition})"
     }
+
 }
 
 interface MessageCondition<M extends WebSocketMessage> {
+
     boolean isValid(M message)
+
 }
 
 @TupleConstructor
 class MessageIdCondition<M extends ResponseWebSocketMessage> implements MessageCondition<M> {
+
     Integer messageId
 
     @Override
     boolean isValid(ResponseWebSocketMessage message) {
-        return message.subscriptionId == messageId
+        message.subscriptionId == messageId
     }
 
     @Override
     String toString() {
-        return "messageId=$messageId"
+        "messageId=$messageId"
     }
+
 }
 
 class NoOpMessageCondition<M extends WebSocketMessage> implements MessageCondition<M> {
+
     @Override
     boolean isValid(M message) {
-        return true
+        true
     }
 
     @Override
     String toString() {
-        return "true";
+        "true"
     }
+
 }

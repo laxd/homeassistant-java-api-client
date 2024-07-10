@@ -11,4 +11,5 @@ abstract class HomeAssistantAuthResponseMessage extends HomeAssistantAuthMessage
     String message
 
     abstract boolean isSuccessful()
+
 }
