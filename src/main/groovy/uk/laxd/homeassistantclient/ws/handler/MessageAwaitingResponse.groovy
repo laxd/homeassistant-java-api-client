@@ -20,7 +20,7 @@ class MessageAwaitingResponse<M extends WebSocketMessage> {
             return
         }
 
-        if (messageClass.isAssignableFrom(message.class)) {
+        if (messageClass.isInstance(message)) {
             future.complete(message)
         }
         else {
