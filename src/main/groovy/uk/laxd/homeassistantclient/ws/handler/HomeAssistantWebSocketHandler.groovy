@@ -45,7 +45,8 @@ class HomeAssistantWebSocketHandler implements WebSocketHandler {
             }
             catch (Exception e) {
                 // Avoid propagating exception up to websocket, to avoid closing if a listener throws an exception
-                log.error("Encountered error while handling WebSocket message: {}", e.message)
+                log.error("Encountered error while handling WebSocket message")
+                e.printStackTrace()
             }
             finally {
                 // Reset string builder now that a message has been processed

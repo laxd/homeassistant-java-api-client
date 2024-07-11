@@ -4,16 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 class EventSubscriptionWebSocketMessage extends SubscriptionWebSocketMessage {
 
-    EventSubscriptionWebSocketMessage(String eventType) {
-        this([eventType])
-    }
+    final String type = "subscribe_events"
 
-    EventSubscriptionWebSocketMessage(Collection<String> eventTypes) {
-        this.type = "subscribe_events"
-        this.eventTypes = eventTypes
+    EventSubscriptionWebSocketMessage(String eventType) {
+        this.eventType = eventType
     }
 
     @JsonProperty("event_type")
-    Collection<String> eventTypes
+    String eventType
 
 }
