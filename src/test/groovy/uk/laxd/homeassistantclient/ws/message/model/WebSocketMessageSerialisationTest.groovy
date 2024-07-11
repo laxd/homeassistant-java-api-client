@@ -8,11 +8,7 @@ import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
 class WebSocketMessageSerialisationTest extends Specification {
 
-    private ObjectMapper objectMapper
-
-    void setup() {
-        objectMapper = new ObjectMapperFactory().createObjectMapper()
-    }
+    ObjectMapper objectMapper = new ObjectMapperFactory().createObjectMapper()
 
     def "TriggerWebSocketMessage can be serialised correctly"() {
         given:
@@ -33,4 +29,5 @@ class WebSocketMessageSerialisationTest extends Specification {
         node.get("trigger").toList()[0].get("platform").textValue() == "test"
         node.get("trigger").toList()[0].get("key").textValue() == "value"
     }
+
 }

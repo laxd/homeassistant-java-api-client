@@ -62,4 +62,5 @@ class StateConverterSpec extends Specification {
         "" | ""
         "ABC" | "ABC"
     }
+
 }

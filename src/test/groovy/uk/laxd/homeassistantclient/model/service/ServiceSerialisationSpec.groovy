@@ -26,4 +26,5 @@ class ServiceSerialisationSpec extends Specification {
         node.get("service").textValue() == "turn_on"
         node.get("target").get("entity_id").toList()[0].textValue() == "light.bedroom"
     }
+
 }

@@ -19,7 +19,7 @@ class MessageAwaitingResponseSpec extends Specification {
         awaitingResponse.respond(message)
 
         then:
-        future.isDone() == result
+        future.done == result
 
         where:
         messageClass | message | result
@@ -37,11 +37,12 @@ class MessageAwaitingResponseSpec extends Specification {
         awaitingResponse.respond(new HomeAssistantAuthSuccessfulMessage())
 
         then:
-        future.isDone() == result
+        future.done == result
 
         where:
         condition | result
         ({ true }) | true
         ({ false }) | false
     }
+
 }

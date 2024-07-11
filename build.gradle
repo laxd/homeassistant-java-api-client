@@ -73,17 +73,24 @@ testing {
 }
 
 codenarc {
-    configFile = rootProject.file('config/codenarc/codenarc.groovy')
     // Don't automatically run codenarc as part of check, run it manually
     sourceSets = []
 }
 
 codenarcMain {
+    configFile = rootProject.file('config/codenarc/codenarc-main.groovy')
     compilationClasspath = sourceSets.main.compileClasspath + sourceSets.main.output
 }
 
 codenarcTest {
+    configFile = rootProject.file('config/codenarc/codenarc-test.groovy')
     compilationClasspath = codenarcMain.compilationClasspath + sourceSets.test.compileClasspath + sourceSets.test.output
+}
+
+codenarcIntegrationTest {
+    configFile = rootProject.file('config/codenarc/codenarc-test.groovy')
+    compilationClasspath = codenarcMain.compilationClasspath + sourceSets.integrationTest.compileClasspath + sourceSets.integrationTest.output
+
 }
 
 // codenarc task to run all source sets with codenarc

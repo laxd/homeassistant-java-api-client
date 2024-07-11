@@ -1,11 +1,5 @@
 ruleset {
 
-        description '''
-        A Sample Groovy RuleSet containing all CodeNarc Rules, grouped by category.
-        You can use this as a template for your own custom RuleSet.
-        Just delete the rules that you don't want to include.
-        '''
-
         // rulesets/basic.xml
         AssertWithinFinallyBlock
         AssignmentInConditional
@@ -299,32 +293,6 @@ ruleset {
         JdbcConnectionReference
         JdbcResultSetReference
         JdbcStatementReference
-
-        // rulesets/junit.xml
-        ChainedTest
-        CoupledTestCase
-        JUnitAssertAlwaysFails
-        JUnitAssertAlwaysSucceeds
-        JUnitFailWithoutMessage
-        JUnitLostTest
-        JUnitPublicField
-        JUnitPublicNonTestMethod
-        JUnitPublicProperty
-        JUnitSetUpCallsSuper
-        JUnitStyleAssertions
-        JUnitTearDownCallsSuper
-        JUnitTestMethodWithoutAssert
-        JUnitUnnecessarySetUp
-        JUnitUnnecessaryTearDown
-        JUnitUnnecessaryThrowsException
-        SpockIgnoreRestUsed
-        UnnecessaryFail
-        UseAssertEqualsInsteadOfAssertTrue
-        UseAssertFalseInsteadOfNegation
-        UseAssertNullInsteadOfAssertEquals
-        UseAssertSameInsteadOfAssertTrue
-        UseAssertTrueInsteadOfAssertEquals
-        UseAssertTrueInsteadOfNegation
 
         // rulesets/logging.xml
         LoggerForDifferentClass

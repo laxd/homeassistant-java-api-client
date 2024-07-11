@@ -15,10 +15,11 @@ class HomeAssistantEntitySpec extends Specification {
         entity.domain == expectedDomain
 
         where:
-        entityId || expectedDomain
-        "light.abc" || "light"
-        "" || null
-        "." || null
-        "light.entity.abc" || "light"
+        entityId | expectedDomain
+        "light.abc" | "light"
+        "" | null
+        "." | null
+        "light.entity.abc" | "light"
     }
+
 }

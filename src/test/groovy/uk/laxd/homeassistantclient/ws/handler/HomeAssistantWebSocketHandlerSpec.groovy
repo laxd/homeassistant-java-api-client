@@ -1,12 +1,13 @@
 package uk.laxd.homeassistantclient.ws.handler
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.web.socket.TextMessage
 import spock.lang.Specification
 import uk.laxd.homeassistantclient.spring.ObjectMapperFactory
 
 class HomeAssistantWebSocketHandlerSpec extends Specification {
 
-    def objectMapper = new ObjectMapperFactory().createObjectMapper()
+    ObjectMapper objectMapper = new ObjectMapperFactory().createObjectMapper()
 
     def "single message can be parsed"() {
         given:
@@ -59,4 +60,5 @@ class HomeAssistantWebSocketHandlerSpec extends Specification {
         1 * messageHandlerDelegate.handle(_, { it.type == "pong" && it.subscriptionId == 1 })
         1 * messageHandlerDelegate.handle(_, { it.type == "auth_required" })
     }
+
 }

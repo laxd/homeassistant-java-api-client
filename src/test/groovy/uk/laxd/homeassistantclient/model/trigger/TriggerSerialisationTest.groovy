@@ -185,7 +185,14 @@ class TriggerSerialisationTest extends Specification {
         def node = objectMapper.valueToTree(mapped)
 
         then:
-        node.fieldNames().toList().sort() == ["platform","entity_id", "below", "above", "attribute", "value_template"].sort()
+        node.fieldNames().toList().sort() == [
+                "platform",
+                "entity_id",
+                "below",
+                "above",
+                "attribute",
+                "value_template",
+        ].sort()
         node.get("platform").textValue() == "numeric_state"
         node.get("entity_id").textValue() == "light.bedroom"
         node.get("below").textValue() == "30"
@@ -193,4 +200,5 @@ class TriggerSerialisationTest extends Specification {
         node.get("attribute").textValue() == "luminance"
         node.get("value_template").textValue() == "{{ state.attribute.luminance - 100 }}"
     }
+
 }

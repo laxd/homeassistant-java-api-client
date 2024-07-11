@@ -46,13 +46,14 @@ class HomeAssistantWsModelSpec extends Specification {
         mapper.readValue(json, IncomingWebSocketMessage).class == messageClass
 
         where:
-        type || messageClass
-        "auth_required" || HomeAssistantAuthRequiredMessage
-        "auth_ok" || HomeAssistantAuthSuccessfulMessage
-        "auth_invalid" || HomeAssistantAuthFailedMessage
-        "event" || EventResponseWebSocketMessage
-        "pong" || PongWebSocketMessage
-        "result" || ResultWebSocketMessage
-        "qwertyuiop" || UnknownWebSocketMessage
+        type | messageClass
+        "auth_required" | HomeAssistantAuthRequiredMessage
+        "auth_ok" | HomeAssistantAuthSuccessfulMessage
+        "auth_invalid" | HomeAssistantAuthFailedMessage
+        "event" | EventResponseWebSocketMessage
+        "pong" | PongWebSocketMessage
+        "result" | ResultWebSocketMessage
+        "qwertyuiop" | UnknownWebSocketMessage
     }
+
 }

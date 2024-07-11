@@ -7,26 +7,25 @@ import uk.laxd.homeassistantclient.ws.handler.MessageIdCondition
 
 class MessageResponseListenerSpec extends Specification {
 
-    private MessageResponseListener messageResponseListener = new MessageResponseListener()
+    private final MessageResponseListener messageResponseListener = new MessageResponseListener()
 
     def "awaiting message is answered by matching incoming message"() {
         given:
         def future = messageResponseListener.waitForMessage(HomeAssistantAuthRequiredMessage)
 
         expect:
-        !future.isDone()
+        !future.done
 
         when:
         messageResponseListener.checkForMessagesAwaitingResponse(new HomeAssistantAuthRequiredMessage())
 
         then:
-        future.isDone()
+        future.done
     }
 
     def "awaiting message with matching condition is answered by incoming message"() {
         given:
         def future = messageResponseListener.waitForMessage(PongWebSocketMessage, new MessageIdCondition(123))
-
 
         when:
         def incomingMessage = new PongWebSocketMessage()
@@ -35,7 +34,7 @@ class MessageResponseListenerSpec extends Specification {
         messageResponseListener.checkForMessagesAwaitingResponse(incomingMessage)
 
         then:
-        !future.isDone()
+        !future.done
 
         when:
         incomingMessage.subscriptionId = 123
@@ -43,7 +42,7 @@ class MessageResponseListenerSpec extends Specification {
         messageResponseListener.checkForMessagesAwaitingResponse(incomingMessage)
 
         then:
-        future.isDone()
+        future.done
     }
 
     def "awaiting messages are removed from queue once answered"() {
@@ -60,7 +59,8 @@ class MessageResponseListenerSpec extends Specification {
         messageResponseListener.checkForMessagesAwaitingResponse(incomingMessage)
 
         then:
-        future.isDone()
+        future.done
         messageResponseListener.messagesAwaitingResponse.size() == 0
     }
+
 }
