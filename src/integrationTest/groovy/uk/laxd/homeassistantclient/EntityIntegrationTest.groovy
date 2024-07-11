@@ -7,7 +7,6 @@ class EntityIntegrationTest extends AbstractIntegrationTest {
 
     def "Test entity state returned"() {
         given:
-        def client = getClient()
 
         when:
         def kitchenLight = client.getEntity("light.kitchen", LightEntity)

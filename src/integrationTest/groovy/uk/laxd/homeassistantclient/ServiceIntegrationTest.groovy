@@ -7,9 +7,8 @@ class ServiceIntegrationTest extends AbstractIntegrationTest {
 
     def "Test manual service call works"() {
         given:
-        def client = getClient()
         def inputNumber = client.getEntity("input_number.test_number_1", InputNumber)
-        inputNumber.setValue(10)
+        inputNumber.value = 10
 
         when:
         def service = ServiceBuilder.createServiceCall("input_number.increment")

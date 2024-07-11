@@ -5,11 +5,11 @@ import uk.laxd.homeassistantclient.ws.exception.AuthenticationFailureException
 
 class AuthenticationIntegrationTest extends AbstractIntegrationTest {
 
-    String INVALID_TOKEN = "ABC123"
+    private static final String INVALID_TOKEN = "ABC123"
 
     def "Test authentication failure"() {
         given:
-        String url = getClientUrl()
+        String url = clientUrl()
 
         when:
         HomeAssistant.createClient().connect(url, INVALID_TOKEN)
@@ -18,4 +18,5 @@ class AuthenticationIntegrationTest extends AbstractIntegrationTest {
         def exception = thrown AuthenticationFailureException
         exception.message == "Failed to authenticate with ${url}: Invalid access token or password"
     }
+
 }

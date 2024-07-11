@@ -37,7 +37,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
       - name: Codenarc
-        run: ./gradlew codenarcMain codenarcTest --info --stacktrace
+        run: ./gradlew codenarc --info --stacktrace
 
   integration-test:
     runs-on: ubuntu-latest
