@@ -70,7 +70,7 @@ jobs:
       - name: Archive test results
         uses: actions/upload-artifact@v4
         with:
-          name: code-test-report
+          name: code-integration-test-report-${{ matrix.HA_VERSION }}
           path: build/reports/tests/integrationTest/**
 
   dependency-submission:
