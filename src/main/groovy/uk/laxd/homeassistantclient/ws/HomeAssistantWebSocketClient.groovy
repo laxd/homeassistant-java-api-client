@@ -20,13 +20,13 @@ import uk.laxd.homeassistantclient.model.mapper.trigger.TriggerMapperFactory
 
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.CallServiceWebSocketMessage
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.EventSubscriptionWebSocketMessage
+import uk.laxd.homeassistantclient.timeout.TimeoutService
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.PingWebSocketMessage
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.TriggerWebSocketMessage
 import uk.laxd.homeassistantclient.ws.session.WebSocketSessionProvider
 
 import java.util.concurrent.Future
-import java.util.concurrent.TimeUnit
 
 @Slf4j
 @Named
@@ -39,6 +39,7 @@ class HomeAssistantWebSocketClient {
     private final ServiceMapper serviceMapper
     private final HomeAssistantWebSocketMessageDispatcher messageDispatcher
     private final WebSocketMessageMapper messageMapper
+    private final TimeoutService timeoutService
 
     @Inject
     HomeAssistantWebSocketClient(WebSocketSessionProvider webSocketSessionProvider,
@@ -47,7 +48,8 @@ class HomeAssistantWebSocketClient {
                                  TriggerMapperFactory triggerMapperFactory,
                                  ServiceMapper serviceMapper,
                                  HomeAssistantWebSocketMessageDispatcher messageDispatcher,
-                                 WebSocketMessageMapper messageMapper) {
+                                 WebSocketMessageMapper messageMapper,
+                                 TimeoutService timeoutService) {
         this.webSocketSessionProvider = webSocketSessionProvider
         this.registry = registry
         this.webSocketMessageConverter = webSocketMessageConverter
@@ -55,6 +57,7 @@ class HomeAssistantWebSocketClient {
         this.serviceMapper = serviceMapper
         this.messageDispatcher = messageDispatcher
         this.messageMapper = messageMapper
+        this.timeoutService = timeoutService
     }
 
     void connect(String url, String token) {
@@ -137,7 +140,7 @@ class HomeAssistantWebSocketClient {
     HomeAssistantPongMessage ping() {
         def message = new PingWebSocketMessage()
         def response = messageDispatcher.sendMessage(message, PongWebSocketMessage)
-        def b = response.get(10, TimeUnit.SECONDS)
+        def b = timeoutService.resolveWithinTimeout(response)
         messageMapper.map(b)
     }
 

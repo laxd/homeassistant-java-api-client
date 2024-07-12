@@ -1,19 +1,15 @@
 package uk.laxd.homeassistantclient.model.domain.entity
 
 import groovy.transform.ToString
+import uk.laxd.homeassistantclient.client.HomeAssistantClient
 import uk.laxd.homeassistantclient.model.domain.entity.state.converter.StateConverter
 import uk.laxd.homeassistantclient.model.domain.service.Service
 import uk.laxd.homeassistantclient.model.json.HomeAssistantEntity
-import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
-
-import java.util.concurrent.TimeUnit
 
 @ToString(includes = "entityId,state")
 class BaseEntity<S> implements Entity<S> {
 
-    protected static final int TIMEOUT_SECONDS = 10
-
-    protected HomeAssistantWebSocketClient wsClient
+    protected HomeAssistantClient client
 
     String entityId
     S state
@@ -21,10 +17,11 @@ class BaseEntity<S> implements Entity<S> {
     Date lastUpdated
     Map<String, Object> attributes
 
-    BaseEntity(HomeAssistantWebSocketClient wsClient,
+    BaseEntity(HomeAssistantClient client,
                HomeAssistantEntity entity,
                StateConverter<S> converter) {
-        this.wsClient = wsClient
+        this.client = client
+
         this.entityId = entity.entityId
         this.lastChanged = entity.lastChanged
         this.lastUpdated = entity.lastUpdated
@@ -35,37 +32,37 @@ class BaseEntity<S> implements Entity<S> {
 
     @Override
     void callService(Service service) {
-        this.wsClient.callService(service).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        this.client.callService(service)
     }
 
     @Override
     void turnOn() {
-        this.wsClient.turnOn(this.entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        this.client.turnOn(this.entityId)
     }
 
     @Override
     void turnOn(Map<String, Object> additionalData) {
-        this.wsClient.turnOn(this.entityId, additionalData).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        this.client.turnOn(this.entityId, additionalData)
     }
 
     @Override
     void turnOff() {
-        this.wsClient.turnOff(this.entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        this.client.turnOff(this.entityId)
     }
 
     @Override
     void turnOff(Map<String, Object> additionalData) {
-        this.wsClient.turnOff(this.entityId, additionalData).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        this.client.turnOff(this.entityId, additionalData)
     }
 
     @Override
     void toggle() {
-        this.wsClient.toggle(this.entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        this.client.toggle(this.entityId)
     }
 
     @Override
     void toggle(Map<String, Object> additionalData) {
-        this.wsClient.toggle(this.entityId, additionalData).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        this.client.toggle(this.entityId, additionalData)
     }
 
     String getType() {

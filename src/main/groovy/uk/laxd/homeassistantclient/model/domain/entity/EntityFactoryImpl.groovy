@@ -1,44 +1,36 @@
 package uk.laxd.homeassistantclient.model.domain.entity
 
-import jakarta.inject.Inject
 import jakarta.inject.Named
+import uk.laxd.homeassistantclient.client.HomeAssistantClient
 import uk.laxd.homeassistantclient.model.domain.entity.helpers.InputNumber
 import uk.laxd.homeassistantclient.model.domain.entity.light.LightEntity
 import uk.laxd.homeassistantclient.model.domain.entity.state.converter.NumericStateConverter
 import uk.laxd.homeassistantclient.model.domain.entity.state.converter.OnOffStateConverter
 import uk.laxd.homeassistantclient.model.json.HomeAssistantEntity
-import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
 
 @Named
 class EntityFactoryImpl implements EntityFactory {
 
-    private final HomeAssistantWebSocketClient webSocketClient
-
-    @Inject
-    EntityFactoryImpl(HomeAssistantWebSocketClient webSocketClient) {
-        this.webSocketClient = webSocketClient
-    }
-
     @Override
-    <E extends Entity> E createEntity(HomeAssistantEntity homeAssistantEntity) {
+    <E extends Entity> E createEntity(HomeAssistantClient client, HomeAssistantEntity homeAssistantEntity) {
         switch (homeAssistantEntity.domain) {
             case "light":
-                return createLightEntity(homeAssistantEntity) as E
+                return createLightEntity(client, homeAssistantEntity) as E
             case "input_number":
-                return createInputNumber(homeAssistantEntity) as E
+                return createInputNumber(client, homeAssistantEntity) as E
             default:
-                return new GenericEntity(webSocketClient, homeAssistantEntity) as E
+                return new GenericEntity(client, homeAssistantEntity) as E
         }
     }
 
     @Override
-    LightEntity createLightEntity(HomeAssistantEntity homeAssistantEntity) {
-        new LightEntity(webSocketClient, homeAssistantEntity, new OnOffStateConverter())
+    LightEntity createLightEntity(HomeAssistantClient client, HomeAssistantEntity homeAssistantEntity) {
+        new LightEntity(client, homeAssistantEntity, new OnOffStateConverter())
     }
 
     @Override
-    InputNumber createInputNumber(HomeAssistantEntity homeAssistantEntity) {
-        new InputNumber(webSocketClient, homeAssistantEntity, new NumericStateConverter())
+    InputNumber createInputNumber(HomeAssistantClient client, HomeAssistantEntity homeAssistantEntity) {
+        new InputNumber(client, homeAssistantEntity, new NumericStateConverter())
     }
 
 }

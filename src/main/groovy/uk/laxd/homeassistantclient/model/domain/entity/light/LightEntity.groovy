@@ -4,13 +4,11 @@ import groovy.transform.InheritConstructors
 import uk.laxd.homeassistantclient.model.domain.entity.BaseEntity
 import uk.laxd.homeassistantclient.model.domain.entity.state.State
 
-import java.util.concurrent.TimeUnit
-
 @InheritConstructors
 class LightEntity extends BaseEntity<State> {
 
     void setBrightness(short brightness) {
-        this.wsClient.turnOn(this.entityId, ["brightness" : brightness]).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        this.client.turnOn(this.entityId, ["brightness" : brightness])
     }
 
     short getBrightness() {
@@ -30,7 +28,7 @@ class LightEntity extends BaseEntity<State> {
      * @param colourTemperature the colour temperature to set in mireds
      */
     void setColourTemperature(short colourTemperature) {
-        this.wsClient.turnOn(this.entityId, ["color_temp" : colourTemperature]).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        this.client.turnOn(this.entityId, ["color_temp" : colourTemperature])
     }
 
     Colour getColour() {
@@ -40,8 +38,7 @@ class LightEntity extends BaseEntity<State> {
     }
 
     void setColour(Colour colour) {
-        this.wsClient.turnOn(this.entityId, ["rgb_color" : [colour.red, colour.green, colour.blue]])
-                .get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        this.client.turnOn(this.entityId, ["rgb_color" : [colour.red, colour.green, colour.blue]])
     }
 
 }

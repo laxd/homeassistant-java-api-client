@@ -87,16 +87,40 @@ interface HomeAssistantClient {
     void turnOn(String entityId)
 
     /**
+     * Attempts to turn the given entity on with the given attributes. Any entity that supports being turned on can be
+     * turned on with this
+     * @param entityId Entity ID, including domain e.g. "light.kitchen"
+     * @param attributes Additional attributes to pass to the turnOn call.
+     */
+    void turnOn(String entityId, Map<String, Object> attributes)
+
+    /**
      * Attempts to turn the given entity off. Any entity that supports being turned off can be turned off with this
      * @param entityId Entity ID, including domain e.g. "light.kitchen"
      */
     void turnOff(String entityId)
 
     /**
+     * Attempts to turn the given entity off with the given attributes. Any entity that supports being turned off can be
+     * turned off with this
+     * @param entityId Entity ID, including domain e.g. "light.kitchen"
+     * @param attributes Additional attributes to pass to the turnOff call.
+     */
+    void turnOff(String entityId, Map<String, Object> attributes)
+
+    /**
      * Attempts to toggle the given entity. Any entity that supports being toggled can be toggled with this
      * @param entityId Entity ID, including domain e.g. "light.kitchen"
      */
     void toggle(String entityId)
+
+    /**
+     * Attempts to toggle the given entity with the given attributes. Any entity that supports being toggled can be
+     * toggled with this
+     * @param entityId Entity ID, including domain e.g. "light.kitchen"
+     * @param attributes Additional attributes to pass to the toggle call.
+     */
+    void toggle(String entityId, Map<String, Object> attributes)
 
     /**
      * Calls the given service.

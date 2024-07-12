@@ -15,9 +15,8 @@ import uk.laxd.homeassistantclient.model.json.event.Event
 import uk.laxd.homeassistantclient.model.json.event.TriggerEvent
 import uk.laxd.homeassistantclient.rest.HomeAssistantRestClient
 import uk.laxd.homeassistantclient.rest.HomeAssistantRestClientFactory
+import uk.laxd.homeassistantclient.timeout.TimeoutService
 import uk.laxd.homeassistantclient.ws.HomeAssistantWebSocketClient
-
-import java.util.concurrent.TimeUnit
 
 /**
  * A Home Assistant client implementation that combined REST API and WebSockets
@@ -26,21 +25,22 @@ import java.util.concurrent.TimeUnit
 @Named
 class HomeAssistantClientImpl implements HomeAssistantClient {
 
-    private static final int TIMEOUT_SECONDS = 10
-
     private final HomeAssistantRestClientFactory restClientFactory
 
     private HomeAssistantRestClient restClient
     private final HomeAssistantWebSocketClient wsClient
     private final EntityFactory entityFactory
+    private final TimeoutService timeoutService
 
     @Inject
     HomeAssistantClientImpl(HomeAssistantRestClientFactory restClientFactory,
                             HomeAssistantWebSocketClient wsClient,
-                            EntityFactory entityFactory) {
+                            EntityFactory entityFactory,
+                            TimeoutService timeoutService) {
         this.restClientFactory = restClientFactory
         this.wsClient = wsClient
         this.entityFactory = entityFactory
+        this.timeoutService = timeoutService
     }
 
     @Override
@@ -58,7 +58,7 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
     Entity getEntity(String entityId) throws NoSuchEntityException {
         def entity = restClient.getEntity(entityId)
 
-        entityFactory.createEntity(entity)
+        entityFactory.createEntity(this, entity)
     }
 
     @Override
@@ -66,7 +66,7 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
             throws NoSuchEntityException, InvalidEntityException {
         def entity = restClient.getEntity(entityId)
 
-        def e = entityFactory.createEntity(entity)
+        def e = entityFactory.createEntity(this, entity)
 
         if (e.class !== entityClass) {
             throw new InvalidEntityException("Entity ${e} does not match expected type ${entityClass}")
@@ -78,42 +78,56 @@ class HomeAssistantClientImpl implements HomeAssistantClient {
     LightEntity getLightEntity(String entityId) throws NoSuchEntityException {
         def entity = restClient.getEntity(entityId)
 
-        entityFactory.createLightEntity(entity)
+        entityFactory.createLightEntity(this, entity)
     }
 
     @Override
     void onEvent(String eventType, HomeAssistantListener<Event> listener) {
-        wsClient.listenToEvents(eventType, listener).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        def future = wsClient.listenToEvents(eventType, listener)
+
+        timeoutService.resolveWithinTimeout(future)
     }
 
     @Override
     void on(Trigger trigger, HomeAssistantListener<TriggerEvent> listener) {
-        wsClient.listenToTrigger(trigger, listener).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        def future = wsClient.listenToTrigger(trigger, listener)
+
+        timeoutService.resolveWithinTimeout(future)
     }
 
     @Override
     void on(Collection<Trigger> triggers, HomeAssistantListener<TriggerEvent> listener) {
-        wsClient.listenToTriggers(triggers, listener).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        def future = wsClient.listenToTriggers(triggers, listener)
+
+        timeoutService.resolveWithinTimeout(future)
     }
 
     @Override
-    void turnOn(String entityId) {
-        wsClient.turnOn(entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+    void turnOn(String entityId, Map<String, Object> attributes = [:]) {
+        def future = wsClient.turnOn(entityId, attributes)
+
+        timeoutService.resolveWithinTimeout(future)
     }
 
     @Override
-    void turnOff(String entityId) {
-        wsClient.turnOff(entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+    void turnOff(String entityId, Map<String, Object> attributes = [:]) {
+        def future = wsClient.turnOff(entityId, attributes)
+
+        timeoutService.resolveWithinTimeout(future)
     }
 
     @Override
-    void toggle(String entityId) {
-        wsClient.toggle(entityId).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+    void toggle(String entityId, Map<String, Object> attributes = [:]) {
+        def future = wsClient.toggle(entityId, attributes)
+
+        timeoutService.resolveWithinTimeout(future)
     }
 
     @Override
     void callService(Service service) {
-        wsClient.callService(service).get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        def future = wsClient.callService(service)
+
+        timeoutService.resolveWithinTimeout(future)
     }
 
 }

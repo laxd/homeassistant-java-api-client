@@ -10,6 +10,7 @@ import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuth
 import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuthRequiredMessage
 import uk.laxd.homeassistantclient.model.json.ws.incoming.auth.HomeAssistantAuthResponseMessage
 import uk.laxd.homeassistantclient.model.json.ws.outgoing.AuthenticationWebSocketMessage
+import uk.laxd.homeassistantclient.timeout.TimeoutService
 import uk.laxd.homeassistantclient.ws.LoggingWebSocketSessionDecorator
 import uk.laxd.homeassistantclient.ws.MessageResponseListener
 import uk.laxd.homeassistantclient.ws.exception.AuthenticationFailureException
@@ -18,13 +19,10 @@ import uk.laxd.homeassistantclient.ws.handler.HomeAssistantWebSocketHandler
 
 import uk.laxd.homeassistantclient.ws.message.model.JacksonWebSocketMessageConverter
 
-import java.util.concurrent.TimeUnit
-
 @Named
 @Slf4j
 class WebSocketSessionProvider {
 
-    private static final int TIMEOUT_SECONDS = 10
     private static final String WEBSOCKET_PROTOCOL = "ws://"
     private static final String HTTPS_PROTOCOL = "https://"
     private static final String HTTP_PROTOCOL = "http://"
@@ -35,14 +33,17 @@ class WebSocketSessionProvider {
     private final HomeAssistantWebSocketHandler handler
     private final MessageResponseListener messageResponseListener
     private final JacksonWebSocketMessageConverter webSocketMessageConverter
+    private final TimeoutService timeoutService
 
     @Inject
     WebSocketSessionProvider(HomeAssistantWebSocketHandler handler,
                              MessageResponseListener messageResponseListener,
-                             JacksonWebSocketMessageConverter webSocketMessageConverter) {
+                             JacksonWebSocketMessageConverter webSocketMessageConverter,
+                             TimeoutService timeoutService) {
         this.handler = handler
         this.messageResponseListener = messageResponseListener
         this.webSocketMessageConverter = webSocketMessageConverter
+        this.timeoutService = timeoutService
     }
 
     void authenticate(String url, String token) {
@@ -58,7 +59,7 @@ class WebSocketSessionProvider {
         this.existingSession = new LoggingWebSocketSessionDecorator(client.execute(handler, wsUrl).get())
 
         // Wait for auth required message
-        authRequiredFuture.get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        timeoutService.resolveWithinTimeout(authRequiredFuture)
 
         // First register listener so we can catch auth response
         def authResponseFuture = messageResponseListener.waitForMessage(HomeAssistantAuthResponseMessage)
@@ -68,7 +69,7 @@ class WebSocketSessionProvider {
         this.existingSession.sendMessage(webSocketMessageConverter.toTextMessage(authMessage))
 
         // Wait for auth success
-        def authResponse = authResponseFuture.get(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        def authResponse = timeoutService.resolveWithinTimeout(authResponseFuture)
 
         if (authResponse.successful) {
             log.info("Authenticated successfully")

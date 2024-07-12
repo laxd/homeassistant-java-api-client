@@ -17,19 +17,19 @@ class InputNumber extends BaseEntity<Float> {
         def service = new Service(SET_VALUE_SERVICE)
         service.data = ["value": value]
         service.targets << new ServiceTarget(TargetType.ENTITY, entityId)
-        this.wsClient.callService(service)
+        this.client.callService(service)
     }
 
     void increment() {
         def service = new Service(INCREMENT_SERVICE)
         service.targets << new ServiceTarget(TargetType.ENTITY, entityId)
-        this.wsClient.callService(service)
+        this.client.callService(service)
     }
 
     void decrement() {
         def service = new Service(DECREMENT_SERVICE)
         service.targets << new ServiceTarget(TargetType.ENTITY, entityId)
-        this.wsClient.callService(service)
+        this.client.callService(service)
     }
 
 }
