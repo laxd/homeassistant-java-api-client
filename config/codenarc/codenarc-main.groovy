@@ -299,7 +299,7 @@ ruleset {
         LoggerWithWrongModifiers
         LoggingSwallowsStacktrace
         MultipleLoggers
-        // PrintStackTrace
+        PrintStackTrace
         Println
         SystemErrPrint
         SystemOutPrint
